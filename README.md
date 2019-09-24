@@ -10,6 +10,8 @@ folgende dateien müssen angepasst werden:
 
 * admin/_config_example.php	--> admin/_config.php
 
+* ggf. noch den admin/ per .htaccess schützen !
+
 ### install
 
 lade folgendes in den admin/ ordner
