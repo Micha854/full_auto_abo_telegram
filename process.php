@@ -17,7 +17,6 @@ if($_POST) //Post Data received from product list page.
 	//$ItemPrice 		= $_POST["itemprice"]; //Item Price
 	$ItemNumber 	= $_POST["itemnumber"]; //Item Number
 	
-	require_once('items.php');
 	$query = "SELECT * FROM products WHERE item_number = '".$ItemNumber."' ORDER BY id DESC";
 	$result = $mysqli->query($query);
 	$rowData = $result->fetch_array())
