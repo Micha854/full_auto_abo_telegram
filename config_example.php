@@ -11,6 +11,10 @@ $InputChannel = 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ';
 // Website Titel
 $WebsiteTitle = "Pogo Dein Stadtteil"
 
+// PayPal Logo
+$paypallogo = "http://YOURURL.COM/logo_example.jpg";
+//$paypallogo = ""; // kein Logo anzeigen
+  
 //PayPal Config
 $PayPalMode 		= 'live'; // sandbox or live
 
