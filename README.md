@@ -1,13 +1,7 @@
 # full_auto_abo_telegram
 Ein voll Automatisiertes Abo- System für einen Telegram Kanal
 
-### Config
-folgende dateien müssen angepasst werden:
-
-* config_example.php		--> config.php
-* ggf. noch den admin/ per .htaccess schützen !
-
-### install
+### Install
 
 lade folgendes in den admin/ ordner
 https://github.com/danog/MadelineProto
@@ -17,12 +11,19 @@ https://github.com/danog/MadelineProto
 in admin/_auth_client.php passe folgende Zeilen an:
 
 * $InputChannel = 'https://t.me/joinchat/AAAAAEOzl0uIG6rC2xuqjQ';	// YOUR Telegram Chanel
-* $InputUser = '@username'; // aother test username
+* $InputUser = '@username'; // Username der dem Kanal hinzugefügt werden soll
 
 Rufe dann im Browser YOURURL.COM/admin/_auth_client.php auf
 
-Gib deine Rufnummer an, du bekommst dann einen Code mit dem du dich verrifizieren musst. Als nächstes logge dich als User mit deinem Telegram Username ein. Hierzu bekommst du auch nochmal einen Code. Fertig! Unter Telegram Einstellungen / Sicherheit / Aktive Sitzungen sollte nun deine neue Sitzung angezeigt werden ;)
+Gib deine Rufnummer an, du bekommst dann einen Code mit dem du dich verrifizieren musst. Als nächstes logge dich als User mit deinem Telegram Username ein (Wichtig!! Es muss ein Admin des Kanals sein, der User hinzufügen darf). Hierzu bekommst du auch nochmal einen Code. Fertig! Unter Telegram Einstellungen / Sicherheit / Aktive Sitzungen sollte nun deine neue Sitzung angezeigt werden ;) Dieser Schritt ist wichtig, damit das Script in Zukunft User dem Kanal hinzufügen und löschen kann.
 
+### Config
+folgende dateien müssen angepasst werden:
+
+* config_example.php		--> config.php
+* ggf. noch den admin/ per .htaccess schützen !
+
+Erstelle einen stündlichen Cronjob für YOURURL.COM/admin/_cron.php (hierbei werden abgelaufene Abos-User aus dem Kanal und der Datenbank entfernt)
 
 ### SQL Telegram Chanel
 name der tabelle muss in --> config_example.php angepasst werden !!
@@ -54,7 +55,7 @@ ALTER TABLE `AAAAAEOzl0uIG6rC2xuqjQ`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 ```
-### SQL products
+### SQL products (Produkte müssen angepasst werden)
 
 ```
 CREATE TABLE `products` (
