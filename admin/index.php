@@ -21,6 +21,7 @@ td {
     <td bgcolor="#FFFFCC"><b>Telegram @user</b></td>
 	<td bgcolor="#FFFFCC"><b>pass [QuestMap]</b></td>
     <td bgcolor="#FFFFCC"><b>paydate</b></td>
+    <td bgcolor="#FFFFCC"><b>enddate</b></td>
     <td bgcolor="#FFFFCC"><b>@user change</b></td>
   </tr>
 <?php
@@ -39,6 +40,7 @@ while($row = $result->fetch_array()) { ?>
     <td><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
 	<td><?=$row["pass"] ?></td>
     <td><?=$row["paydate"] ?></td>
+    <td><?=$row["endtime"] ?></td>
     <td><a href="_edit_user.php?id=<?=$row["id"]?>">edit</a></td>
   </tr>
 <?php
