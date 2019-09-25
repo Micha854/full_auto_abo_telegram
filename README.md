@@ -68,18 +68,10 @@ INSERT INTO `products` (`id`, `months`, `item_number`, `item_price`, `abo_days`)
 (3, '6', '60000', '3.44', '180');
 
 --
--- Indizes der exportierten Tabellen
---
-
---
 -- Indizes für die Tabelle `products`
 --
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT für exportierte Tabellen
---
 
 --
 -- AUTO_INCREMENT für Tabelle `products`
