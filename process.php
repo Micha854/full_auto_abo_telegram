@@ -19,7 +19,7 @@ if($_POST) //Post Data received from product list page.
 	
 	$query = "SELECT * FROM products WHERE item_number = '".$ItemNumber."' ORDER BY id DESC";
 	$result = $mysqli->query($query);
-	$rowData = $result->fetch_array())
+	$rowData = $result->fetch_array();
 	
 	$ItemPrice 		= $rowData["item_price"];
 	$days_to_end 	= $rowData["abo_days"];
