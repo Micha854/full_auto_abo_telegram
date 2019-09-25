@@ -44,7 +44,7 @@ CREATE TABLE `abos` (
 --
 -- Indizes für die Tabelle `abos`
 --
-ALTER TABLE `AAAAAEOzl0uIG6rC2xuqjQ`
+ALTER TABLE `abos`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `TelegramUser` (`TelegramUser`);
 
