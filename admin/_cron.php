@@ -1,5 +1,5 @@
 <?php
-require_once('_config.php');
+require_once('../config.php');
 					
 /* check connection */
 if (mysqli_connect_errno()) {

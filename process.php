@@ -18,6 +18,13 @@ if($_POST) //Post Data received from product list page.
 	$ItemNumber 	= $_POST["itemnumber"]; //Item Number
 	
 	require_once('items.php');
+	$query = "SELECT * FROM products WHERE item_number = '".$ItemNumber."' ORDER BY id DESC";
+	$result = $mysqli->query($query);
+	$rowData = $result->fetch_array())
+	
+	$ItemPrice 		= $rowData["item_price"];
+	$days_to_end 	= $rowData["abo_days"];
+	
 	
 	$ItemDesc 		= $_POST["itemdesc"]; //Item description
 	$ItemQty 		= $_POST["itemQty"]; // Item Quantity
@@ -215,23 +222,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					
 					$buyerName = $httpParsedResponseAr["FIRSTNAME"].' '.$httpParsedResponseAr["LASTNAME"];
 					$buyerEmail = $httpParsedResponseAr["EMAIL"];
-					
-					//Open a new connection to the MySQL server
-					require_once('admin/_config.php');
-					
-					//Output any connection error
-					if ($mysqli->connect_error) {
-						die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-					}		
-					
-					if ($ItemNumber == '10000') {
-						$days_to_end = '30';
-					} elseif ($ItemNumber == '30000') {
-						$days_to_end = '90';
-					} elseif ($ItemNumber == '60000') {
-						$days_to_end = '180';
-					}
-					
+										
 					$buyName = urldecode($buyerName);
 					$buyEmail= urldecode($buyerEmail);
 					
