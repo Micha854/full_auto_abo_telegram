@@ -13,20 +13,18 @@ if($_POST) //Post Data received from product list page.
 	//In practical world you must fetch actual price from database using item id. Eg: 
 	//$ItemPrice = $mysqli->query("SELECT item_price FROM products WHERE id = Product_Number");
 
-	$ItemName 		= $_POST["itemname"]; //Item Name
-	//$ItemPrice 		= $_POST["itemprice"]; //Item Price
+	$ItemName 	= $_POST["itemname"]; //Item Name
 	$ItemNumber 	= $_POST["itemnumber"]; //Item Number
 	
 	$query = "SELECT * FROM products WHERE item_number = '".$ItemNumber."' ORDER BY id DESC";
 	$result = $mysqli->query($query);
 	$rowData = $result->fetch_array();
 	
-	$ItemPrice 		= $rowData["item_price"];
-	$days_to_end 	= $rowData["abo_days"];
+	$ItemPrice 	= $rowData["item_price"];
+	$days_to_end 	= $rowData["abo_days"];	
 	
-	
-	$ItemDesc 		= $_POST["itemdesc"]; //Item description
-	$ItemQty 		= $_POST["itemQty"]; // Item Quantity
+	$ItemDesc 	= $_POST["itemdesc"]; //Item description
+	$ItemQty 	= $_POST["itemQty"]; // Item Quantity
 	$ItemTotalPrice = ($ItemPrice*$ItemQty); //(Item Price x Quantity = Total) Get total amount of product; 
 	
 	//Other important variables like tax, shipping cost
@@ -100,6 +98,7 @@ if($_POST) //Post Data received from product list page.
 				$_SESSION['ShippinDiscount'] 	=  $ShippinDiscount; //Shipping discount for this order. Specify this as negative number.
 				$_SESSION['ShippinCost'] 		=   $ShippinCost; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
 				$_SESSION['GrandTotal'] 		=  $GrandTotal;
+				$_SESSION['days_to_end'] 		= $days_to_end;
 
 
 		//We need to execute the "SetExpressCheckOut" method to obtain paypal token
@@ -146,6 +145,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	$ShippinDiscount 	= $_SESSION['ShippinDiscount']; //Shipping discount for this order. Specify this as negative number.
 	$ShippinCost 		= $_SESSION['ShippinCost']; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
 	$GrandTotal 		= $_SESSION['GrandTotal'];
+	$days_to_end		= $_SESSION['days_to_end'];
 
 	$padata = 	'&TOKEN='.urlencode($token).
 				'&PAYERID='.urlencode($payer_id).
