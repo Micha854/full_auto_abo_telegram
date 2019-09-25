@@ -9,7 +9,7 @@ $result = $mysqli->query($query);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Pogo L&uuml;beck</title>
+<title><?=$WebsiteTitle ?></title>
 <style type="text/css">
 <!--
 body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}
