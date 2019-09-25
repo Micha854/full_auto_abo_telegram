@@ -25,5 +25,5 @@ $PayPalApiSignature = 'YOUR_API_SIGNATURE'; //Paypal API Signature
 $PayPalCurrencyCode = 'EUR'; //Paypal Currency Code
 
 $PayPalReturnURL 	= 'http://YOUR_DOMAIN/process.php'; //Point to process.php page
-$PayPalCancelURL 	= 'http://YOUR_DOMAIN/tme/index.php'; //Cancel URL if user clicks cancel
+$PayPalCancelURL 	= 'http://YOUR_DOMAIN/index.php'; //Cancel URL if user clicks cancel
 ?>
