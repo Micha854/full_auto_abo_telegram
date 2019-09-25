@@ -5,11 +5,6 @@ Ein voll Automatisiertes Abo- System für einen Telegram Kanal
 folgende dateien müssen angepasst werden:
 
 * config_example.php		--> config.php
-* index_example.php		--> index.php
-* items_example.php		--> items.php
-
-* admin/_config_example.php	--> admin/_config.php
-
 * ggf. noch den admin/ per .htaccess schützen !
 
 ### install
@@ -18,8 +13,8 @@ lade folgendes in den admin/ ordner
 https://github.com/danog/MadelineProto
 
 
-### SQL
-name der tabelle muss in --> admin/_config_example.php angepasst werden !!
+### SQL Telegram Chanel
+name der tabelle muss in --> config_example.php angepasst werden !!
 
 
 ```
@@ -46,5 +41,50 @@ ALTER TABLE `AAAAAEOzl0uIG6rC2xuqjQ`
 --
 ALTER TABLE `AAAAAEOzl0uIG6rC2xuqjQ`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+```
+### SQL products
+
+```
+--
+-- Tabellenstruktur für Tabelle `products`
+--
+
+CREATE TABLE `products` (
+  `id` int(11) NOT NULL,
+  `months` varchar(2) NOT NULL,
+  `item_number` varchar(6) NOT NULL,
+  `item_price` varchar(5) NOT NULL,
+  `abo_days` varchar(3) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `products`
+--
+
+INSERT INTO `products` (`id`, `months`, `item_number`, `item_price`, `abo_days`) VALUES
+(1, '1', '10000', '0.87', '30'),
+(2, '3', '30000', '1.90', '90'),
+(3, '6', '60000', '3.44', '180');
+
+--
+-- Indizes der exportierten Tabellen
+--
+
+--
+-- Indizes für die Tabelle `products`
+--
+ALTER TABLE `products`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT für exportierte Tabellen
+--
+
+--
+-- AUTO_INCREMENT für Tabelle `products`
+--
+ALTER TABLE `products`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 ```
