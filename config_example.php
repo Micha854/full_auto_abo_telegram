@@ -2,12 +2,14 @@
 // Mysql Database
 $mysqli = new mysqli('localhost','DBuser','DBpass','database');
 
-// tabelle
-$tbl = "AAAAAEOzl0uIG6rC2xuqjQ";
+// name der tabelle
+$tbl = "abos";
 
-// Telegram Chanel
-$InputChannel = 'https://t.me/joinchat/AAAAAEOzl0uIG6rC2xuqjQ';
+// Telegram Chanel - Join-URL
+$InputChannel = 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ';
 
+// Website Titel
+$WebsiteTitle = "Pogo Dein Stadtteil"
 
 //PayPal Config
 $PayPalMode 		= 'live'; // sandbox or live
