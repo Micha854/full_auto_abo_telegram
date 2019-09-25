@@ -30,7 +30,7 @@ name der tabelle muss in --> config_example.php angepasst werden !!
 
 
 ```
-CREATE TABLE `AAAAAEOzl0uIG6rC2xuqjQ` (
+CREATE TABLE `abos` (
   `id` int(11) NOT NULL,
   `buyerName` varchar(155) NOT NULL,
   `buyerEmail` varchar(255) NOT NULL,
@@ -42,16 +42,16 @@ CREATE TABLE `AAAAAEOzl0uIG6rC2xuqjQ` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Indizes für die Tabelle `AAAAAEOzl0uIG6rC2xuqjQ`
+-- Indizes für die Tabelle `abos`
 --
 ALTER TABLE `AAAAAEOzl0uIG6rC2xuqjQ`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `TelegramUser` (`TelegramUser`);
 
 --
--- AUTO_INCREMENT für Tabelle `AAAAAEOzl0uIG6rC2xuqjQ`
+-- AUTO_INCREMENT für Tabelle `abos`
 --
-ALTER TABLE `AAAAAEOzl0uIG6rC2xuqjQ`
+ALTER TABLE `abos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 ```
