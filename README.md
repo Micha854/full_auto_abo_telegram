@@ -46,10 +46,6 @@ COMMIT;
 ### SQL products
 
 ```
---
--- Tabellenstruktur für Tabelle `products`
---
-
 CREATE TABLE `products` (
   `id` int(11) NOT NULL,
   `months` varchar(2) NOT NULL,
