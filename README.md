@@ -12,6 +12,17 @@ folgende dateien müssen angepasst werden:
 lade folgendes in den admin/ ordner
 https://github.com/danog/MadelineProto
 
+### Verbindung zum Madline Client aufbauen
+
+in admin/_auth_client.php passe folgende Zeilen an:
+
+* $InputChannel = 'https://t.me/joinchat/AAAAAEOzl0uIG6rC2xuqjQ';	// YOUR Telegram Chanel
+* $InputUser = '@username'; // aother test username
+
+Rufe dann im Browser YOURURL.COM/admin/_auth_client.php auf
+
+Gib deine Rufnummer an, du bekommst dann einen Code mit dem du dich verrifizieren musst. Als nächstes logge dich als User mit deinem Telegram Username ein. Hierzu bekommst du auch nochmal einen Code. Fertig! Unter Telegram Einstellungen / Sicherheit / Aktive Sitzungen sollte nun deine neue Sitzung angezeigt werden ;)
+
 
 ### SQL Telegram Chanel
 name der tabelle muss in --> config_example.php angepasst werden !!
