@@ -23,7 +23,7 @@ body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}
 
 <body>
 <div align="center" style="padding-bottom:5px; padding-top:15px; font-size:24px; font-weight:bolder">ABO</div>
-<div align="center" style="padding-bottom:8px; font-size:12px">f&uuml;r den L&uuml;becker Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!</div>
+<div align="center" style="padding-bottom:8px; font-size:12px"><?=$header ?></div>
 <div class="product_wrapper">
 <?php
 while($row = $result->fetch_array()) { ?>
