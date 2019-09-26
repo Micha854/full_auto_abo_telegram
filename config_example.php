@@ -11,6 +11,9 @@ $InputChannel = 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ';
 // Website Titel
 $WebsiteTitle = "Pogo Dein Stadtteil"
 
+// index header  
+$header = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
+
 // PayPal Logo
 $paypallogo = "http://YOURURL.COM/logo_example.jpg";
 //$paypallogo = ""; // kein Logo anzeigen
