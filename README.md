@@ -19,6 +19,7 @@ Gib deine Rufnummer an, du bekommst dann einen Code mit dem du dich verifizieren
 
 ### PayPal API einrichten
 Logge dich in deinen PayPal Account ein! Danach öffne im selben Browser-Tab folgende URL:
+
 https://www.paypal.com/businessmanage/credentials/apiAccess
 
 Wähle die Option "NVP/SOAP API integration" und erstelle API Username, Password & Signature (diese Daten dann in die config.php)
