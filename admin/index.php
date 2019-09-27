@@ -25,7 +25,7 @@ td {
     <td bgcolor="#FFFFCC"><b>@user change</b></td>
   </tr>
 <?php
-require_once('../config.php');
+require_once(__DIR__.'/../config.php');
 					
 //Output any connection error
 if ($mysqli->connect_error) {

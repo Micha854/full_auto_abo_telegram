@@ -1,5 +1,5 @@
 <?php
-include('../config.php');
+include(__DIR__.'/../config.php');
 					
 //Output any connection error
 if ($mysqli->connect_error) {
