@@ -228,7 +228,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					$buyEmail= urldecode($buyerEmail);
 					
 					function generateRandomString($length = 10) {
-						return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
+						//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
+						return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
 					}
 					$passwd = generateRandomString(8);
 
