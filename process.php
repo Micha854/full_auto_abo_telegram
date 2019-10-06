@@ -184,10 +184,12 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) 
 	{
 
+			if($mailmail = '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
+			
 			echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">';
 			echo '<h2>Zahlung erfolgreich!</h2>';
 			echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-			echo '<div style="color:green"><br>Vielen Dank, du bist dem Kanal soeben beigetreten!</div>';
+			echo '<div style="color:green"><br>Vielen Dank, du bist dem Kanal soeben beigetreten!'.$output_message.'</div>';
 			
 				/*
 				//Sometimes Payment are kept pending even when transaction is complete. 
@@ -243,11 +245,27 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					}
 					*/
 					
-					include_once("admin/_add_user.php");
-					include("admin/Htpasswd.php");
+					if($mailmail = '1') {
+						$empfaenger = $buyEmail;
+						$betreff = $mailSubject;
+						$from = "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
+						$from .= "Reply-To: ".$mailmail."\r\n";
+						$from .= "Content-Type: text/html\r\n";
+						
+						ob_start();
+						include("mail.php");
+						$mailtext = ob_get_contents();
+						ob_end_clean();
+ 
+						mail($empfaenger, $betreff, $mailtext, $from);
+					}
+					
+					include("Htpasswd.php");
 
-					$htpasswd = new Htpasswd('.htpasswd_user');
+					$htpasswd = new Htpasswd('.htpasswd');
 					$htpasswd->addUser($ItemDesc, $passwd);
+					
+					include_once("admin/_add_user.php");
 					
 					//echo '<pre>';
 					//print_r($httpParsedResponseAr);

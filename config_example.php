@@ -14,6 +14,12 @@ $WebsiteTitle = "Pogo Dein Stadtteil";
 // index header  
 $header = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
 
+// Mail Settings
+$mailSend = '1'; // set value '0' to off
+$mailmail = 'pogo@YOURURL.COM'; // sender mail
+$mailSubject = "Welcome to PoGO MAP - here is your login data";
+$urlRocketmap= "https://YOURURL.COM/go/";
+
 // PayPal Logo
 $paypallogo = "http://YOURURL.COM/logo_example.jpg";
 //$paypallogo = ""; // kein Logo anzeigen
