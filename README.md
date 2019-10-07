@@ -12,7 +12,7 @@ https://github.com/danog/MadelineProto
 
 in admin/_auth_client.php passe folgende Zeilen an:
 
-* $InputChannel = 'https://t.me/joinchat/AAAAAEOzl0uIG6rC2xuqjQ';	// YOUR Telegram Chanel
+* $InputChannel = 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ';	// YOUR Telegram Chanel
 * $InputUser = '@username'; // Username der dem Kanal hinzugefügt werden soll
 
 Rufe dann im Browser YOURURL.COM/admin/_auth_client.php auf
