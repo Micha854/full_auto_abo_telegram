@@ -1,3 +1,11 @@
+<?php
+require_once(__DIR__.'/../config.php');
+					
+//Output any connection error
+if ($mysqli->connect_error) {
+	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,12 +33,6 @@ td {
     <td bgcolor="#FFFFCC"><b>@user change</b></td>
   </tr>
 <?php
-require_once(__DIR__.'/../config.php');
-					
-//Output any connection error
-if ($mysqli->connect_error) {
-	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
-}
 					
 $query = "SELECT * FROM ".$tbl." ORDER BY id DESC";
 $result = $mysqli->query($query);
