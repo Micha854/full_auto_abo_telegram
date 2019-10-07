@@ -12,7 +12,7 @@ function generateRandomString($length = 10) {
 }
 $passwd = generateRandomString(8);
 
-include("Htpasswd.php");
+include("../Htpasswd.php");
 
 $id = mysqli_real_escape_string($mysqli, $_GET["id"]);
 					
@@ -32,7 +32,7 @@ if($_POST["submit"] and $_POST["user"]) {
 	$newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
 	$newAdd = $_POST["user"];
 	
-	$htpasswd = new Htpasswd('.htpasswd');
+	$htpasswd = new Htpasswd('../.htpasswd');
 	$htpasswd->deleteUser($InputUser);
 	$htpasswd->addUser($newAdd, $passwd);
 					
