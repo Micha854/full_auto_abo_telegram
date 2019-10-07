@@ -32,6 +32,33 @@ folgende Dateien müssen angepasst werden:
 
 Erstelle einen stündlichen Cronjob für YOURURL.COM/admin/_cron.php (hierbei werden abgelaufene Abos-User aus dem Kanal und der Datenbank entfernt)
 
+### Zugriff auf Rocketmap via .htpasswd
+
+Wenn User Zugriff auf die Rocketmap haben dürfen muss folgendes (in Ubuntu) konfiguriert werden. 
+erstelle eine neue Datei "rocketmap.conf" in /etc/apache2/sites-available/
+
+```
+ServerName YOURDOMAIN.de
+ProxyPass /go/ http://YOURIP:46516/
+ProxyPassReverse /go/ http://127.0.0.1:46516/
+
+    <Proxy *>
+        Order deny,allow
+        Allow from all
+        Authtype Basic
+        Authname "Password Required"
+        AuthUserFile /var/www/vhosts/YOURDOMAIN.de/httpdocs/.htpasswd
+        Require valid-user
+    </Proxy>
+
+RewriteCond %{HTTP_HOST} !^YOURDOMAIN\.de/go/$ [NC]
+RewriteRule ^/go/$ http://%{HTTP_HOST}/go/ [L,R=301]
+```
+
+eingebunden wird die configuration in 000-default.conf mit der zeile "Include sites-available/rocketmap.conf
+"
+
+
 ### SQL Telegram Chanel
 Name der Tabelle muss in --> config_example.php angepasst werden!!
 
