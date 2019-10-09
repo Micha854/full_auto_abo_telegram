@@ -21,7 +21,10 @@ if($_POST) //Post Data received from product list page.
 	$rowData = $result->fetch_array();
 	
 	$ItemPrice 	= $rowData["item_price"];
-	$days_to_end 	= $rowData["abo_days"];	
+	$days_to_end 	= $rowData["abo_days"];
+	
+	$InputChannel = array();
+	$InputChannel = $_POST["added"];
 	
 	$ItemDesc 	= $_POST["itemdesc"]; //Item description
 	$ItemQty 	= $_POST["itemQty"]; // Item Quantity
@@ -96,9 +99,10 @@ if($_POST) //Post Data received from product list page.
 				$_SESSION['HandalingCost'] 		=  $HandalingCost;  //Handling cost for this order.
 				$_SESSION['InsuranceCost'] 		=  $InsuranceCost;  //shipping insurance cost for this order.
 				$_SESSION['ShippinDiscount'] 	=  $ShippinDiscount; //Shipping discount for this order. Specify this as negative number.
-				$_SESSION['ShippinCost'] 		=   $ShippinCost; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
+				$_SESSION['ShippinCost'] 		=  $ShippinCost; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
 				$_SESSION['GrandTotal'] 		=  $GrandTotal;
-				$_SESSION['days_to_end'] 		= $days_to_end;
+				$_SESSION['days_to_end'] 		=  $days_to_end;
+				$_SESSION['InputChannel'] 		=  $InputChannel;
 
 
 		//We need to execute the "SetExpressCheckOut" method to obtain paypal token
@@ -146,6 +150,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	$ShippinCost 		= $_SESSION['ShippinCost']; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
 	$GrandTotal 		= $_SESSION['GrandTotal'];
 	$days_to_end		= $_SESSION['days_to_end'];
+	$InputChannel		= $_SESSION['InputChannel'];
 
 	$padata = 	'&TOKEN='.urlencode($token).
 				'&PAYERID='.urlencode($payer_id).

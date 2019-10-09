@@ -5,8 +5,13 @@ $mysqli = new mysqli('localhost','DBuser','DBpass','database');
 // name der tabelle
 $tbl = "abos";
 
-// Telegram Chanel - Join-URL
-$InputChannel = 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ';
+// Channel Join - Url´s
+$InputChannel = array(
+"channel name 1" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ",		// channel 1
+"channel name 2" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ",		// channel 2
+"channel name 3" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ",		// channel 3
+"channel name 4" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ"		// channel 4
+);
 
 // Website Titel
 $WebsiteTitle = "Pogo Dein Stadtteil";
@@ -20,19 +25,17 @@ $mailmail = 'pogo@YOURURL.COM'; // sender mail
 $mailSubject = "Welcome to PoGO MAP - here is your login data";
 $urlRocketmap= "https://YOURURL.COM/go/";
 
-// PayPal Logo
-$paypallogo = "http://YOURURL.COM/logo_example.jpg";
-//$paypallogo = ""; // kein Logo anzeigen
-  
-//PayPal Config
-$PayPalMode 		= 'live'; // sandbox or live
+$paypallogo = "http://YOURURL.COM/logo_example.jpg";	// PayPal Logo
+//$paypallogo = ""; 									// kein Logo anzeigen
 
-$PayPalApiUsername 	= 'YOUR_API_USERNAME'; //PayPal API Username
-$PayPalApiPassword 	= 'YOUR_API_PASSWORD'; //Paypal API password
-$PayPalApiSignature = 'YOUR_API_SIGNATURE'; //Paypal API Signature
+$PayPalMode 		= 'live'; 							// sandbox or live
 
-$PayPalCurrencyCode = 'EUR'; //Paypal Currency Code
+$PayPalApiUsername 	= 'YOUR_API_USERNAME'; 				//PayPal API Username
+$PayPalApiPassword 	= 'YOUR_API_PASSWORD'; 				//Paypal API password
+$PayPalApiSignature = 'YOUR_API_SIGNATURE'; 			//Paypal API Signature
+
+$PayPalCurrencyCode = 'EUR'; 							//Paypal Currency Code
 
 $PayPalReturnURL 	= 'http://YOUR_DOMAIN/process.php'; //Point to process.php page
-$PayPalCancelURL 	= 'http://YOUR_DOMAIN/index.php'; //Cancel URL if user clicks cancel
+$PayPalCancelURL 	= 'http://YOUR_DOMAIN/index.php'; 	//Cancel URL if user clicks cancel
 ?>

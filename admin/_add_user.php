@@ -10,6 +10,7 @@ $MadelineProto->start();
 
 $InputUser = $ItemDesc; // username
 
-$Updates = $MadelineProto->channels->inviteToChannel(['silent' => false, 'channel' => $InputChannel, 'users' => [$InputUser, $InputUser], ]);
+foreach($InputChannel as $joinded)
+$Updates = $MadelineProto->channels->inviteToChannel(['silent' => false, 'channel' => $joinded, 'users' => [$InputUser, $InputUser], ]);
 echo '</div>';
 ?>

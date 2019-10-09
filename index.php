@@ -37,6 +37,11 @@ while($row = $result->fetch_array()) { ?>
     Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="@" /> 
 	<input type="hidden" name="itemprice" value="<?=$row["item_price"]?>" />
     <input type="hidden" name="itemQty" value="1" />
+	<p>
+	<?php
+		foreach($InputChannel as $channel => $join)
+  			echo $channel." beitreten <input type='checkbox' name='added[]' value='".$join."' checked='checked' /><br />";
+	?></p>
     <p><input class="dw_button" type="submit" name="submitbutt" value="PayPal (<?=$row["item_price"]?> EUR)" /></p>
     </form>
     </td>
