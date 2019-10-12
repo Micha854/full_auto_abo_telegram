@@ -124,3 +124,35 @@ ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 COMMIT;
 ```
+### SQL channels
+
+```
+CREATE TABLE `channels` (
+  `id` int(11) NOT NULL,
+  `name` varchar(155) NOT NULL,
+  `url` varchar(155) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Daten für Tabelle `channels`
+--
+
+INSERT INTO `channels` (`id`, `name`, `url`) VALUES
+(1, 'Kanal 1', 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ'),
+(2, 'Kanal 2', 'https://t.me/Kanal2'),
+(3, 'Kanal 3', 'https://t.me/joinchat/XXXXXXgy6i4Y6WxnEQQNqw'),
+(4, 'Kanal 4', 'https://t.me/Kanal4');
+
+--
+-- Indizes für die Tabelle `channels`
+--
+ALTER TABLE `channels`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT für Tabelle `channels`
+--
+ALTER TABLE `channels`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+COMMIT;
+```
