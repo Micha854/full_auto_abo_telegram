@@ -27,6 +27,8 @@ if($_POST) //Post Data received from product list page.
 	$InputChannel = $_POST["added"];
 	
 	$ItemDesc 	= $_POST["itemdesc"]; //Item description
+	$ItemDesc2 	= $_POST["itemdesc2"]; //Item description
+	
 	$ItemQty 	= $_POST["itemQty"]; // Item Quantity
 	$ItemTotalPrice = ($ItemPrice*$ItemQty); //(Item Price x Quantity = Total) Get total amount of product; 
 	
@@ -93,6 +95,7 @@ if($_POST) //Post Data received from product list page.
 				$_SESSION['ItemPrice'] 			=  $ItemPrice; //Item Price
 				$_SESSION['ItemNumber'] 		=  $ItemNumber; //Item Number
 				$_SESSION['ItemDesc'] 			=  $ItemDesc; //Item description
+				$_SESSION['ItemDesc2'] 			=  $ItemDesc2; //Item description
 				$_SESSION['ItemQty'] 			=  $ItemQty; // Item Quantity
 				$_SESSION['ItemTotalPrice'] 	=  $ItemTotalPrice; //total amount of product; 
 				$_SESSION['TotalTaxAmount'] 	=  $TotalTaxAmount;  //Sum of tax for all items in this order. 
@@ -141,6 +144,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	$ItemPrice 			= $_SESSION['ItemPrice'] ; //Item Price
 	$ItemNumber 		= $_SESSION['ItemNumber']; //Item Number
 	$ItemDesc 			= $_SESSION['ItemDesc']; //Item Number
+	$ItemDesc2 			= $_SESSION['ItemDesc2']; //Item Number
 	$ItemQty 			= $_SESSION['ItemQty']; // Item Quantity
 	$ItemTotalPrice 	= $_SESSION['ItemTotalPrice']; //total amount of product; 
 	$TotalTaxAmount 	= $_SESSION['TotalTaxAmount'] ;  //Sum of tax for all items in this order. 
@@ -194,7 +198,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 			echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">';
 			echo '<h2>Zahlung erfolgreich!</h2>';
 			echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-			echo '<div style="color:green"><br>Vielen Dank, du bist dem Kanal soeben beigetreten!'.$output_message.'</div>';
+			echo '<div style="color:green"><br>Vielen Dank, du bist den ausgew&auml;hlten Kan&auml;len soeben beigetreten!'.$output_message.'</div>';
 			
 				/*
 				//Sometimes Payment are kept pending even when transaction is complete. 
@@ -221,10 +225,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 				if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) 
 				{
 					
-					//echo '<br /><b>Stuff to store in database :</b><br /><pre>';
-					
 					#### SAVE BUYER INFORMATION IN DATABASE ###
-					//see (https://www.sanwebe.com/2013/03/basic-php-mysqli-usage) for mysqli usage
 					
 					$buyerName = $httpParsedResponseAr["FIRSTNAME"].' '.$httpParsedResponseAr["LASTNAME"];
 					$buyerEmail = $httpParsedResponseAr["EMAIL"];
@@ -235,24 +236,42 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					function generateRandomString($length = 10) {
 						//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
 						return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-					}
-					$passwd = generateRandomString(8);
+					} $passwd = generateRandomString(8);
+										
+					if($use_map == "PMSF") {
+						$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
+						
+						$date = new DateTime();
+						$datum = $date->getTimestamp();
+						$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
+						
+						$empfaenger	= $ItemDesc2;
 
+						$insert_pmsf_user = $mysqli->query("INSERT INTO users 
+						(user,temp_password,expire_timestamp,login_system,access_level)
+						VALUES ('$ItemDesc2','$hashedPwd','$expire_timestamp','$login_system','$access_level')");
+					}
+					
+					elseif($use_map == "Rocketmap") {
+						
+						include("Htpasswd.php");
+						$htpasswd = new Htpasswd('.htpasswd');
+						$htpasswd->addUser($ItemDesc, $passwd);
+						
+						$empfaenger	= $buyEmail;
+					}
+					
+					else {
+						$empfaenger	= $buyEmail;
+					}
+					
+					$InputChannels = implode(',',$InputChannel);
 					
 					$insert_row = $mysqli->query("INSERT INTO ".$tbl." 
-					(buyerName,buyerEmail,Amount,TelegramUser,pass,paydate,endtime)
-					VALUES ('$buyName','$buyEmail','$ItemTotalPrice','$ItemDesc','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
-					
-					/*
-					if($insert_row){
-						print 'Success! ID of last inserted record is : ' .$mysqli->insert_id .'<br />'; 
-					}else{
-						die('Error : ('. $mysqli->errno .') '. $mysqli->error);
-					}
-					*/
+					(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
+					VALUES ('$buyName','$empfaenger','$ItemTotalPrice','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
 					
 					if($mailmail = '1') {
-						$empfaenger = $buyEmail;
 						$betreff = $mailSubject;
 						$from = "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
 						$from .= "Reply-To: ".$mailmail."\r\n";
@@ -265,11 +284,6 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
  
 						mail($empfaenger, $betreff, $mailtext, $from);
 					}
-					
-					include("Htpasswd.php");
-
-					$htpasswd = new Htpasswd('.htpasswd');
-					$htpasswd->addUser($ItemDesc, $passwd);
 					
 					include_once("admin/_add_user.php");
 					

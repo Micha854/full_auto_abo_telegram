@@ -5,25 +5,22 @@ $mysqli = new mysqli('localhost','DBuser','DBpass','database');
 // name der tabelle
 $tbl = "abos";
 
-// Channel Join - Url´s
-$InputChannel = array(
-"channel name 1" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ",		// channel 1
-"channel name 2" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ",		// channel 2
-"channel name 3" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ",		// channel 3
-"channel name 4" => "https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ"		// channel 4
-);
-
 // Website Titel
 $WebsiteTitle = "Pogo Dein Stadtteil";
 
 // index header  
 $header = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
 
+// use MAP
+$urlMap= "https://YOURURL.COM/map/";
+$use_map = "PMSF";	// settings --> "PMSF" or "Rocketmap" or "" for empty
+$login_system = "native";
+$access_level = "1";
+
 // Mail Settings
 $mailSend = '1'; // set value '0' to off
 $mailmail = 'pogo@YOURURL.COM'; // sender mail
 $mailSubject = "Welcome to PoGO MAP - here is your login data";
-$urlRocketmap= "https://YOURURL.COM/go/";
 
 $paypallogo = "http://YOURURL.COM/logo_example.jpg";	// PayPal Logo
 //$paypallogo = ""; 									// kein Logo anzeigen

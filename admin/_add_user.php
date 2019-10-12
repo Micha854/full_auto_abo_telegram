@@ -10,7 +10,10 @@ $MadelineProto->start();
 
 $InputUser = $ItemDesc; // username
 
-foreach($InputChannel as $joinded)
-$Updates = $MadelineProto->channels->inviteToChannel(['silent' => false, 'channel' => $joinded, 'users' => [$InputUser, $InputUser], ]);
+$query = "SELECT url FROM channels WHERE id IN (".implode(',',$InputChannel).")";
+$result = $mysqli->query($query);
+while($channel = $result->fetch_array()) {
+	$Updates = $MadelineProto->channels->inviteToChannel(['silent' => false, 'channel' => $channel["url"], 'users' => [$InputUser, $InputUser], ]);
+}	
 echo '</div>';
 ?>

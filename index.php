@@ -3,6 +3,9 @@ include_once("config.php");
 
 $query = "SELECT * FROM products ORDER BY id ASC";
 $result = $mysqli->query($query);
+
+$query_cha = "SELECT * FROM channels ORDER BY name ASC";
+$result_cha = $mysqli->query($query_cha);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -34,13 +37,19 @@ while($row = $result->fetch_array()) { ?>
     <form method="post" action="process.php">
 	<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
 	<input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
-    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="@" /> 
+    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="@" />
+	
+	<?php if($use_map == "PMSF") { ?>
+	<br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" />
+	<?php } ?> 
+	
 	<input type="hidden" name="itemprice" value="<?=$row["item_price"]?>" />
     <input type="hidden" name="itemQty" value="1" />
 	<p>
 	<?php
-		foreach($InputChannel as $channel => $join)
-  			echo $channel." beitreten <input type='checkbox' name='added[]' value='".$join."' checked='checked' /><br />";
+		foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
+    		echo $channel["name"]." beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' /><br />";
+		}
 	?></p>
     <p><input class="dw_button" type="submit" name="submitbutt" value="PayPal (<?=$row["item_price"]?> EUR)" /></p>
     </form>
