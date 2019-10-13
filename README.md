@@ -66,12 +66,13 @@ Name der Tabelle muss in --> config_example.php angepasst werden!!
 
 
 ```
-CREATE TABLE `abos` (
+CREATE TABLE `AAAAAEOzl0uIG6rC2xuqjQ` (
   `id` int(11) NOT NULL,
   `buyerName` varchar(155) NOT NULL,
   `buyerEmail` varchar(255) NOT NULL,
   `Amount` varchar(5) NOT NULL,
   `TelegramUser` varchar(155) NOT NULL,
+  `channels` varchar(55) NOT NULL,
   `pass` varchar(8) NOT NULL,
   `paydate` datetime NOT NULL,
   `endtime` datetime NOT NULL
