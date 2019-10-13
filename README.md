@@ -66,7 +66,7 @@ Name der Tabelle muss in --> config_example.php angepasst werden!!
 
 
 ```
-CREATE TABLE `AAAAAEOzl0uIG6rC2xuqjQ` (
+CREATE TABLE `abos` (
   `id` int(11) NOT NULL,
   `buyerName` varchar(155) NOT NULL,
   `buyerEmail` varchar(255) NOT NULL,
