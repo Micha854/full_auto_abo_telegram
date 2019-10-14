@@ -246,6 +246,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
 						
 						$empfaenger	= $ItemDesc2;
+						$loginName	= $empfaenger;
 
 						$insert_pmsf_user = $mysqli->query("INSERT INTO users 
 						(user,temp_password,expire_timestamp,login_system,access_level)
@@ -259,6 +260,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$htpasswd->addUser($ItemDesc, $passwd);
 						
 						$empfaenger	= $buyEmail;
+						$loginName	= $ItemDesc;
 					}
 					
 					else {
