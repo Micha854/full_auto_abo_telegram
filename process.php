@@ -237,20 +237,34 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
 						return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
 					} $passwd = generateRandomString(8);
+					
+					// NEW USER OR UPDATE
+					if($check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = ".$ItemDesc." AND endtime > now()")) {
+						$update = $check->fetch_array();
+						$statement = "update";
+						$date = $update["endtime"];						
+					} else {
+						$statement = "insert";
+						$date = new DateTime();
+					}
 										
 					if($use_map == "PMSF") {
 						$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 						
-						$date = new DateTime();
+						//$date = new DateTime();
 						$datum = $date->getTimestamp();
 						$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
 						
 						$empfaenger	= $ItemDesc2;
 						$loginName	= $empfaenger;
-
-						$insert_pmsf_user = $mysqli->query("INSERT INTO users 
-						(user,temp_password,expire_timestamp,login_system,access_level)
-						VALUES ('$ItemDesc2','$hashedPwd','$expire_timestamp','$login_system','$access_level')");
+						
+						if($statement == "insert") {
+							$insert_pmsf_user = $mysqli->query("INSERT INTO users 
+							(user,temp_password,expire_timestamp,login_system,access_level)
+							VALUES ('$ItemDesc2','$hashedPwd','$expire_timestamp','$login_system','$access_level')");
+						} else {
+							mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$expire_timestamp."' WHERE id = ".$update["id"]);
+						}
 					}
 					
 					elseif($use_map == "Rocketmap") {
@@ -269,9 +283,13 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					
 					$InputChannels = implode(',',$InputChannel);
 					
-					$insert_row = $mysqli->query("INSERT INTO ".$tbl." 
-					(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
-					VALUES ('$buyName','$empfaenger','$ItemTotalPrice','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
+					if($statement == "insert") {
+						$insert_row = $mysqli->query("INSERT INTO ".$tbl." 
+						(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
+						VALUES ('$buyName','$empfaenger','$ItemTotalPrice','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
+					} else {
+						mysqli_query($mysqli, "UPDATE ".$tbl." SET endtime = '".$update["endtime"]." + INTERVAL $days_to_end DAY' WHERE id = ".$update["id"]);
+					}
 					
 					if($mailmail = '1') {
 						$betreff = $mailSubject;
