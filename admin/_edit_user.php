@@ -15,54 +15,99 @@ if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
-function generateRandomString($length = 10) {
-	//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
-	return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-} $passwd = generateRandomString(8);
-
-$id = mysqli_real_escape_string($mysqli, $_GET["id"]);
-					
-$query = "SELECT * FROM ".$tbl." WHERE id = $id";
+$query = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
 $result = $mysqli->query($query);
+$row = $result->fetch_array();
 
-$row = $result->fetch_array(MYSQLI_ASSOC);
+$schnitt = $row["total"]/$row["abo"];	// durchschnittlicher preis pro tag
 
 
 if($_POST["submit"] and $_POST["user"]) {
+
+	function generateRandomString($length = 10) {
+		//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
+		return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+	} $passwd = generateRandomString(8);
 	
-	$InputUser = $row["TelegramUser"]; // old Username delete
+	$newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
+	$newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
+	$newAdd = $_POST["user"];
+	$ItemDesc = $newAdd;
 	
-	if($use_map == "Rocketmap") {
-						
-		include("../Htpasswd.php");
-		$newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
-		$newAdd = $_POST["user"];
+	$sumBar = $_POST["itemprice"];
 	
-		$htpasswd = new Htpasswd('../.htpasswd');
-		$htpasswd->deleteUser($InputUser);
-		$htpasswd->addUser($newAdd, $passwd);
+	$days_to_end = $_POST["itemprice"]/$schnitt;
+	$days_to_end = ceil($days_to_end);
+	
+	$InputChannel = array();
+	$InputChannel = $_POST["added"];
 					
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', pass = '".$passwd."' WHERE id = ".$row["id"]);
-	}
-						
-	mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', pass = '".$passwd."' WHERE id = ".$row["id"]);
+	// NEW USER OR UPDATE
+	$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' AND endtime > now()");
+	$row_cnt = $check->num_rows;
 	
+	if($row_cnt != 0) {
+		$update = $check->fetch_array();
+		$statement = "update";
+		$date = $update["endtime"];
+		$amountInsert = $update["Amount"];
+		$amountInsert+=$sumBar;
+	} else {
+		$statement = "insert";
+		$date = new DateTime();
+		$amountInsert = $sumBar;
+	}
+	
+	if($use_map == "PMSF") {
+		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
+						
+		$datum = $date->getTimestamp();
+		$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
+						
+		$empfaenger	= $newMail;
+		$loginName	= $empfaenger;
+						
+		if($statement == "insert") {
+			$insert_pmsf_user = $mysqli->query("INSERT INTO users 
+			(user,temp_password,expire_timestamp,login_system,access_level)
+			VALUES ('$newMail','$hashedPwd','$expire_timestamp','$login_system','$access_level')");
+		} else {
+			mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$expire_timestamp."' WHERE id = ".$update["id"]);
+		}
+	}
+					
+	elseif($use_map == "Rocketmap") {
+		
+		if($statement == "insert") {				
+			include("../Htpasswd.php");
+			$htpasswd = new Htpasswd('../.htpasswd');
+			$htpasswd->addUser($newAdd, $passwd);
+		}
+						
+		$empfaenger	= $newMail;
+		$loginName	= $newAdd;
+	}
+					
+	else {
+		$empfaenger	= $newMail;
+	}
+					
+	$InputChannels = implode(',',$InputChannel);
+	
+	if($statement == "insert") {
+		$mysqli->query("INSERT INTO ".$tbl." 
+		(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
+		VALUES ('','$empfaenger','$amountInsert','$newUser','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
+	} elseif($statement == "update") {
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
+	}
+					
 	if($mailmail = '1') {
-		$empfaenger	= $row["buyerEmail"];
 		$betreff = $mailSubject;
 		$from = "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
 		$from .= "Reply-To: ".$mailmail."\r\n";
 		$from .= "Content-Type: text/html\r\n";
-		
-		$ItemDesc = $newUser;
-		
-		
-		$datetime1 = new DateTime();
-		$datetime2 = new DateTime(date('Y-m-d', strtotime($row["endtime"])));
-		$interval = $datetime1->diff($datetime2);
-		$days_to_end = $interval->format('%d');
-		
-				
+						
 		ob_start();
 		include("../mail.php");
 		$mailtext = ob_get_contents();
@@ -70,48 +115,44 @@ if($_POST["submit"] and $_POST["user"]) {
  
 		mail($empfaenger, $betreff, $mailtext, $from);
 	}
-					
-	echo '<div style="display:none">';
-	include 'madeline.php';
-
-	$MadelineProto = new \danog\MadelineProto\API('session.madeline');
-	$MadelineProto->start();
-	
-	$ChatBannedRights = ['_' => 'chatBannedRights', 'view_messages' => true, 'until_date' => 0];
-
-	$query2 = "SELECT url FROM channels WHERE id IN (".$row["channels"].")";
-	$result2 = $mysqli->query($query2);
-	while($channel = $result2->fetch_array()) {
-		$Updates = $MadelineProto->channels->editBanned(['channel' => $channel["url"], 'user_id' => $InputUser, 'banned_rights' => $ChatBannedRights, ]);	// banned old user
-		$Updates = $MadelineProto->channels->inviteToChannel(['channel' => $channel["url"], 'users' => [$newAdd, $newAdd], ]);								// add new user
-	}
-	echo '</div>';
-	echo '<h3 style="background:#009900; color:#FFFFFF; padding:5px; text-align:center"><a href="/tme/admin/">back</a> | user has been changed to '.$newAdd.'</h3>';
+	echo "User wurde gespeichert!";				
+	include_once("_add_user.php");
+									
 }
+
 ?>
 <p>
-<body>
-   <main role="main" class="container">
-<?php include "nav.php"; ?>
+  <main role="main" class="container">
+	<?php include "nav.php"; ?>
 <p>
       <div class="jumbotron">
-        <h1>Benutzer umbenennen</h1>
-		<form method="post" action=""> 
-  <table class="table">
-  <tr>
-    <th scope="col"><b>Aktueller @user</b></th>
-    <th scope="col"><b>Neuer @user</b></th>
-  </tr>
-  <tr>
-    <th scope="col"><?=$row["TelegramUser"] ?></th>
-    <th scope="col"><input type="text" name="user" class="form-control" autocomplete="off" required /></td>
-  </tr>
-  <tr>
-    <th scope="col"><input class="btn btn-sm btn-outline-secondary" type="submit" name="submit" value="User &auml;ndern!" /></td>
-	<a class="btn btn-sm btn-outline-secondary" href="/admin" role="button">zurück</a>
-  </tr>
-</table>
-</form>
+        <h1>Benutzer hinzufügen</h1>
+		<form method="post" action="">
+  <div class="form-group">
+    <p class="lead">Telegram Username:</p>
+    <input type="text" name="user" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
+  </div>
+   <div class="form-group">
+    <p class="lead">eMail:</p>
+    <input type="email" name="email" class="form-control" placeholder="Emailadresse" required>
+  </div>
+  <div class="form-group">
+    <p class="lead">Bar erhalten</p>
+    <input type="text" name="itemprice" class="form-control" placeholder="€" required>
+  </div>
+  <div>
+    <p><tr><td><b>Channels:</b><br></td><td>
+	<?php
+		foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
+    		echo $channel["name"]." beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' /><br />";
+		}
+	?><p>
+	  <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
+	  <a class="btn btn-sm btn-outline-secondary" href="/admin" role="button">zurück</a>
+	</td></tr></div>
+  </form>
+     </div>
+  </main>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
