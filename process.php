@@ -239,13 +239,19 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					} $passwd = generateRandomString(8);
 					
 					// NEW USER OR UPDATE
-					if($check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = ".$ItemDesc." AND endtime > now()")) {
+					$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' AND endtime > now()");
+					$row_cnt = $check->num_rows;
+	
+					if($row_cnt != 0) {
 						$update = $check->fetch_array();
 						$statement = "update";
-						$date = $update["endtime"];						
+						$date = $update["endtime"];
+						$amountInsert = $update["Amount"];
+						$amountInsert+=$ItemTotalPrice;				
 					} else {
 						$statement = "insert";
 						$date = new DateTime();
+						$amountInsert = $ItemTotalPrice;
 					}
 										
 					if($use_map == "PMSF") {
@@ -286,9 +292,9 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					if($statement == "insert") {
 						$insert_row = $mysqli->query("INSERT INTO ".$tbl." 
 						(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
-						VALUES ('$buyName','$empfaenger','$ItemTotalPrice','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
+						VALUES ('$buyName','$empfaenger','$amountInsert','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
 					} else {
-						mysqli_query($mysqli, "UPDATE ".$tbl." SET endtime = '".$update["endtime"]." + INTERVAL $days_to_end DAY' WHERE id = ".$update["id"]);
+						mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
 					}
 					
 					if($mailmail = '1') {
