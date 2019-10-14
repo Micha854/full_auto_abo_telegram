@@ -16,7 +16,7 @@ td {
 </head>
 
 <body>
-<a href="_newUser.php">Neuen Benutzer hinzufuegen</a>
+<h2><a href="_newUser.php">Neuen Benutzer hinzuf&uuml;gen</a></h2>
 <table width="100%" border="0">
   <tr>
     <td bgcolor="#FFFFCC"><b>Telegram @user</b></td>

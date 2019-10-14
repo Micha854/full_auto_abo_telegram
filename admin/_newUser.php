@@ -1,7 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set("display_errors", 1);
-
 include(__DIR__.'/../config.php');
 					
 //Output any connection error
@@ -115,7 +112,7 @@ if($_POST["submit"] and $_POST["user"]) {
 }
 
 ?>
-<a href="index.php">Zur&uuml;ck</a>
+<h2><a href="index.php">Zur&uuml;ck</a></h2>
 <form method="post" action="">
 <table width="100%" border="1">
 <tr><td>Telegram Username:</td><td><input class="input" size="10" type="text" name="user" value="@" style="width:100%" /></td></tr>
