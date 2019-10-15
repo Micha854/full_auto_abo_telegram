@@ -1,19 +1,19 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="/admin">Adminpanel</a>
+  <a class="navbar-brand" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Adminpanel</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="/" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <a class="nav-link dropdown-toggle" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Benutzercenter
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="/admin">Übersicht</a>
-          <a class="dropdown-item" href="_newUser.php">Hinzufügen</a>
+          <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Übersicht</a>
+          <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_newUser.php">Hinzufügen</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="/admin">Reset</a>
+          <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Reset</a>
         </div>
       </li>
     </ul>

@@ -108,7 +108,7 @@ if($_POST["submit"] and $_POST["user"]) {
   </tr>
   <tr>
     <th scope="col"><input class="btn btn-sm btn-outline-secondary" type="submit" name="submit" value="User &auml;ndern!" /></td>
-	<a class="btn btn-sm btn-outline-secondary" href="/admin" role="button">zurück</a>
+	<a class="btn btn-sm btn-outline-secondary" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zurück</a>
   </tr>
 </table>
 </form>

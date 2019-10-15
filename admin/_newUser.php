@@ -148,7 +148,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		}
 	?><p>
 	  <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
-	  <a class="btn btn-sm btn-outline-secondary" href="/admin" role="button">zurück</a>
+	  <a class="btn btn-sm btn-outline-secondary" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zurück</a>
 	</td></tr></div>
   </form>
      </div>
