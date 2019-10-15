@@ -157,3 +157,9 @@ ALTER TABLE `channels`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 ```
+### PMSF Datenbank anpassen
+
+```
+ALTER TABLE `users`
+  ADD UNIQUE KEY `user` (`user`);
+```
