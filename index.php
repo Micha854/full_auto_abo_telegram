@@ -13,34 +13,27 @@ $result_cha = $mysqli->query($query_cha);
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title><?=$WebsiteTitle ?></title>
-<style type="text/css">
-<!--
-body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}
-.procut_item {width: 100%;margin-right: auto;margin-left: auto;padding: 20px;background: #F1F1F1;margin-bottom: 1px;font-size: 12px;border-radius: 5px;text-shadow: 1px 1px 1px #FCFCFC;}
-.procut_item h4 {margin: 0px;padding: 0px;font-size: 20px;}
-.input{font-size:22px; padding:1px}
-.dw_button{font-size:16px}
--->
-</style>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 </head>
-
 <body>
+   <main role="main" class="container">
+<p>
 <div align="center" style="padding-bottom:5px; padding-top:15px; font-size:24px; font-weight:bolder">ABO</div>
 <div align="center" style="padding-bottom:8px; font-size:12px"><?=$header ?></div>
 <div class="product_wrapper">
 <?php
 while($row = $result->fetch_array()) { ?>
-<table class="procut_item" border="0" cellpadding="4">
+<table class="table" border="0" cellpadding="4">
   <tr>
-    <td width="70%"><h4><?=$row["months"]?> Monat <span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</td>
+    <th scope="col" width="70%"><h4><?=$row["months"]?> Monat <span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</th>
     <td width="30%">
     <form method="post" action="process.php">
 	<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
 	<input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
-    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="@" />
+    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="" required />
 	
 	<?php if($use_map == "PMSF") { ?>
-	<br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" />
+	<br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" required />
 	<?php } ?> 
 	
 	<input type="hidden" name="itemprice" value="<?=$row["item_price"]?>" />
@@ -60,5 +53,8 @@ while($row = $result->fetch_array()) { ?>
 }
 ?>
 </div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
