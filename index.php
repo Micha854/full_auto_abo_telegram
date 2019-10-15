@@ -25,15 +25,16 @@ $result_cha = $mysqli->query($query_cha);
 while($row = $result->fetch_array()) { ?>
 <table class="table" border="0" cellpadding="4">
   <tr>
-    <th scope="col" width="70%"><h4><?=$row["months"]?> Monat <span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</th>
-    <td width="30%">
+    <td valign="middel" scope=".col-xs-"><h4><?=$row["months"]?> Monat <span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>
+	<span style="font-size:11px">(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</span><p><br></th>
     <form method="post" action="process.php">
 	<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
 	<input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
-    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="" required />
+    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @ (<a target="_blank" href="https://telegram.org/faq/de#benutzernamen">Du bist unsicher?</a>)<br></span><p>
+		<input class="form-control" size="10" type="text" name="itemdesc" value="" required /><br>
 	
 	<?php if($use_map == "PMSF") { ?>
-	<br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" required />
+	Deine eMail: <br><input class="form-control" size="10" type="text" name="itemdesc2" value="" required /><p>
 	<?php } ?> 
 	
 	<input type="hidden" name="itemprice" value="<?=$row["item_price"]?>" />
@@ -41,10 +42,10 @@ while($row = $result->fetch_array()) { ?>
 	<p>
 	<?php
 		foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
-    		echo $channel["name"]." beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' /><br />";
+    		echo $channel["name"]." beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' />";
 		}
-	?></p>
-    <p><input class="dw_button" type="submit" name="submitbutt" value="PayPal (<?=$row["item_price"]?> EUR)" /></p>
+	?>
+	<center><input class="btn btn-success" type="submit" name="submitbutt" value="PayPal (<?=$row["item_price"]?> EUR)" /></center>
     </form>
     </td>
   </tr>
