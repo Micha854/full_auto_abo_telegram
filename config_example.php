@@ -35,4 +35,40 @@ $PayPalCurrencyCode = 'EUR'; 							//Paypal Currency Code
 
 $PayPalReturnURL 	= 'http://YOUR_DOMAIN/process.php'; //Point to process.php page
 $PayPalCancelURL 	= 'http://YOUR_DOMAIN/index.php'; 	//Cancel URL if user clicks cancel
+
+
+
+
+
+
+
+
+
+// DEBUGGING
+class Logger
+{
+  private static function addEntry($str)
+  {
+    $t = microtime(true);
+	$micro = sprintf("%06d",($t - floor($t)) * 1000000);
+	$handle = fopen(__DIR__.'/admin/log.txt', 'a');
+    fwrite($handle, sprintf("%s %s\n", "[".date("m-d H:i:s.".$micro,$t)."]", $str));
+    fclose($handle);
+  }
+
+  public static function warn($str)
+  {
+    self::addEntry("[\tWARNING] [\t\t". $_SERVER['SCRIPT_NAME'] ."] \t$str");
+  }
+
+  public static function error($str)
+  {
+    self::addEntry("[\tERROR] [\t\t". $_SERVER['SCRIPT_NAME'] ."] \t$str");
+  }
+
+  public static function info($str)
+  {
+    self::addEntry("[\tINFO] [\t\t". $_SERVER['SCRIPT_NAME'] ."] \t$str");
+  }
+}
 ?>

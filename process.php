@@ -4,6 +4,7 @@ include_once("config.php");
 include_once("paypal.class.php");
 
 $paypalmode = ($PayPalMode=='sandbox') ? '.sandbox' : '';
+Logger::info("PAYPAL MODE SET TO ".$paypalmode); // LOGGER
 
 if($_POST) //Post Data received from product list page.
 {
@@ -214,6 +215,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 				{
 					echo '<div style="color:red">Transaction Complete, but payment is still pending! '.
 					'You need to manually authorize this payment in your <a target="_new" href="http://www.paypal.com">Paypal Account</a></div>';
+					Logger::warn("AN NEWER PAYPAL ACC, PENDING..."); // LOGGER
 				}
 
 				// we can retrive transection details using either GetTransactionDetails or GetExpressCheckoutDetails
@@ -225,6 +227,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 				if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) 
 				{
 					
+					Logger::info("SUCESS PAYMENT"); // LOGGER
 					#### SAVE BUYER INFORMATION IN DATABASE ###
 					
 					$buyerName = $httpParsedResponseAr["FIRSTNAME"].' '.$httpParsedResponseAr["LASTNAME"];
@@ -239,7 +242,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					} $passwd = generateRandomString(8);
 					
 					// NEW USER OR UPDATE
-					$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' AND endtime > now()");
+					$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$ItemDesc."' AND endtime > now()");
 					$row_cnt = $check->num_rows;
 	
 					if($row_cnt != 0) {
@@ -253,8 +256,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$date = new DateTime();
 						$amountInsert = $ItemTotalPrice;
 					}
+					
+					Logger::info("USE ".$statement." FOR USER"); // LOGGER
 										
 					if($use_map == "PMSF") {
+						Logger::info("USE PMSF AS MAP"); // LOGGER
 						$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 						
 						//$date = new DateTime();
@@ -274,30 +280,40 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					}
 					
 					elseif($use_map == "Rocketmap") {
-						
+						Logger::info("USE ROCKETMAP AS MAP"); // LOGGER
 						include("Htpasswd.php");
 						$htpasswd = new Htpasswd('.htpasswd');
-						$htpasswd->addUser($ItemDesc, $passwd);
+						if($htpasswd->addUser($ItemDesc, $passwd)) {
+							Logger::info("CREATE USER ".$ItemDesc." ON .htpasswd"); // LOGGER
+						}
 						
 						$empfaenger	= $buyEmail;
 						$loginName	= $ItemDesc;
 					}
 					
 					else {
+						Logger::warn("USE NO MAP IN YOUR CONFIG !!!"); // LOGGER
 						$empfaenger	= $buyEmail;
 					}
 					
 					$InputChannels = implode(',',$InputChannel);
+					Logger::info("SELECTED CHANNELS ".$InputChannels); // LOGGER
 					
 					if($statement == "insert") {
-						$insert_row = $mysqli->query("INSERT INTO ".$tbl." 
+						if($insert_row = $mysqli->query("INSERT INTO ".$tbl." 
 						(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
-						VALUES ('$buyName','$empfaenger','$amountInsert','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
+						VALUES ('$buyName','$empfaenger','$amountInsert','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)")) {
+							Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
+						} else {
+							Logger::error("INSERT USER ON DATABASE FAILED"); // LOGGER
+						}
 					} else {
-						mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
+						mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
+						Logger::info("UPDATE USER ON DATABASE"); // LOGGER
 					}
 					
 					if($mailmail = '1') {
+						Logger::info("MAILER AKTIVE"); // LOGGER
 						$betreff = $mailSubject;
 						$from = "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
 						$from .= "Reply-To: ".$mailmail."\r\n";
@@ -307,12 +323,16 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						include("mail.php");
 						$mailtext = ob_get_contents();
 						ob_end_clean();
- 
-						mail($empfaenger, $betreff, $mailtext, $from);
+ 						
+						if(mail($empfaenger, $betreff, $mailtext, $from)) {
+							Logger::info("MAIL SEND TO ".$empfaenger); // LOGGER
+						} else {
+							Logger::error("CAN NOT MAIL SEND TO ".$empfaenger); // LOGGER
+						}
 					}
 					
 					include_once("admin/_add_user.php");
-					
+					Logger::info("FINISH SUCESS !!!"); // LOGGER
 					//echo '<pre>';
 					//print_r($httpParsedResponseAr);
 					//echo '</pre>';
