@@ -1,6 +1,11 @@
 <?php
 include_once("config.php");
 
+if($use_map == 'Rocketmap' and !file_exists(__DIR__.'/.htpasswd')) {
+$handle = fopen(__DIR__.'/.htpasswd', 'a');
+fclose($handle);
+}
+
 $query = "SELECT * FROM products ORDER BY id ASC";
 $result = $mysqli->query($query);
 
@@ -58,7 +63,6 @@ while($row = $result->fetch_array()) { ?>
 </table>
 <?php
 }
-Logger::info('test123');
 ?>
 </div>
 </body>
