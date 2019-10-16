@@ -34,10 +34,16 @@ body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}
 <div align="center" style="padding-bottom:8px; font-size:12px"><?=$header ?></div>
 <div class="product_wrapper">
 <?php
-while($row = $result->fetch_array()) { ?>
+while($row = $result->fetch_array()) { 
+	if($row["months"] > 1) {
+		$monate = " Monate ";
+	} else {
+		$monate = " Monat ";
+	}
+?>
 <table class="procut_item" border="0" cellpadding="4">
   <tr>
-    <td width="70%"><h4><?=$row["months"]?> Monat <span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</td>
+    <td width="70%"><h4><?=$row["months"].$monate?><span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</td>
     <td width="30%">
     <form method="post" action="process.php">
 	<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
