@@ -1,12 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<title><?=$WebsiteTitle ?> - ADMIN</title>
-</head>
-<body>
 <?php
 include(__DIR__.'/../config.php');
 					
@@ -121,40 +112,18 @@ if($_POST["submit"] and $_POST["user"]) {
 }
 
 ?>
-<p>
-  <main role="main" class="container">
-	<?php include "nav.php"; ?>
-<p>
-      <div class="jumbotron">
-        <h1>Benutzer hinzufügen</h1>
-		<form method="post" action="">
-  <div class="form-group">
-    <p class="lead">Telegram Username:</p>
-    <input type="text" name="user" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
-  </div>
-   <div class="form-group">
-    <p class="lead">eMail:</p>
-    <input type="email" name="email" class="form-control" placeholder="Emailadresse" required>
-  </div>
-  <div class="form-group">
-    <p class="lead">Bar erhalten</p>
-    <input type="text" name="itemprice" class="form-control" placeholder="€" required>
-  </div>
-  <div>
-    <p><tr><td><b>Channels:</b><br></td><td>
+<h2><a href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Zur&uuml;ck</a></h2>
+<form method="post" action="">
+<table width="100%" border="1">
+<tr><td>Telegram Username:</td><td><input class="input" size="10" type="text" name="user" value="@" style="width:100%" /></td></tr>
+<tr><td>eMail:</td><td><input class="input" size="10" type="text" name="email" value="" style="width:100%" /></td></tr>
+<tr><td>Bar erhalten:</td><td><input type="text" name="itemprice" value="" style="width:100%" /></td></tr>
+<tr><td>Channels:</td><td>
 	<?php
 		foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
     		echo $channel["name"]." beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' /><br />";
 		}
-	?><p>
-	  <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
-	  <a class="btn btn-sm btn-outline-secondary" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zurück</a>
-	</td></tr></div>
-  </form>
-     </div>
-  </main>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-</body>
-</html>
+	?></td></tr>
+	<tr><td colspan="2" align="center"><input class="dw_button" type="submit" name="submit" value="Benutzer erstellen" /></td></tr>
+</table>
+</form>

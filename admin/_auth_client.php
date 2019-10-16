@@ -8,8 +8,8 @@ include __DIR__.'/../config.php';
 $MadelineProto = new \danog\MadelineProto\API('session.madeline');
 $MadelineProto->start();
 
-$InputChannel = 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ';        // YOUR Telegram Chanel
-$InputUser = '@username'; // aother test username
+$InputChannel = 'https://t.me/joinchat/AAAAAEOzl0uIG6rC2xuqjQ';        // YOUR Telegram Chanel
+$InputUser = '@StarburgerHL'; // aother test username
 
 $Updates = $MadelineProto->channels->inviteToChannel(['silent' => false, 'channel' => $InputChannel, 'users' => [$InputUser, $InputUser], ]);
 ?>

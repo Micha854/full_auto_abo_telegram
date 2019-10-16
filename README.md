@@ -1,7 +1,7 @@
 # full_auto_abo_telegram
 Ein voll Automatisiertes Abo- System für einen Telegram Kanal
 
-Support On <a href="https://discord.gg/jsvX9pz">Discord</a>
+Support On <a href="https://discord.gg/9QfcqmB">Discord</a>
 
 ### Install
 
@@ -72,7 +72,6 @@ CREATE TABLE `abos` (
   `buyerEmail` varchar(255) NOT NULL,
   `Amount` varchar(5) NOT NULL,
   `TelegramUser` varchar(155) NOT NULL,
-  `channels` varchar(55) NOT NULL,
   `pass` varchar(8) NOT NULL,
   `paydate` datetime NOT NULL,
   `endtime` datetime NOT NULL

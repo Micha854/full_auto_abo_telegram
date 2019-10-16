@@ -3,25 +3,28 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <title><?=$WebsiteTitle ?> - ADMIN</title>
+<style type="text/css">
+table {
+   border-collapse: collapse; 
+}
+td {
+	border:solid #CCCCCC 1px;
+	padding:2px
+}
+</style>
 </head>
+
 <body>
-<p>
-<main role="main" class="container">
-<?php include "nav.php"; ?>
-<p>
-<div class="jumbotron">
-	<table class="table">
-	<thead class="thead-light">
+<h2><a href="_newUser.php">Neuen Benutzer hinzuf&uuml;gen</a></h2>
+<table width="100%" border="0">
   <tr>
-    <th scope="col">Telegram Username</th>
-	<th scope="col">TempPW</th>
-    <th scope="col">Bezahlt am:</th>
-    <th scope="col">Läuft ab:</th>
-    <th scope="col"></th>
+    <td bgcolor="#FFFFCC"><b>Telegram @user</b></td>
+	<td bgcolor="#FFFFCC"><b>pass [QuestMap]</b></td>
+    <td bgcolor="#FFFFCC"><b>paydate</b></td>
+    <td bgcolor="#FFFFCC"><b>enddate</b></td>
+    <td bgcolor="#FFFFCC"><b>@user change</b></td>
   </tr>
-  </thead>
 <?php
 require_once(__DIR__.'/../config.php');
 					
@@ -39,18 +42,11 @@ while($row = $result->fetch_array()) { ?>
 	<td><?=$row["pass"] ?></td>
     <td><?=$row["paydate"] ?></td>
     <td><?=$row["endtime"] ?></td>
-	<td><a class="btn btn-sm btn-outline-secondary" href="_edit_user.php?id=<?=$row["id"]?>" role="button">edit</a></td>
+    <td><a href="_edit_user.php?id=<?=$row["id"]?>">edit</a></td>
   </tr>
 <?php
 }
 ?>
 </table>
-<a class="btn btn-sm btn-outline-secondary" href="_newUser.php" role="button">Neuer User</a>
-<a class="btn btn-sm btn-outline-secondary" href="<?=$urlMap ?>" role="button">zur Map</a>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-     </div>
-  </main>
 </body>
 </html>
