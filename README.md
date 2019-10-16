@@ -1,7 +1,7 @@
 # full_auto_abo_telegram
 Ein voll Automatisiertes Abo- System für einen Telegram Kanal
 
-Support On <a href="https://discord.gg/9QfcqmB">Discord</a>
+Support On <a href="https://discord.gg/jsvX9pz">Discord</a>
 
 ### Install
 
