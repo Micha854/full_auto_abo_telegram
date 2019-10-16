@@ -60,6 +60,15 @@ RewriteRule ^/go/$ http://%{HTTP_HOST}/go/ [L,R=301]
 eingebunden wird die configuration in 000-default.conf mit der zeile "Include sites-available/rocketmap.conf
 "
 
+### bei Verwendung von PMSF als MAP
+
+Es müssen manualdb (PMSF) und unsere 3 Tabellen (siehe unten) zusammengeführt werden!
+Folgende Anpassung muss außerdem die Spalte "users" bekommen
+
+```
+ALTER TABLE `users`
+  ADD UNIQUE KEY `user` (`user`);
+```
 
 ### SQL Telegram Chanel
 Name der Tabelle muss in --> config_example.php angepasst werden!!
@@ -72,6 +81,7 @@ CREATE TABLE `abos` (
   `buyerEmail` varchar(255) NOT NULL,
   `Amount` varchar(5) NOT NULL,
   `TelegramUser` varchar(155) NOT NULL,
+  `channels` varchar(55) NOT NULL,
   `pass` varchar(8) NOT NULL,
   `paydate` datetime NOT NULL,
   `endtime` datetime NOT NULL
