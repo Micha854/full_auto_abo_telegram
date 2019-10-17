@@ -6,11 +6,6 @@ if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
-function generateRandomString($length = 10) {
-	//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
-	return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-} $passwd = generateRandomString(8);
-
 $id = mysqli_real_escape_string($mysqli, $_GET["id"]);
 					
 $query = "SELECT * FROM ".$tbl." WHERE id = $id";
@@ -21,22 +16,46 @@ $row = $result->fetch_array(MYSQLI_ASSOC);
 
 if($_POST["submit"] and $_POST["user"]) {
 	
-	$InputUser = $row["TelegramUser"]; // old Username delete
+	function generateRandomString($length = 10) {
+		//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
+		return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+	} $passwd = generateRandomString(8);
 	
-	if($use_map == "Rocketmap") {
+	$newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
+	$newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
+	$newAdd = $_POST["user"];
+	$ItemDesc = $newAdd;
+	
+	$OldUser = $row["TelegramUser"]; // old Username delete
+	$InputChannel = array($row["channels"]);
+	
+	if($use_map == "PMSF") {
+		$statement = "insert";
+		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
+		
+		$date = $row["endtime"];
+		$expire_timestamp = $date->getTimestamp();
+						
+		$loginName	= $_POST["email"];
+		
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', pass = '".$passwd."' WHERE id = ".$row["id"]);				
+		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', expire_timestamp = '".$expire_timestamp."', session_id = NULL, WHERE id = ".$row["buyerEmail"]);
+	}
+	
+	elseif($use_map == "Rocketmap") {
+		$statement = "insert";
+		$date = $row["endtime"];
+		$loginName	= $newAdd;
 						
 		include("../Htpasswd.php");
-		$newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
-		$newAdd = $_POST["user"];
 	
 		$htpasswd = new Htpasswd('../.htpasswd');
-		$htpasswd->deleteUser($InputUser);
+		$htpasswd->deleteUser($OldUser);
 		$htpasswd->addUser($newAdd, $passwd);
 					
 		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', pass = '".$passwd."' WHERE id = ".$row["id"]);
 	}
 						
-	mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', pass = '".$passwd."' WHERE id = ".$row["id"]);
 	
 	if($mailmail = '1') {
 		$empfaenger	= $row["buyerEmail"];
@@ -44,15 +63,6 @@ if($_POST["submit"] and $_POST["user"]) {
 		$from = "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
 		$from .= "Reply-To: ".$mailmail."\r\n";
 		$from .= "Content-Type: text/html\r\n";
-		
-		$ItemDesc = $newUser;
-		
-		
-		$datetime1 = new DateTime();
-		$datetime2 = new DateTime(date('Y-m-d', strtotime($row["endtime"])));
-		$interval = $datetime1->diff($datetime2);
-		$days_to_end = $interval->format('%d');
-		
 				
 		ob_start();
 		include("../mail.php");
@@ -62,22 +72,8 @@ if($_POST["submit"] and $_POST["user"]) {
 		mail($empfaenger, $betreff, $mailtext, $from);
 	}
 					
-	echo '<div style="display:none">';
-	include 'madeline.php';
-
-	$MadelineProto = new \danog\MadelineProto\API('session.madeline');
-	$MadelineProto->start();
-	
-	$ChatBannedRights = ['_' => 'chatBannedRights', 'view_messages' => true, 'until_date' => 0];
-
-	$query2 = "SELECT url FROM channels WHERE id IN (".$row["channels"].")";
-	$result2 = $mysqli->query($query2);
-	while($channel = $result2->fetch_array()) {
-		$Updates = $MadelineProto->channels->editBanned(['channel' => $channel["url"], 'user_id' => $InputUser, 'banned_rights' => $ChatBannedRights, ]);	// banned old user
-		$Updates = $MadelineProto->channels->inviteToChannel(['channel' => $channel["url"], 'users' => [$newAdd, $newAdd], ]);								// add new user
-	}
-	echo '</div>';
-	echo '<h3 style="background:#009900; color:#FFFFFF; padding:5px; text-align:center"><a href="/tme/admin/">back</a> | user has been changed to '.$newAdd.'</h3>';
+	include_once("_add_user.php");
+	$userSave = "<h1>Benuzter ge&auml;ndert zu ".$newAdd."</h1>";
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -85,38 +81,42 @@ if($_POST["submit"] and $_POST["user"]) {
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <title><?=$WebsiteTitle ?> - ADMIN EDIT</title>
-<style type="text/css">
-html {
-font-size:20px
-}
-td {
-border:solid #999999 1px
-}
-.input {
-font-size:18px;
-padding:5px;
-margin-top:10px;
-margin-bottom:10px
-}
-</style>
 </head>
 
 <body>
-<form action="" method="post">
-<table width="100%" border="0" style="border:solid #999999 1px">
-  <tr>
-    <td><b>Aktueller @user</b></td>
-    <td><b>Neuer @user</b></td>
-  </tr>
-  <tr>
-    <td><?=$row["TelegramUser"] ?></td>
-    <td><input class="input" type="text" name="user" autocomplete="off" style="width:90%; background:#FFFF99" /></td>
-  </tr>
-  <tr>
-    <td colspan="2" style="text-align:center"><input class="input" type="submit" name="submit" value="User &auml;ndern!" /></td>
-  </tr>
-</table>
+<main role="main" class="container">
+<?php include "nav.php"; ?>
+<div class="jumbotron">
+<?=$userSave?>
+<h1>Benutzer umbenennen</h1>
+<form method="post" action=""> 
+  <table class="table">
+    <tr>
+      <th scope="col"><b>Aktueller @Username</b></th>
+      <th scope="col"><b><?=$row["TelegramUser"] ?></b></th>
+    </tr>
+    <tr>
+      <th scope="col">Neuer @Username</th>
+      <th scope="col"><input type="text" name="user" class="form-control" autocomplete="off" required /></th>
+    </tr>
+	<?php if($use_map == "PMSF") { ?>
+	<tr>
+      <th scope="col">Neue Emailadresse</th>
+      <th scope="col"><input type="text" name="email" class="form-control" autocomplete="off" required /></th>
+    </tr>
+	<?php } ?>
+    <tr>
+      <th scope="col"><a class="btn btn-sm btn-outline-secondary" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a></th>
+	  <th scope="col"><input class="btn btn-sm btn-outline-secondary" type="submit" name="submit" value="User &auml;ndern!" /></th>
+    </tr>
+  </table>
 </form>
+</div>
+</main>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>

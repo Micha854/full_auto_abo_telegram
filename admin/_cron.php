@@ -17,9 +17,9 @@ $query = "SELECT * FROM ".$tbl." WHERE endtime < now() ORDER BY endtime ASC";
 $result = $mysqli->query($query);
 
 if($result->num_rows) { 
-	//echo "ergebnisse vorhanden";
-	include("delete_user.php");
+	echo "<h2>ergebnisse vorhanden</h2>";
+	include("_delete_user.php");
 } else {
-	echo "nix zu tun!";
+	echo "<h2>nix zu tun!</h2>";
 }
 ?>

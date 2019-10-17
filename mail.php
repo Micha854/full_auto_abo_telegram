@@ -7,5 +7,5 @@
 <?php } elseif($statement == "update") { ?>
 <p>Dein Abo wurde erfolgreich verl&auml;ngert. An deinen Login Daten hat sich nichts ge&auml;ndert!</p>
 <?php } ?>
-<p>Dein Abo endet automatisch am <b><?=date('d.m.Y', strtotime("+30 day", strtotime($date)))?></b> ab und wird nicht verl&auml;ngert! Du hast dann keinen Zugriff mehr auf unsere Kan&auml;le und die MAP</p>
+<p>Dein Abo endet automatisch am <b><?=date('d.m.Y', strtotime($date))?></b> ab und wird nicht verl&auml;ngert! Du hast dann keinen Zugriff mehr auf unsere Kan&auml;le und die MAP</p>
 <p>Viel Erfolg und GO! Trainer!</p>
