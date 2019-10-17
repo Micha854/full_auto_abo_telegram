@@ -60,9 +60,11 @@ if($_POST["submit"] and $_POST["user"]) {
 	if($mailmail = '1') {
 		$empfaenger	= $row["buyerEmail"];
 		$betreff = $mailSubject;
-		$from = "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
+		$from  = "MIME-Version: 1.0\r\n";
+		$from .= "Content-type: text/html; charset=utf-8\r\n";
+		$from .= "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
 		$from .= "Reply-To: ".$mailmail."\r\n";
-		$from .= "Content-Type: text/html\r\n";
+		$from .= "X-Mailer: PHP ". phpversion();
 				
 		ob_start();
 		include("../mail.php");

@@ -315,9 +315,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					if($mailmail = '1') {
 						Logger::info("MAILER AKTIVE"); // LOGGER
 						$betreff = $mailSubject;
-						$from = "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
+						$from  = "MIME-Version: 1.0\r\n";
+						$from .= "Content-type: text/html; charset=utf-8\r\n";
+						$from .= "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
 						$from .= "Reply-To: ".$mailmail."\r\n";
-						$from .= "Content-Type: text/html\r\n";
+						$from .= "X-Mailer: PHP ". phpversion();
 						
 						ob_start();
 						include("mail.php");
