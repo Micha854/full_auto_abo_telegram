@@ -105,22 +105,39 @@ if($_POST["submit"] and $_POST["user"]) {
 	}
 					
 	if($mailmail = '1') {
-		$betreff = $mailSubject;
-		$from  = "MIME-Version: 1.0\r\n";
-		$from .= "Content-type: text/html; charset=utf-8\r\n";
-		$from .= "From: ".$WebsiteTitle." <".$mailmail.">\r\n";
-		$from .= "Reply-To: ".$mailmail."\r\n";
-		$from .= "X-Mailer: PHP ". phpversion();
-						
+		
+		require_once('../mailer/class.phpmailer.php');
+
+		$mail             = new PHPMailer();
+		$mail->CharSet	  = 'ISO-8859-1';
+		
 		ob_start();
 		include("../mail.php");
-		$mailtext = ob_get_contents();
+		$body = ob_get_contents();
 		ob_end_clean();
- 
-		mail($empfaenger, $betreff, $mailtext, $from);
+
+		$mail->IsSMTP(); // telling the class to use SMTP
+		$mail->Host       = $mailHost; // SMTP server
+		$mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
+		$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
+                                           // 1 = errors and messages
+                                           // 2 = messages only
+		$mail->SMTPAuth   = true;                  // enable SMTP authentication
+		$mail->Username   = $smtpUser; // SMTP account username
+		$mail->Password   = $smtpPass;        // SMTP account password
+		
+		$mail->SetFrom($mailSender, $WebsiteTitle);
+		$mail->AddReplyTo($mailSender, $WebsiteTitle);
+		
+		$mail->Subject    = $mailSubject;
+		$mail->AltBody    = strip_tags($body); // optional, comment out and test
+		$mail->MsgHTML($body);
+		$mail->AddAddress($empfaenger, $WebsiteTitle);
+
+		$mail->Send();
 	}
 	$userSave = "<h1>Neuer Benuzter ".$newAdd." wurde erstellt!</h1>";				
-	include_once("_add_user.php");
+	//include_once("_add_user.php");
 									
 }
 

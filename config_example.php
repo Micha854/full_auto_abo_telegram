@@ -19,8 +19,13 @@ $access_level = "1";
 
 // Mail Settings
 $mailSend = '1'; // set value '0' to off
-$mailmail = 'pogo@YOURURL.COM'; // sender mail
 $mailSubject = "Welcome to PoGO MAP - here is your login data";
+
+$mailSender = 'pogo@YOURURL.COM'; // sender mail || ReplyTo
+$mailHost = 'domain.com'; // SMTP server
+$smtpPort = 25; // default 25
+$smtpUser = '';	// SMTP account username
+$smtpPass = '';	// SMTP account password
 
 $paypallogo = "http://YOURURL.COM/logo_example.jpg";	// PayPal Logo
 //$paypallogo = ""; 									// kein Logo anzeigen
