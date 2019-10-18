@@ -137,7 +137,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		$mail->Send();
 	}
 	$userSave = "<h1>Neuer Benuzter ".$newAdd." wurde erstellt!</h1>";				
-	//include_once("_add_user.php");
+	include_once("_add_user.php");
 									
 }
 

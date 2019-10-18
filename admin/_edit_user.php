@@ -59,6 +59,7 @@ if($_POST["submit"] and $_POST["user"]) {
 	
 	if($mailmail = '1') {
 		
+		$empfaenger	= $row["buyerEmail"];
 		require_once('../mailer/class.phpmailer.php');
 
 		$mail             = new PHPMailer();
