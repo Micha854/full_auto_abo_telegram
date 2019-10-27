@@ -256,8 +256,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						//$date = new DateTime();
 						//$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
 						$date = new DateTime();
-						$date->modify('+$days_to_end day');
-						$date = $date->format('Y-m-d H:i:s');
+						//$date->modify('+$days_to_end day');
+						//$date = $date->format('Y-m-d H:i:s');
 						$amountInsert = $ItemTotalPrice;
 					}
 					
@@ -274,7 +274,9 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						//$date = new DateTime();
 						//$datum = $date->getTimestamp();
 						//$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
-						$expire_timestamp = $date->getTimestamp();
+						$datum = $date->getTimestamp();
+						$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
+						//$expire_timestamp = $date->getTimestamp();
 						Logger::info("SET TIMESTAMP TO ".$expire_timestamp); // LOGGER
 						
 						$empfaenger	= $ItemDesc2;
