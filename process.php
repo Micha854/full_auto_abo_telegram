@@ -253,11 +253,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$amountInsert+=$ItemTotalPrice;				
 					} else {
 						$statement = "insert";
-						//$date = new DateTime();
-						//$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
 						$date = new DateTime();
-						//$date->modify('+$days_to_end day');
-						//$date = $date->format('Y-m-d H:i:s');
+						$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
 						$amountInsert = $ItemTotalPrice;
 					}
 					
@@ -271,12 +268,10 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						Logger::info("USE PMSF AS MAP"); // LOGGER
 						$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 						
-						//$date = new DateTime();
-						//$datum = $date->getTimestamp();
-						//$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
-						$datum = $date->getTimestamp();
-						$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
-						//$expire_timestamp = $date->getTimestamp();
+						$datum = new DateTime($date);
+						$datum = $datum->getTimestamp();
+						$expire_timestamp = $datum;
+						
 						Logger::info("SET TIMESTAMP TO ".$expire_timestamp); // LOGGER
 						
 						$empfaenger	= $ItemDesc2;
