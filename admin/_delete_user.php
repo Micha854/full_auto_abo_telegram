@@ -1,9 +1,9 @@
 <?php
 
-while($row = $result->fetch_array()) {
+while($rowX = $result->fetch_array()) {
 	
-	echo "<h2>". $row["name"] ."</h2>";
-	$chat_id = $row["chatid"];
+	echo "<h2>". $rowX["name"] ."</h2>";
+	$chat_id = $rowX["chatid"];
 	$getMember = file_get_contents($apiServer."getPWRchat/?id=$chat_id");
 	
 	$output = json_decode($getMember, true);
@@ -23,16 +23,18 @@ while($row = $result->fetch_array()) {
 		}
 		
 		$userid = $row["userid"];
+		$channel= $rowX["name"];
 		
 		if(!$row_cnt and $element["role"] == 'user') {
 			echo "<span class='false'>@".$element["user"]["username"]." darf hier nicht sein !!!!</span><br>";	// user ohne ABO
 			$deleteUser = file_get_contents($apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights");
-			$botMessage = urlencode("Du wurdest aus den Kan‰len entfernt, da du kein Abo hast. Hier kannst du ein Abo abschlieﬂen:\n\n".$WebsiteUrl);
-			$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+			$botMessage = urlencode("Du wurdest aus dem Kanal $channel entfernt: $WebsiteUrl");
+			$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$user_id&text=$botMessage");
 		} elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s") ) {			// user ABO abgelaufen
 			echo "<span class='time'>@".$element["user"]["username"]." Abo ist ausgelaufen --> ".$row["endtime"]."</span><br>";
 			$deleteUser = file_get_contents($apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights");
-			$botMessage = urlencode("Dein Abo ist am ".date('d.m.Y', strtotime($row["endtime"]))." abgelaufen und du hast nun keinen Zutritt mehr zu den Kan‰len und yur MAP. Hier kannst du ein Abo abschlieﬂen:\n\n".$WebsiteUrl);
+			//$botMessage = urlencode("Dein Abo ist am ".date('d.m.Y', strtotime($row["endtime"]))." abgelaufen und du hast nun keinen Zutritt mehr zu den Kan‰len und yur MAP. Hier kannst du ein Abo abschlieﬂen:\n\n".$WebsiteUrl);
+			$botMessage = urlencode("Du hast keinen Zutritt mehr zu $channel");
 			$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
 			mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$row["id"]." ");
 			
@@ -43,6 +45,5 @@ while($row = $result->fetch_array()) {
 			echo "<span class='true'>@".$element["user"]["username"]."</span><br>";
 		}
 	}
-
 }
 ?>
