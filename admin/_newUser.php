@@ -60,6 +60,10 @@ if($_POST["submit"] and $_POST["user"]) {
 		$amountInsert = $sumBar;
 	}
 	
+	$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
+	$getUserId	= json_decode($getInfo, true);
+	$userid		= $getUserId["response"]["InputPeer"]["user_id"];
+					
 	if($use_map == "PMSF") {
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 						
@@ -98,10 +102,16 @@ if($_POST["submit"] and $_POST["user"]) {
 	
 	if($statement == "insert") {
 		$mysqli->query("INSERT INTO ".$tbl." 
-		(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
-		VALUES ('','$empfaenger','$amountInsert','$newUser','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
+		(buyerName,buyerEmail,Amount,TelegramUser,userid,channels,pass,paydate,endtime)
+		VALUES ('','$empfaenger','$amountInsert','$newUser','$userid','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
 	} elseif($statement == "update") {
 		mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
+	}
+	
+	if($botSend == '1') {
+		$botMessage = urlencode("Link zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
+		$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		include_once("_add_user.php");
 	}
 					
 	if($mailmail = '1') {
@@ -136,8 +146,7 @@ if($_POST["submit"] and $_POST["user"]) {
 
 		$mail->Send();
 	}
-	$userSave = "<h1>Neuer Benutzer ".$newAdd." wurde erstellt!</h1>";				
-	include_once("_add_user.php");
+	$userSave = "<h1>Neuer Benuzter ".$newAdd." wurde erstellt!</h1>";				
 									
 }
 

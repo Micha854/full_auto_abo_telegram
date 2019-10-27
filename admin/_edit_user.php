@@ -29,6 +29,10 @@ if($_POST["submit"] and $_POST["user"]) {
 	$OldUser = $row["TelegramUser"]; // old Username delete
 	$InputChannel = array($row["channels"]);
 	
+	$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
+	$getUserId	= json_decode($getInfo, true);
+	$userid		= $getUserId["response"]["InputPeer"]["user_id"];
+	
 	if($use_map == "PMSF") {
 		$statement = "insert";
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
@@ -38,7 +42,7 @@ if($_POST["submit"] and $_POST["user"]) {
 						
 		$loginName	= $_POST["email"];
 		
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', pass = '".$passwd."' WHERE id = ".$row["id"]);				
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', userid = '".$userid."', pass = '".$passwd."' WHERE id = ".$row["id"]);				
 		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', expire_timestamp = '".$expire_timestamp."', session_id = NULL, WHERE id = ".$row["buyerEmail"]);
 	}
 	
@@ -53,10 +57,15 @@ if($_POST["submit"] and $_POST["user"]) {
 		$htpasswd->deleteUser($OldUser);
 		$htpasswd->addUser($newAdd, $passwd);
 					
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', pass = '".$passwd."' WHERE id = ".$row["id"]);
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', userid = '".$userid."', pass = '".$passwd."' WHERE id = ".$row["id"]);
 	}
 						
-	
+	if($botSend == '1') {
+		$botMessage = urlencode("Link zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
+		$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		include_once("_add_user.php");
+	}
+					
 	if($mailmail = '1') {
 		
 		$empfaenger	= $row["buyerEmail"];
@@ -91,7 +100,6 @@ if($_POST["submit"] and $_POST["user"]) {
 		$mail->Send();
 	}
 					
-	include_once("_add_user.php");
 	$userSave = "<h1>Benuzter ge&auml;ndert zu ".$newAdd."</h1>";
 }
 ?>

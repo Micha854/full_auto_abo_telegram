@@ -1,45 +1,52 @@
 <?php
-// Mysql Database
+// Mysql Database, Name der Tabelle
 $mysqli = new mysqli('localhost','DBuser','DBpass','database');
+$tbl    = "abos";
 
-// name der tabelle
-$tbl = "abos";
 
-// Website Titel
-$WebsiteTitle = "Pogo Dein Stadtteil";
+// Website- Url, Titel, Header
+$WebsiteUrl     = "https://YOUR_DOMAIN.COM";
+$WebsiteTitle   = "Pogo Dein Stadtteil";
+$header         = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
 
-// index header  
-$header = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
 
-// use MAP
-$urlMap= "https://YOURURL.COM/map/";
-$use_map = "PMSF";	// settings --> "PMSF" or "Rocketmap" or "" for empty
-$login_system = "native";
-$access_level = "1";
+// API Server Config, bot Token Telegram
+$apiServer      = "http://YOURURL.COM:9503/api/";
+$apitoken       = "bot:TOKen1337";
 
-// Mail Settings
-$mailSend = '1'; // set value '0' to off
-$mailSubject = "Welcome to PoGO MAP - here is your login data";
 
-$mailSender = 'pogo@YOURURL.COM'; // sender mail || ReplyTo
-$mailHost = 'domain.com'; // SMTP server
-$smtpPort = 25; // default 25
-$smtpUser = '';	// SMTP account username
-$smtpPass = '';	// SMTP account password
+// Pogo Map Config
+$urlMap         = "http://YOURURL.COM/map/";    // Url to your pogo map
+$use_map        = "PMSF";                       // settings --> "PMSF" or "Rocketmap" or "" for empty
+$login_system   = "native";                     // login type
+$access_level   = "1";                          // access level for user
 
-$paypallogo = "http://YOURURL.COM/logo_example.jpg";	// PayPal Logo
-//$paypallogo = ""; 									// kein Logo anzeigen
 
-$PayPalMode 		= 'live'; 							// sandbox or live
+// Mail Config
+$mailSend       = '1';                  // set value '0' to off
+$mailSubject    = "Welcome to PoGO MAP";// mail betreff
+$mailSender     = 'pogo@YOURURL.COM';   // sender mail || ReplyTo
+$mailHost       = 'domain.com';         // SMTP server
+$smtpPort       = 25;                   // default 25
+$smtpUser       = '';                   // SMTP account username
+$smtpPass       = '';                   // SMTP account password
 
-$PayPalApiUsername 	= 'YOUR_API_USERNAME'; 				//PayPal API Username
-$PayPalApiPassword 	= 'YOUR_API_PASSWORD'; 				//Paypal API password
-$PayPalApiSignature = 'YOUR_API_SIGNATURE'; 			//Paypal API Signature
 
-$PayPalCurrencyCode = 'EUR'; 							//Paypal Currency Code
+//PayPal Config
+$paypallogo         = $WebsiteUrl."/logo_example.jpg";	// PayPal Logo
+//$paypallogo       = ""; 							    // kein Logo anzeigen
 
-$PayPalReturnURL 	= 'http://YOUR_DOMAIN/process.php'; //Point to process.php page
-$PayPalCancelURL 	= 'http://YOUR_DOMAIN/index.php'; 	//Cancel URL if user clicks cancel
+$PayPalMode 		= 'live';                           // sandbox or live
+
+$PayPalApiUsername 	= 'YOUR_API_USERNAME';              // PayPal API Username
+$PayPalApiPassword 	= 'YOUR_API_PASSWORD';              // Paypal API password
+$PayPalApiSignature = 'YOUR_API_SIGNATURE';             // Paypal API Signature
+
+$PayPalCurrencyCode = 'EUR';                            // Paypal Currency Code
+
+$PayPalReturnURL 	= $WebsiteUrl.'/process.php';       // Point to process.php page
+$PayPalCancelURL 	= $WebsiteUrl.'/index.php';         // Cancel URL if user clicks cancel
+
 
 
 

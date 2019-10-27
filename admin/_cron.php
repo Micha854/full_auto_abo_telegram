@@ -1,3 +1,25 @@
+<style type="text/css">
+.true {
+background:#009900;
+color:#FFFFFF;
+padding:3px;
+line-height:160%
+}
+
+.false {
+background:#FF0000;
+color:#FFFFFF;
+padding:3px;
+line-height:160%
+}
+
+.time {
+background:#FFFF00;
+color:#000000;
+padding:3px;
+line-height:160%
+}
+</style>
 <?php
 require_once(__DIR__.'/../config.php');
 					
@@ -13,11 +35,11 @@ echo $datum;
 
 echo "<br><br>";
 
-$query = "SELECT * FROM ".$tbl." WHERE endtime < now() ORDER BY endtime ASC";
+$query = "SELECT name, chatid FROM channels";
 $result = $mysqli->query($query);
 
 if($result->num_rows) { 
-	echo "<h2>ergebnisse vorhanden</h2>";
+	//echo "<h2>ergebnisse vorhanden</h2>";
 	include("_delete_user.php");
 } else {
 	echo "<h2>nix zu tun!</h2>";

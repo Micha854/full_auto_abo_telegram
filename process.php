@@ -253,19 +253,28 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$amountInsert+=$ItemTotalPrice;				
 					} else {
 						$statement = "insert";
+						//$date = new DateTime();
+						//$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
 						$date = new DateTime();
+						$date->modify('+$days_to_end day');
+						$date = $date->format('Y-m-d H:i:s');
 						$amountInsert = $ItemTotalPrice;
 					}
 					
 					Logger::info("USE ".$statement." FOR USER"); // LOGGER
+					
+					$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
+					$getUserId	= json_decode($getInfo, true);
+					$userid		= $getUserId["response"]["InputPeer"]["user_id"];					
 										
 					if($use_map == "PMSF") {
 						Logger::info("USE PMSF AS MAP"); // LOGGER
 						$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 						
 						//$date = new DateTime();
-						$datum = $date->getTimestamp();
-						$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
+						//$datum = $date->getTimestamp();
+						//$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
+						$expire_timestamp = $date->getTimestamp();
 						
 						$empfaenger	= $ItemDesc2;
 						$loginName	= $empfaenger;
@@ -301,8 +310,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					
 					if($statement == "insert") {
 						if($insert_row = $mysqli->query("INSERT INTO ".$tbl." 
-						(buyerName,buyerEmail,Amount,TelegramUser,channels,pass,paydate,endtime)
-						VALUES ('$buyName','$empfaenger','$amountInsert','$ItemDesc','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)")) {
+						(buyerName,buyerEmail,Amount,TelegramUser,userid,channels,pass,paydate,endtime)
+						VALUES ('$buyName','$empfaenger','$amountInsert','$ItemDesc','$userid','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)")) {
 							Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
 						} else {
 							Logger::error("INSERT USER ON DATABASE FAILED"); // LOGGER
@@ -311,9 +320,16 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
 						Logger::info("UPDATE USER ON DATABASE"); // LOGGER
 					}
-					
-					if($mailmail = '1') {
-						Logger::info("MAILER AKTIVE"); // LOGGER
+
+					if($botSend == '1') {
+						Logger::info("USER BOT TO SEND MESSAGE"); // LOGGER
+						$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!\n\nLink zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
+						$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+						include_once("admin/_add_user.php");
+					}
+
+					if($mailSend == '1') {
+						Logger::info("USE MAIL TO SEND MESSAGE"); // LOGGER
 						
 						require_once('mailer/class.phpmailer.php');
 
@@ -352,7 +368,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						}
 					}
 					
-					include_once("admin/_add_user.php");
+					
 					Logger::info("FINISH SUCESS !!!"); // LOGGER
 					//echo '<pre>';
 					//print_r($httpParsedResponseAr);
