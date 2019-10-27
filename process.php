@@ -275,6 +275,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						//$datum = $date->getTimestamp();
 						//$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
 						$expire_timestamp = $date->getTimestamp();
+						Logger::info("SET TIMESTAMP TO ".$expire_timestamp); // LOGGER
 						
 						$empfaenger	= $ItemDesc2;
 						$loginName	= $empfaenger;

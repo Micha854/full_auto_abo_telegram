@@ -23,7 +23,8 @@ $access_level   = "1";                          // access level for user
 
 
 // Mail Config
-$mailSend       = '1';                  // set value '0' to off
+$botSend        = '1';                                                  // send message to user from your bot
+$mailSend       = '0';                  // set value '0' to off
 $mailSubject    = "Welcome to PoGO MAP";// mail betreff
 $mailSender     = 'pogo@YOURURL.COM';   // sender mail || ReplyTo
 $mailHost       = 'domain.com';         // SMTP server
