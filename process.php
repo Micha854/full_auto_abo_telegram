@@ -263,6 +263,12 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
 					$getUserId	= json_decode($getInfo, true);
 					$userid		= $getUserId["response"]["InputPeer"]["user_id"];					
+					
+					if($userid) {
+						$useridnow = ", userid = '$userid'";
+					}
+					
+					echo "-----> ".$userid;
 										
 					if($use_map == "PMSF") {
 						Logger::info("USE PMSF AS MAP"); // LOGGER
@@ -307,12 +313,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					Logger::info("SELECTED CHANNELS ".$InputChannels); // LOGGER
 					
 					if($statement == "insert") {
-						if($insert_row = $mysqli->query("INSERT INTO ".$tbl." 
-						(buyerName,buyerEmail,Amount,TelegramUser,userid,channels,pass,paydate,endtime)
-						VALUES ('$buyName','$empfaenger','$amountInsert','$ItemDesc','$userid','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)")) {
+						$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannels', pass = '$passwd', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+						if($insert_row = $mysqli->query($sql_insert)) {
 							Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
 						} else {
-							Logger::error("INSERT USER ON DATABASE FAILED"); // LOGGER
+							Logger::error("INSERT USER ON DATABASE FAILED\n".$sql_insert); // LOGGER
 						}
 					} else {
 						mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
@@ -320,7 +325,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					}
 
 					if($botSend == '1') {
-						Logger::info("USER BOT TO SEND MESSAGE"); // LOGGER
+						Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
 						$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!\n\nLink zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
 						$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
 						include_once("admin/_add_user.php");

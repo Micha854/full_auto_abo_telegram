@@ -63,6 +63,10 @@ if($_POST["submit"] and $_POST["user"]) {
 	$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
 	$getUserId	= json_decode($getInfo, true);
 	$userid		= $getUserId["response"]["InputPeer"]["user_id"];
+	
+	if($userid) {
+		$useridnow = ", userid = '$userid'";
+	}
 					
 	if($use_map == "PMSF") {
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
@@ -101,9 +105,8 @@ if($_POST["submit"] and $_POST["user"]) {
 	$InputChannels = implode(',',$InputChannel);
 	
 	if($statement == "insert") {
-		$mysqli->query("INSERT INTO ".$tbl." 
-		(buyerName,buyerEmail,Amount,TelegramUser,userid,channels,pass,paydate,endtime)
-		VALUES ('','$empfaenger','$amountInsert','$newUser','$userid','$InputChannels','$passwd',now(),NOW() + INTERVAL $days_to_end DAY)");
+		$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+		$mysqli->query($sql_insert);
 	} elseif($statement == "update") {
 		mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
 	}
