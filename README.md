@@ -1,23 +1,30 @@
 # full_auto_abo_telegram
-Ein voll Automatisiertes Abo- System für einen Telegram Kanal
+Ein voll Automatisiertes Abo- System für einen/mehrere Telegram Kanal/Kanäle
 
 Support On <a href="https://discord.gg/jsvX9pz">Discord</a>
 
-### Install
+### BotFather erstellen
 
-lade folgendes in den admin/ ordner
-https://github.com/danog/MadelineProto
+Starte einen Chat mit dem https://t.me/BotFather
+Mit /newbot wird ein neuer Bot erstellt. Anschließend müssen im Dialog der Botname und der Benutzername angelegt werden.
 
-### Verbindung zum Madline Client aufbauen
+Ist der bot erstellt notiere dir den bot Token, den brauchen wir aber erst später
 
-in admin/_auth_client.php passe folgende Zeilen an:
+#### Bot Settings:
 
-* $InputChannel = 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ';	// YOUR Telegram Chanel
-* $InputUser = '@username'; // Username der dem Kanal hinzugefügt werden soll
+- Enable Inline mode
+- Allow Groups
+- Group Privacy off
 
-Rufe dann im Browser YOURURL.COM/admin/_auth_client.php auf
+### TelegramApiServer
 
-Gib deine Rufnummer an, du bekommst dann einen Code mit dem du dich verifizieren musst. Als nächstes logge dich als User mit deinem Telegram Username ein (Wichtig!! Es muss ein Admin des Kanals sein, der User hinzufügen darf). Hierzu bekommst du auch nochmal einen Code. Fertig! Unter Telegram Einstellungen / Sicherheit / Aktive Sitzungen sollte nun deine neue Sitzung angezeigt werden ;) Dieser Schritt ist wichtig, damit das Script in Zukunft User dem Kanal hinzufügen und löschen kann.
+`git clone https://github.com/xtrime-ru/TelegramApiServer.git`
+
+wechsel in das Verzeichniss und führe `composer install` aus, der TelegramAPIServer wird nun installiert.
+
+anschließend die Datei `.env.example` in `.env` umbenennen und den `HOST` eintragen
+
+starten wir den Server mit `php server.php`
 
 ### PayPal API einrichten
 Logge dich in deinen PayPal Account ein! Danach öffne im selben Browser-Tab folgende URL:
@@ -71,7 +78,7 @@ ALTER TABLE `users`
 ```
 
 ### SQL Telegram Chanel
-Name der Tabelle muss in --> config_example.php angepasst werden!!
+Name der Tabelle muss in `config.php` angepasst werden!!
 
 
 ```
@@ -81,6 +88,7 @@ CREATE TABLE `abos` (
   `buyerEmail` varchar(255) NOT NULL,
   `Amount` varchar(5) NOT NULL,
   `TelegramUser` varchar(155) NOT NULL,
+  `userid` bigint(10) DEFAULT NULL,
   `channels` varchar(55) NOT NULL,
   `pass` varchar(8) NOT NULL,
   `paydate` datetime NOT NULL,
@@ -140,7 +148,8 @@ COMMIT;
 CREATE TABLE `channels` (
   `id` int(11) NOT NULL,
   `name` varchar(155) NOT NULL,
-  `url` varchar(155) NOT NULL
+  `url` varchar(155) NOT NULL,
+  `chatid` bigint(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
