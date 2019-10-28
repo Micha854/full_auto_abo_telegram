@@ -33,6 +33,12 @@ if($_POST["submit"] and $_POST["user"]) {
 	$getUserId	= json_decode($getInfo, true);
 	$userid		= $getUserId["response"]["InputPeer"]["user_id"];
 	
+	if($userid) {
+		$useridnow = ", userid = '$userid'";
+	} else {
+		$useridnow = ", userid = NULL";
+	}
+	
 	if($use_map == "PMSF") {
 		$statement = "insert";
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
@@ -42,7 +48,7 @@ if($_POST["submit"] and $_POST["user"]) {
 						
 		$loginName	= $_POST["email"];
 		
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', userid = '".$userid."', pass = '".$passwd."' WHERE id = ".$row["id"]);				
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."'".$useridnow.", pass = '".$passwd."' WHERE id = ".$row["id"]);				
 		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', expire_timestamp = '".$expire_timestamp."', session_id = NULL, WHERE id = ".$row["buyerEmail"]);
 	}
 	
@@ -62,7 +68,8 @@ if($_POST["submit"] and $_POST["user"]) {
 						
 	if($botSend == '1') {
 		$botMessage = urlencode("Link zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
-		$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage");
 		include_once("_add_user.php");
 	}
 					

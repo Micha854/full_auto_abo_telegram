@@ -113,7 +113,8 @@ if($_POST["submit"] and $_POST["user"]) {
 	
 	if($botSend == '1') {
 		$botMessage = urlencode("Link zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
-		$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$ItemDesc&data[message]=$botMessage");
 		include_once("_add_user.php");
 	}
 					
@@ -198,3 +199,8 @@ if($_POST["submit"] and $_POST["user"]) {
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
 </html>
+<?php
+	echo "<pre>";
+	print_r($getUserId);
+	echo "</pre>";
+?>
