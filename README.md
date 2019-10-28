@@ -3,19 +3,6 @@ Ein voll Automatisiertes Abo- System für einen/mehrere Telegram Kanal/Kanäle
 
 Support On <a href="https://discord.gg/jsvX9pz">Discord</a>
 
-### BotFather erstellen
-
-Starte einen Chat mit dem https://t.me/BotFather
-Mit /newbot wird ein neuer Bot erstellt. Anschließend müssen im Dialog der Botname und der Benutzername angelegt werden.
-
-Ist der bot erstellt notiere dir den bot Token, den brauchen wir aber erst später
-
-#### Bot Settings:
-
-- Enable Inline mode
-- Allow Groups
-- Group Privacy off
-
 ### TelegramApiServer
 
 `git clone https://github.com/xtrime-ru/TelegramApiServer.git`
