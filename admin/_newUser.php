@@ -1,4 +1,5 @@
-<?php require_once(__DIR__.'/../config.php'); ?>
+<?php 
+require_once(__DIR__.'/../config.php'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -95,7 +96,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		if($statement == "insert") {				
 			include("../Htpasswd.php");
 			$htpasswd = new Htpasswd('../.htpasswd');
-			$htpasswd->deleteUser($newAdd);
+			//$htpasswd->deleteUser($newAdd);
 			$htpasswd->addUser($newAdd, $passwd);
 		}
 						
@@ -119,7 +120,7 @@ if($_POST["submit"] and $_POST["user"]) {
 	if($botSend == '1') {
 		$botMessage = urlencode("Link zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
 		//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
-		$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$ItemDesc&data[message]=$botMessage");
+		$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage");
 		include_once("_add_user.php");
 	}
 					
