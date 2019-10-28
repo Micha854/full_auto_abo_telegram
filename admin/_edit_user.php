@@ -32,6 +32,7 @@ if($_POST["submit"] and $_POST["user"]) {
 	$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
 	$getUserId	= json_decode($getInfo, true);
 	$userid		= $getUserId["response"]["InputPeer"]["user_id"];
+	$date		= $row["endtime"];
 	
 	if($userid) {
 		$useridnow = ", userid = '$userid'";
@@ -43,18 +44,14 @@ if($_POST["submit"] and $_POST["user"]) {
 		$statement = "insert";
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 		
-		$date = $row["endtime"];
-		$expire_timestamp = $date->getTimestamp();
-						
 		$loginName	= $_POST["email"];
 		
 		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."'".$useridnow.", pass = '".$passwd."' WHERE id = ".$row["id"]);				
-		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', expire_timestamp = '".$expire_timestamp."', session_id = NULL, WHERE id = ".$row["buyerEmail"]);
+		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', session_id = NULL, WHERE id = ".$row["buyerEmail"]);
 	}
 	
 	elseif($use_map == "Rocketmap") {
 		$statement = "insert";
-		$date = $row["endtime"];
 		$loginName	= $newAdd;
 						
 		include("../Htpasswd.php");

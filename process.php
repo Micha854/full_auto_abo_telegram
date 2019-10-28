@@ -253,7 +253,6 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$amountInsert+=$ItemTotalPrice;				
 					} else {
 						$statement = "insert";
-						$date = new DateTime();
 						$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
 						$amountInsert = $ItemTotalPrice;
 					}

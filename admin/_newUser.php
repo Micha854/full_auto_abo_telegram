@@ -54,9 +54,10 @@ if($_POST["submit"] and $_POST["user"]) {
 		$amountInsert+=$sumBar;
 	} else {
 		$statement = "insert";
-		$date = new DateTime();
-		$date->modify('+$days_to_end day');
-		$date = $date->format('Y-m-d H:i:s');
+		//$date = new DateTime();
+		//$date->modify('+$days_to_end day');
+		//$date = $date->format('Y-m-d H:i:s');
+		$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
 		$amountInsert = $sumBar;
 	}
 	
@@ -71,9 +72,12 @@ if($_POST["submit"] and $_POST["user"]) {
 	if($use_map == "PMSF") {
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 						
-		$datum = $date->getTimestamp();
-		$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
-						
+		//$datum = $date->getTimestamp();
+		//$expire_timestamp = strtotime('+'.$days_to_end.' day', $datum);
+		$datum = new DateTime($date);
+		$datum = $datum->getTimestamp();
+		$expire_timestamp = $datum;
+										
 		$empfaenger	= $newMail;
 		$loginName	= $empfaenger;
 						
@@ -91,6 +95,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		if($statement == "insert") {				
 			include("../Htpasswd.php");
 			$htpasswd = new Htpasswd('../.htpasswd');
+			$htpasswd->deleteUser($newAdd);
 			$htpasswd->addUser($newAdd, $passwd);
 		}
 						
