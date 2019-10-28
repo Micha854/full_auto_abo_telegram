@@ -123,7 +123,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		include_once("_add_user.php");
 	}
 					
-	if($mailmail = '1') {
+	if($mailSend = '1') {
 		
 		require_once('../mailer/class.phpmailer.php');
 
