@@ -51,7 +51,11 @@ if (!in_array($sort, array('asc', 'desc'))) {
 	<table class="table">
 		<thead class="thead-light">
 			<tr>
-     			<?php $query = "SELECT * FROM ".$tbl." ORDER BY " . $spalte . " " . $sort;
+     			<?php
+				$query = "SELECT * FROM ".$tbl." ORDER BY " . $spalte . " " . $sort;
+				$result = $mysqli->query($query);
+				$row_cnt = $result->num_rows;
+				echo "<th colspan='4'><h3>".$row_cnt." Abonnenten</h3></th></tr><tr>";
 				foreach ($spalten as $spalte => $name) {
 					echo '<th>' .
 						ucfirst($name) .
@@ -63,7 +67,6 @@ if (!in_array($sort, array('asc', 'desc'))) {
 			</tr>
 		</thead>
 <?php
-$result = $mysqli->query($query);
 while($row = $result->fetch_array()) { ?>
   <tr>
 	<td><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>

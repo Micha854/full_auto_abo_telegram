@@ -125,11 +125,15 @@ if($_POST["submit"] and $_POST["user"]) {
 <form method="post" action=""> 
   <table class="table">
     <tr>
-      <th scope="col"><b>Aktueller @Username</b></th>
-      <th scope="col"><b><?=$row["TelegramUser"] ?></b></th>
+      <th scope="col">Aktueller @Username</th>
+      <th scope="col"><?=$row["TelegramUser"] ?></th>
+    </tr>
+	<tr>
+      <th scope="col">Passwort</th>
+      <th scope="col"><?=$row["pass"] ?></th>
     </tr>
     <tr>
-      <th scope="col">Neuer @Username</th>
+      <th scope="col"><b>Neuer @Username</b></th>
       <th scope="col"><input type="text" name="user" class="form-control" autocomplete="off" required /></th>
     </tr>
 	<?php if($use_map == "PMSF") { ?>
