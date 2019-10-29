@@ -64,6 +64,16 @@ ALTER TABLE `users`
   ADD UNIQUE KEY `user` (`user`);
 ```
 
+Wenn du alle vorhanden User aus der PMSF tabelle `users` in die tabelle `abos` kopieren möchtest kannst du folgenden SQL Befehl benutzten:
+
+```
+INSERT INTO abos (id, buyerName, buyerEmail, Amount, TelegramUser, channels, pass, paydate, endtime)  
+SELECT id, '', user, '', user, '1', '', now(), FROM_UNIXTIME(expire_timestamp)
+FROM users;
+```
+
+im Anschluß musst du die spalte `TelegramUsername` natürlich anpassen ;)
+
 ### SQL Telegram Chanel
 Name der Tabelle muss in `config.php` angepasst werden!!
 
