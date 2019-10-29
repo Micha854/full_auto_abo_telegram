@@ -67,11 +67,16 @@ if (!in_array($sort, array('asc', 'desc'))) {
 			</tr>
 		</thead>
 <?php
-while($row = $result->fetch_array()) { ?>
+while($row = $result->fetch_array()) {
+
+if($row["endtime"] > date("Y-m-d H:i:s")) {
+	$color = ' style="color:#FF0000;font-weight:bolder"';
+}
+?>
   <tr>
 	<td><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
     <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
-    <td title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
+    <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
     <td><a class="btn btn-sm btn-outline-secondary" href="_edit_user.php?id=<?=$row["id"]?>" role="button">edit</a></td>
   </tr>
 <?php
