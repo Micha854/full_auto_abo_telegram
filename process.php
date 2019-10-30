@@ -323,9 +323,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 
 					if($botSend == '1') {
 						Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
-						$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!\n\nLink zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
-						//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
-						$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage");
+						$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+						$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html");
 						include_once("admin/_add_user.php");
 					}
 

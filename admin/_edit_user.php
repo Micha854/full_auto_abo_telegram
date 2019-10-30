@@ -64,9 +64,9 @@ if($_POST["submit"] and $_POST["user"]) {
 	}
 						
 	if($botSend == '1') {
-		$botMessage = urlencode("Link zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: $passwd\n\nDein Abo endet am ".date('d.m.Y', strtotime($date)));
+		$botMessage = urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
 		//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
-		$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage");
+		$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html");
 		include_once("_add_user.php");
 	}
 					
