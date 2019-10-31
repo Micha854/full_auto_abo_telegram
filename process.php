@@ -280,7 +280,10 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$empfaenger	= $ItemDesc2;
 						$loginName	= $empfaenger;
 						
-						if($statement == "insert") {
+						$check_user = $mysqli->query("SELECT id FROM users WHERE user = '".$loginName."' ");
+						if($check_user->num_rows != 0) {
+							mysqli_query($mysqli, "UPDATE users SET password = NULL, temp_password = '".$hashedPwd."', expire_timestamp = '".$expire_timestamp."', session_id = NULL, login_system = '".$login_system."', access_level = '".$access_level."'  WHERE user = '".$loginName."' ");
+						} elseif($statement == "insert") {
 							$insert_pmsf_user = $mysqli->query("INSERT INTO users 
 							(user,temp_password,expire_timestamp,login_system,access_level)
 							VALUES ('$ItemDesc2','$hashedPwd','$expire_timestamp','$login_system','$access_level')");
