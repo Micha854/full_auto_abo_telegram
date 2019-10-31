@@ -71,6 +71,8 @@ while($row = $result->fetch_array()) {
 
 if($row["endtime"] < date("Y-m-d H:i:s")) {
 	$color = ' style="color:#FF0000;font-weight:bolder"';
+} else {
+	$color = ' style="color:#000"';
 }
 ?>
   <tr>
