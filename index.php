@@ -63,7 +63,7 @@ while($row = $result->fetch_array()) {
     <td width="30%">
 	<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
 	<input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
-    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="" required />
+    Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="" />
 	
 	<?php if($use_map == "PMSF") { ?>
 	<br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" required />
