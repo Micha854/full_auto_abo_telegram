@@ -75,10 +75,10 @@ while($row = $result->fetch_array()) {
     </td>
   </tr>
 </table>
-</form>
 <?php
 }
 ?>
+</form>
 </div>
 </body>
 </html>
