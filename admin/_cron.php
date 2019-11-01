@@ -1,4 +1,11 @@
 <style type="text/css">
+.admin {
+background:#0099FF;
+color:#FFFFFF;
+padding:3px;
+line-height:160%
+}
+
 .true {
 background:#009900;
 color:#FFFFFF;
@@ -18,6 +25,23 @@ background:#FFFF00;
 color:#000000;
 padding:3px;
 line-height:160%
+}
+
+.iderror {
+background:#333333;
+color:#FF3300;
+padding:3px;
+line-height:160%;
+font-weight:bolder
+}
+
+.stat {
+background:#FF99CC;
+color:#000000;
+padding:3px;
+line-height:160%;
+font-weight:bolder;
+font-style:oblique
 }
 </style>
 <?php
