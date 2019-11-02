@@ -1,3 +1,9 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title><?=$WebsiteTitle?> - Cron</title>
 <style type="text/css">
 .admin {
 background:#0099FF;
@@ -44,6 +50,8 @@ font-weight:bolder;
 font-style:oblique
 }
 </style>
+</head>
+<body>
 <?php
 require_once(__DIR__.'/../config.php');
 					
@@ -52,6 +60,24 @@ if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
 }
+
+$sql_abos = $mysqli->query("SELECT * FROM ".$tbl);
+while($get_user = $sql_abos->fetch_array()) {
+	if($get_user["userid"] == NULL) {
+		
+		$from_username = $get_user["TelegramUser"];
+		$getUserId = file_get_contents($apiServer."getInfo/?id=$from_username");
+		
+		$output = json_decode($getUserId, true);
+		$user_id = $output["response"]["InputPeer"]["user_id"];
+		
+	
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$row["id"]." ");
+		
+		echo "set userid for ".$from_username."<br>";
+	}
+}
+
 
 $timestamp = time();
 $datum = date("Y-m-d H:i:s", $timestamp);
@@ -69,3 +95,5 @@ if($result->num_rows) {
 	echo "<h2>nix zu tun!</h2>";
 }
 ?>
+</body>
+</html>

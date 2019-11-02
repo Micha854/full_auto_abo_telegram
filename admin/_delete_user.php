@@ -15,7 +15,6 @@ while($rowX = $result->fetch_array()) {
 	
 	foreach ($output as $element) {
 		$user_id = $element["user"]["id"];
-		$username= $element["user"]["username"];
 		
 		$row_query = "SELECT * FROM ".$tbl." WHERE userid = ".$user_id;
 		$row_result = $mysqli->query($row_query);
@@ -25,7 +24,7 @@ while($rowX = $result->fetch_array()) {
 		$userid = $row["userid"];
 		$channel= $rowX["name"];
 		
-		if($userid == NULL or $userid != $user_id) {
+		if($userid != $user_id) {
 			mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$row["id"]." ");
 			$delete = 'no';
 		} else {
