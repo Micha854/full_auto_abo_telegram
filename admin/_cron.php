@@ -6,6 +6,8 @@ if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();
 }
+
+$beginnScript = microtime(true);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -62,13 +64,14 @@ font-style:oblique
 </head>
 <body>
 <?php
+require_once(__DIR__.'/../functions.php');
 
 $sql_abos = $mysqli->query("SELECT * FROM ".$tbl);
 while($get_user = $sql_abos->fetch_array()) {
 	if($get_user["userid"] == NULL) {
 		
 		$from_username = $get_user["TelegramUser"];
-		$getUserId = file_get_contents($apiServer."getInfo/?id=$from_username");
+		$getUserId = callAPI('GET', $apiServer."getInfo/?id=$from_username", false);
 		
 		$output = json_decode($getUserId, true);
 		$user_id = $output["response"]["InputPeer"]["user_id"];
@@ -96,6 +99,9 @@ if($result->num_rows) {
 } else {
 	echo "<h2>nix zu tun!</h2>";
 }
+
+$dauerScript = microtime(true) - $beginnScript;
+echo "<h4>Verarbeitung der Cron in $dauerScript Sek.</h4>";
 ?>
 </body>
 </html>

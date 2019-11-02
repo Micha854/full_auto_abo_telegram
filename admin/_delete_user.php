@@ -3,7 +3,7 @@
 while($rowX = $result->fetch_array()) {
 	
 	$chat_id = $rowX["chatid"];
-	$getMember = file_get_contents($apiServer."getPWRchat/?id=$chat_id");
+	$getMember = callAPI('GET', $apiServer."getPWRchat/?id=$chat_id", false);
 	
 	$check_chatid = json_decode($getMember, true);
 	$check_chatid = $check_chatid["response"]["title"];
@@ -62,16 +62,16 @@ while($rowX = $result->fetch_array()) {
 				echo "<tr><td class='admin'>@".$element["user"]["username"]."</td><td class='admin'>".$element["role"]."</td><td class='admin'>".$user_id."</td><td".$userid_check." class='admin'>".$admin_id."</td><td class='admin'>".$ending."</td></tr>";
 			} elseif(!$row_cnt and $element["role"] == 'user') {	// user existiert nicht in abos || user = user
 				echo "<tr><td class='false'>@".$element["user"]["username"]."</td><td class='false'>".$element["role"]."</td><td class='false'>".$user_id."</td><td".$userid_check." class='false'>".$userid."</td><td class='false'>-- KICKED --</td></tr>";	// user ohne ABO
-				$deleteUser = file_get_contents($apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights");
+				$deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
 				$botMessage = urlencode("Du wurdest aus dem Kanal $channel entfernt, du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl");
-				$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage");
+				$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
 				time.sleep(1);
 			} elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s") ) {			// user ABO abgelaufen || user = user
 				echo "<tr><td class='time'>@".$element["user"]["username"]."</td><td class='time'>".$element["role"]."</td><td class='time'>".$user_id."</td><td".$userid_check." class='time'>".$userid."</td><td class='time'>".$row["endtime"]."</td></tr>";
 				if($delete == 'yes') { // nur loeschen wenn userid bekannt !!!
-					$deleteUser = file_get_contents($apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights");
+					$deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
 					$botMessage = urlencode("Dein Abo ist am ".date('d.m.Y', strtotime($row["endtime"]))." abgelaufen, du hast keinen Zutritt mehr zu $channel und zur MAP, du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl");
-					$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage");
+					$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
 					time.sleep(1);
 					mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$row["id"]." ");
 			
