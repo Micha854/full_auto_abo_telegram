@@ -17,7 +17,7 @@ while($rowX = $result->fetch_array()) {
 		$user_id = $element["user"]["id"];
 		$username= $element["user"]["username"];
 		
-		$row_query = "SELECT * FROM ".$tbl." WHERE TelegramUser = '@".$username."' ";
+		$row_query = "SELECT * FROM ".$tbl." WHERE userid = ".$user_id;
 		$row_result = $mysqli->query($row_query);
 		$row_cnt = mysqli_num_rows($row_result);
 		$row = $row_result->fetch_array();
