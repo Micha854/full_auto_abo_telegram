@@ -21,16 +21,16 @@ while($rowX = $result->fetch_array()) {
 		$row_result = $mysqli->query($row_query);
 		$row_cnt = mysqli_num_rows($row_result);
 		$row = $row_result->fetch_array();
+
+		$userid = $row["userid"];
+		$channel= $rowX["name"];
 		
-		if($row["userid"] == NULL) {
+		if($userid == NULL or $userid != $user_id) {
 			mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$row["id"]." ");
 			$delete = 'no';
 		} else {
 			$delete = 'yes';
 		}
-		
-		$userid = $row["userid"];
-		$channel= $rowX["name"];
 		
 		if($userid != $user_id and $element["role"] == 'user') {
 			$userid_check = " class='iderror'";
@@ -38,7 +38,7 @@ while($rowX = $result->fetch_array()) {
 			$userid_check = "";
 		}
 		
-		if($element["banned"]) {
+		if($element["role"] == 'banned') {
 			$i_bann++;
 		} else {
 			$i_user++;
