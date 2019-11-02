@@ -24,6 +24,9 @@ while($rowX = $result->fetch_array()) {
 		
 		if($row["userid"] == NULL) {
 			mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$row["id"]." ");
+			$delete = 'no';
+		} else {
+			$delete = 'yes';
 		}
 		
 		$userid = $row["userid"];
@@ -58,16 +61,18 @@ while($rowX = $result->fetch_array()) {
 			time.sleep(1);
 		} elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s") ) {			// user ABO abgelaufen || user = user
 			echo "<tr><td class='time'>@".$element["user"]["username"]."</td><td class='time'>".$element["role"]."</td><td class='time'>".$user_id."</td><td".$userid_check." class='time'>".$userid."</td><td class='time'>".$row["endtime"]."</td></tr>";
-			$deleteUser = file_get_contents($apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights");
-			$botMessage = urlencode("Dein Abo ist am ".date('d.m.Y', strtotime($row["endtime"]))." abgelaufen, du hast keinen Zutritt mehr zu $channel und zur MAP, du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl");
-			$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage");
-			time.sleep(1);
-			mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$row["id"]." ");
+			if($delete == 'yes') { // nur loeschen wenn userid bekannt !!!
+				$deleteUser = file_get_contents($apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights");
+				$botMessage = urlencode("Dein Abo ist am ".date('d.m.Y', strtotime($row["endtime"]))." abgelaufen, du hast keinen Zutritt mehr zu $channel und zur MAP, du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl");
+				$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage");
+				time.sleep(1);
+				mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$row["id"]." ");
 			
-			if($use_map == "Rocketmap") {
-				include '../Htpasswd.php';
-				$htpasswd = new Htpasswd('../.htpasswd');
-				$htpasswd->deleteUser($row["TelegramUser"]);
+				if($use_map == "Rocketmap") {
+					include '../Htpasswd.php';
+					$htpasswd = new Htpasswd('../.htpasswd');
+					$htpasswd->deleteUser($row["TelegramUser"]);
+				}
 			}
 		} elseif($element["role"] != 'banned') {																								// ALLES OK
 			echo "<tr><td class='true'>@".$element["user"]["username"]."</td><td class='true'>".$element["role"]."</td><td class='true'>".$user_id."</td><td".$userid_check." class='true'>".$userid."</td><td class='true'>".$row["endtime"]."</td></tr>";
