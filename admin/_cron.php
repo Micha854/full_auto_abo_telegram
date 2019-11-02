@@ -1,3 +1,12 @@
+<?php
+require_once(__DIR__.'/../config.php');
+					
+/* check connection */
+if (mysqli_connect_errno()) {
+    printf("Connect failed: %s\n", mysqli_connect_error());
+    exit();
+}
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -53,13 +62,6 @@ font-style:oblique
 </head>
 <body>
 <?php
-require_once(__DIR__.'/../config.php');
-					
-/* check connection */
-if (mysqli_connect_errno()) {
-    printf("Connect failed: %s\n", mysqli_connect_error());
-    exit();
-}
 
 $sql_abos = $mysqli->query("SELECT * FROM ".$tbl);
 while($get_user = $sql_abos->fetch_array()) {
