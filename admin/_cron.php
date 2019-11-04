@@ -77,7 +77,7 @@ while($get_user = $sql_abos->fetch_array()) {
 		$user_id = $output["response"]["InputPeer"]["user_id"];
 		
 	
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$row["id"]." ");
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$get_user["id"]." ");
 		
 		echo "set userid for ".$from_username."<br>";
 	}
@@ -90,7 +90,7 @@ echo $datum;
 
 echo "<br><br>";
 
-$query = "SELECT name, chatid FROM channels";
+$query = "SELECT * FROM channels";
 $result = $mysqli->query($query);
 
 if($result->num_rows) { 
@@ -101,7 +101,7 @@ if($result->num_rows) {
 }
 
 $dauerScript = microtime(true) - $beginnScript;
-echo "<h4>Verarbeitung der Cron in $dauerScript Sek.</h4>";
+echo "<h4>Verarbeitung der Cron in ".sprintf('%.3f', $dauerScript)." Sek.</h4>";
 ?>
 </body>
 </html>
