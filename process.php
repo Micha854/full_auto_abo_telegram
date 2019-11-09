@@ -1,6 +1,7 @@
 <?php
 session_start();
 include_once("config.php");
+require_once("functions.php");
 include_once("paypal.class.php");
 
 $paypalmode = ($PayPalMode=='sandbox') ? '.sandbox' : '';
@@ -259,7 +260,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					
 					Logger::info("USE ".$statement." FOR USER"); // LOGGER
 					
-					$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
+					$getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
 					$getUserId	= json_decode($getInfo, true);
 					$userid		= $getUserId["response"]["InputPeer"]["user_id"];					
 					
@@ -327,7 +328,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					if($botSend == '1') {
 						Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
 						$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
-						$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html");
+						$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 						include_once("admin/_add_user.php");
 					}
 

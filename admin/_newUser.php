@@ -24,6 +24,8 @@ $schnitt = $row["total"]/$row["abo"];	// durchschnittlicher preis pro tag
 
 if($_POST["submit"] and $_POST["user"]) {
 
+	require_once(__DIR__.'/../functions.php');
+	
 	function generateRandomString($length = 10) {
 		//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
 		return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
@@ -62,7 +64,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		$amountInsert = $sumBar;
 	}
 	
-	$getInfo	= file_get_contents($apiServer."getfullInfo/?id=".$ItemDesc);
+	$getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
 	$getUserId	= json_decode($getInfo, true);
 	$userid		= $getUserId["response"]["InputPeer"]["user_id"];
 	
@@ -123,7 +125,7 @@ if($_POST["submit"] and $_POST["user"]) {
 	if($botSend == '1') {
 		$botMessage = urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
 		//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
-		$sendMessage = file_get_contents($apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html");
+		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 		include_once("_add_user.php");
 	}
 					
