@@ -13,6 +13,28 @@ anschließend die Datei `.env.example` in `.env` umbenennen und den `HOST` eintr
 
 starten wir den Server mit `php server.php`
 
+#### TelegramApiServer in den Autostart migrieren
+
+Damit der ApiServer 24/7 läuft installieren wir diesen als Systemdienst. Hierzu können wir zb. Supervisor verwenden
+
+Falls Supervisor noch nicht installiert ist (in Ubuntu) `apt-get install supervisor`
+
+damit Supervisor startet führen wir noch einmal `service supervisor restart` aus
+
+Um nun die API als Systemdienst zu migrieren gehen wir in das Verzeichniss `/etc/supervisor/conf.d/` und erstellen hier eine neue Datei `telegram_client.conf` mit folgendem Inhalt (den path zur api bitte anpassen!)
+```
+[program:telegram_client]
+command=/usr/bin/php /home/USER/TelegramApiServer/server.php
+numprocs=1
+directory=/home/USER/TelegramApiServer/
+autostart=true
+autorestart=true
+stdout_logfile=none
+redirect_stderr=true
+```
+
+Nun müssen wir mit `supervisorctl reread` Supervisor über unser neues Programm informieren und ihm anschließend mit `supervisorctl update` mitteilen, dass er unser neues Programm aufnimmt. Damit sollte die API 24/7 laufen und im Falle eines Fehlers sowie beim reboot neugestartet werden
+
 ### PayPal API einrichten
 Logge dich in deinen PayPal Account ein! Danach öffne im selben Browser-Tab folgende URL:
 
