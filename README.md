@@ -175,11 +175,11 @@ CREATE TABLE `channels` (
 -- Daten für Tabelle `channels`
 --
 
-INSERT INTO `channels` (`id`, `name`, `url`) VALUES
-(1, 'Kanal 1', 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ'),
-(2, 'Kanal 2', 'https://t.me/Kanal2'),
-(3, 'Kanal 3', 'https://t.me/joinchat/XXXXXXgy6i4Y6WxnEQQNqw'),
-(4, 'Kanal 4', 'https://t.me/Kanal4');
+INSERT INTO `channels` (`id`, `name`, `url`, `chatid`) VALUES
+(1, 'Kanal 1', 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ', NULL),
+(2, 'Kanal 2', 'https://t.me/Kanal2', NULL),
+(3, 'Kanal 3', 'https://t.me/joinchat/XXXXXXgy6i4Y6WxnEQQNqw', NULL),
+(4, 'Kanal 4', 'https://t.me/Kanal4', NULL);
 
 --
 -- Indizes für die Tabelle `channels`
