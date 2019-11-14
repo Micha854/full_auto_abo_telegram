@@ -29,6 +29,10 @@ if($_POST) //Post Data received from product list page.
 	$InputChannel = $_POST["added"];
 	
 	$ItemDesc 	= $_POST["itemdesc"]; //Item description
+	if(substr($ItemDesc,0,1) !== "@")
+	{
+                $ItemDesc = "@".$ItemDesc;
+        }
 	$ItemDesc2 	= $_POST["itemdesc2"]; //Item description
 	
 	$ItemQty 	= $_POST["itemQty"]; // Item Quantity
@@ -195,12 +199,12 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) 
 	{
 
-			if($mailmail = '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
+			if($mailSend == '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
 			
 			echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">';
 			echo '<h2>Zahlung erfolgreich!</h2>';
 			echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-			echo '<div style="color:green"><br>Vielen Dank, du bist den ausgew&auml;hlten Kan&auml;len soeben beigetreten!'.$output_message.'</div>';
+			echo '<div style="color:green"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
 			
 				/*
 				//Sometimes Payment are kept pending even when transaction is complete. 
