@@ -44,7 +44,7 @@ while($row = $result->fetch_array()) {
 		$monate = " Monat ";
 	}
 ?>
-<form method="post" action="">
+<form method="post" action="process.php">
 <table class="procut_item" border="0" cellpadding="4">
   <tr>
     <td width="70%"><h4><?=$row["months"].$monate?><span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</td>
