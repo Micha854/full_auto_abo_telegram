@@ -110,6 +110,7 @@ CREATE TABLE `abos` (
   `userid` bigint(10) DEFAULT NULL,
   `channels` varchar(55) NOT NULL,
   `pass` varchar(8) NOT NULL,
+  `TransID` varchar(25) DEFAULT NULL,
   `paydate` datetime NOT NULL,
   `endtime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
