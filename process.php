@@ -201,6 +201,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 
 			if($mailSend == '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
 			
+			$TansID = urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
+			
 			echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">';
 			echo '<h2>Zahlung erfolgreich!</h2>';
 			echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
@@ -252,6 +254,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	
 					if($row_cnt != 0) {
 						$update = $check->fetch_array();
+						if($update["TransID"] == $TansID) {
+							$mysqli->close();
+							echo "Die Zahlung wurde schon abgeschlossen!";
+							exit;
+						}
 						$statement = "update";
 						$date = $update["endtime"];
 						$amountInsert = $update["Amount"];
@@ -318,14 +325,14 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					Logger::info("SELECTED CHANNELS ".$InputChannels); // LOGGER
 					
 					if($statement == "insert") {
-						$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannels', pass = '$passwd', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+						$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
 						if($insert_row = $mysqli->query($sql_insert)) {
 							Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
 						} else {
 							Logger::error("INSERT USER ON DATABASE FAILED\n".$sql_insert); // LOGGER
 						}
 					} else {
-						mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
+						mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = '$TansID', paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
 						Logger::info("UPDATE USER ON DATABASE"); // LOGGER
 					}
 
