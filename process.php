@@ -15,10 +15,10 @@ if($_POST) //Post Data received from product list page.
 	//In practical world you must fetch actual price from database using item id. Eg: 
 	//$ItemPrice = $mysqli->query("SELECT item_price FROM products WHERE id = Product_Number");
 
-	$ItemName 	= $_POST["itemname"]; //Item Name
+	$ItemName		= $_POST["itemname"]; //Item Name
 	$ItemNumber 	= $_POST["itemnumber"]; //Item Number
 	
-	$query = "SELECT * FROM products WHERE item_number = '".$ItemNumber."' ORDER BY id DESC";
+	$query = "SELECT * FROM products WHERE item_number = '".mysql_real_escape_string($ItemNumber)."' ORDER BY id DESC";
 	$result = $mysqli->query($query);
 	$rowData = $result->fetch_array();
 	
@@ -26,14 +26,14 @@ if($_POST) //Post Data received from product list page.
 	$days_to_end 	= $rowData["abo_days"];
 	
 	$InputChannel = array();
-	$InputChannel = $_POST["added"];
+	$InputChannel = mysql_real_escape_string($_POST["added"]);
 	
-	$ItemDesc 	= $_POST["itemdesc"]; //Item description
+	$ItemDesc 	= mysql_real_escape_string($_POST["itemdesc"]); //Item description
 	if(substr($ItemDesc,0,1) !== "@")
 	{
                 $ItemDesc = "@".$ItemDesc;
         }
-	$ItemDesc2 	= $_POST["itemdesc2"]; //Item description
+	$ItemDesc2 	= mysql_real_escape_string($_POST["itemdesc2"]); //Item description
 	
 	$ItemQty 	= $_POST["itemQty"]; // Item Quantity
 	$ItemTotalPrice = ($ItemPrice*$ItemQty); //(Item Price x Quantity = Total) Get total amount of product; 
