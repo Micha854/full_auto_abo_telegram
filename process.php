@@ -16,9 +16,9 @@ if($_POST) //Post Data received from product list page.
 	//$ItemPrice = $mysqli->query("SELECT item_price FROM products WHERE id = Product_Number");
 
 	$ItemName		= $_POST["itemname"]; //Item Name
-	$ItemNumber 	= $_POST["itemnumber"]; //Item Number
+	$ItemNumber 	= mysqli_real_escape_string($mysqli, $_POST["itemnumber"]); //Item Number
 	
-	$query = "SELECT * FROM products WHERE item_number = '".mysql_real_escape_string($ItemNumber)."' ORDER BY id DESC";
+	$query = "SELECT * FROM products WHERE item_number = '".$ItemNumber."' ORDER BY id DESC";
 	$result = $mysqli->query($query);
 	$rowData = $result->fetch_array();
 	
@@ -26,14 +26,14 @@ if($_POST) //Post Data received from product list page.
 	$days_to_end 	= $rowData["abo_days"];
 	
 	$InputChannel = array();
-	$InputChannel = mysql_real_escape_string($_POST["added"]);
+	$InputChannel = mysqli_real_escape_string($mysqli, $_POST["added"]);
 	
-	$ItemDesc 	= mysql_real_escape_string($_POST["itemdesc"]); //Item description
+	$ItemDesc 	= mysqli_real_escape_string($mysqli, $_POST["itemdesc"]); //Item description
 	if(substr($ItemDesc,0,1) !== "@")
 	{
                 $ItemDesc = "@".$ItemDesc;
         }
-	$ItemDesc2 	= mysql_real_escape_string($_POST["itemdesc2"]); //Item description
+	$ItemDesc2 	= mysqli_real_escape_string($mysqli, $_POST["itemdesc2"]); //Item description
 	
 	$ItemQty 	= $_POST["itemQty"]; // Item Quantity
 	$ItemTotalPrice = ($ItemPrice*$ItemQty); //(Item Price x Quantity = Total) Get total amount of product; 
@@ -338,7 +338,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 
 					if($botSend == '1') {
 						Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
-						$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+						if($use_map == "PMSF" or $use_map == "Rocketmap") {
+							$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+						} else {
+							$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+						}
 						$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 						include_once("admin/_add_user.php");
 					}

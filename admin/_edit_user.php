@@ -1,5 +1,6 @@
 <?php
 require_once(__DIR__.'/../config.php');
+require_once(__DIR__.'/../functions.php');
 					
 //Output any connection error
 if ($mysqli->connect_error) {
@@ -11,12 +12,9 @@ $id = mysqli_real_escape_string($mysqli, $_GET["id"]);
 $query = "SELECT * FROM ".$tbl." WHERE id = $id";
 $result = $mysqli->query($query);
 
-$row = $result->fetch_array(MYSQLI_ASSOC);
-
+$row = $result->fetch_array();
 
 if($_POST["submit"] and $_POST["user"]) {
-	
-	require_once(__DIR__.'/../functions.php');
 	
 	function generateRandomString($length = 10) {
 		//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
@@ -66,8 +64,11 @@ if($_POST["submit"] and $_POST["user"]) {
 	}
 						
 	if($botSend == '1') {
-		$botMessage = urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
-		//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		if($use_map == "PMSF" or $use_map == "Rocketmap") {
+			$botMessage = urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+		} else {
+			$botMessage = urlencode("Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+		}
 		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 		include_once("_add_user.php");
 	}
@@ -106,7 +107,82 @@ if($_POST["submit"] and $_POST["user"]) {
 		$mail->Send();
 	}
 					
-	$userSave = "<h1>Benuzter ge&auml;ndert zu ".$newAdd."</h1>";
+	$userSave = "<div style=\"margin-bottom:20px; background:#CCCCCC; color:#009900; padding:5px\"><h1>Benuzter ge&auml;ndert zu ".$newAdd."</h1></div>";
+} elseif($_POST["submit2"] and $_POST["itemprice"]) {
+	
+	$query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
+	$result2 = $mysqli->query($query2);
+	$row2 = $result2->fetch_array();
+	$schnitt = $row2["total"]/$row2["abo"];	// durchschnittlicher preis pro tag
+
+	$sumBar = mysqli_real_escape_string($mysqli, $_POST["itemprice"]);
+	$sumBar = str_replace(",",".", $sumBar);
+	
+	$days_to_end = $_POST["itemprice"]/$schnitt;
+	$days_to_end = ceil($days_to_end);
+		
+	$amountInsert = $row["Amount"];
+	$amountInsert+=$sumBar;
+	
+	$userid = $row["userid"];
+	
+	$date = date('Y-m-d H:i:s', strtotime($row["endtime"]. " + {$days_to_end} days"));
+	
+	if($use_map == "PMSF") {
+		$datum = new DateTime($date);
+		$datum = $datum->getTimestamp();
+		$expire_timestamp = $datum;
+		
+		$check_user = $mysqli->query("SELECT id FROM users WHERE user = '".$row["buyerEmail"]."' ");
+		if($check_user->num_rows != 0) {
+			$update_user = $check_user->fetch_array();
+			mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$expire_timestamp."' WHERE id = ".$update_user["id"]);
+		}
+	}
+	
+	mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$row["id"]);
+	
+	if($botSend == '1') {
+		$botMessage = urlencode("Dein Abo wurde verl&auml;ngert und endet folglich am ".date('d.m.Y', strtotime($date)));
+		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
+	}
+					
+	if($mailSend == '1') {
+		
+		$empfaenger	= $row["buyerEmail"];
+		require_once('../mailer/class.phpmailer.php');
+
+		$mail             = new PHPMailer();
+		$mail->CharSet	  = 'ISO-8859-1';
+		
+		ob_start();
+		include("../mail.php");
+		$body = ob_get_contents();
+		ob_end_clean();
+
+		$mail->IsSMTP(); // telling the class to use SMTP
+		$mail->Host       = $mailHost; // SMTP server
+		$mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
+		$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
+                                           // 1 = errors and messages
+                                           // 2 = messages only
+		$mail->SMTPAuth   = true;                  // enable SMTP authentication
+		$mail->Username   = $smtpUser; // SMTP account username
+		$mail->Password   = $smtpPass;        // SMTP account password
+		
+		$mail->SetFrom($mailSender, $WebsiteTitle);
+		$mail->AddReplyTo($mailSender, $WebsiteTitle);
+		
+		$mail->Subject    = $mailSubject;
+		$mail->AltBody    = strip_tags($body); // optional, comment out and test
+		$mail->MsgHTML($body);
+		$mail->AddAddress($empfaenger, $WebsiteTitle);
+
+		$mail->Send();
+	}
+	
+	$userSave = "<div style=\"margin-bottom:20px; background:#CCCCCC; color:#009900; padding:5px\"><h1>Abo verl&auml;ngert auf ".$date."</h1></div>";
+	
 }
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -122,12 +198,13 @@ if($_POST["submit"] and $_POST["user"]) {
 <main role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
+<a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <?=$userSave?>
 <h1>Benutzer umbenennen</h1>
-<form method="post" action=""> 
+<form name="one" method="post" action=""> 
   <table class="table">
     <tr>
-      <th scope="col">Aktueller @Username</th>
+      <th width="50%" scope="col">Aktueller @Username</th>
       <th scope="col"><?=$row["TelegramUser"] ?></th>
     </tr>
 	<tr>
@@ -145,8 +222,25 @@ if($_POST["submit"] and $_POST["user"]) {
     </tr>
 	<?php } ?>
     <tr>
-      <th scope="col"><a class="btn btn-sm btn-outline-secondary" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a></th>
+      <th scope="col">&nbsp;</th>
 	  <th scope="col"><input class="btn btn-sm btn-outline-secondary" type="submit" name="submit" value="User &auml;ndern!" /></th>
+    </tr>
+  </table>
+</form>
+<h1>Abo verl&auml;ngern</h1>
+<form name="two" method="post" action=""> 
+  <table class="table">
+    <tr>
+      <th width="50%" scope="col">Abonnent</th>
+      <th scope="col"><?=$row["TelegramUser"] ?></th>
+    </tr>
+    <tr>
+      <th scope="col">Bar erhalten</th>
+      <th scope="col"><input type="text" name="itemprice" class="form-control" placeholder="&euro;" required /></th>
+    </tr>
+    <tr>
+      <th scope="col">&nbsp;</th>
+	  <th scope="col"><input class="btn btn-sm btn-outline-secondary" type="submit" name="submit2" value="Abo verl&auml;ngern!" /></th>
     </tr>
   </table>
 </form>

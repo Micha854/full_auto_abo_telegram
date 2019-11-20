@@ -123,8 +123,11 @@ if($_POST["submit"] and $_POST["user"]) {
 	}
 	
 	if($botSend == '1') {
-		$botMessage = urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
-		//$sendMessage = file_get_contents("https://api.telegram.org/bot".$apitoken."/sendMessage?chat_id=$userid&text=$botMessage");
+		if($use_map == "PMSF" or $use_map == "Rocketmap") {
+			$botMessage = urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+		} else {
+			$botMessage = urlencode("Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+		}
 		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 		include_once("_add_user.php");
 	}
