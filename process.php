@@ -300,7 +300,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 							(user,temp_password,expire_timestamp,login_system,access_level)
 							VALUES ('$ItemDesc2','$hashedPwd','$expire_timestamp','$login_system','$access_level')");
 						} else {
-							mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$expire_timestamp."' WHERE id = ".$update["id"]);
+							$update_user = $check_user->fetch_array();
+							mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$expire_timestamp."' WHERE id = ".$update_user["id"]);
 						}
 					}
 					
