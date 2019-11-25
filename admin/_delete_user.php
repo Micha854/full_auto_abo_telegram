@@ -8,11 +8,12 @@ while($rowX = $result->fetch_array()) {
 	$check_chatid = json_decode($getMember, true);
 	$check_title = $check_chatid["response"]["title"];
 	$check_invite = $check_chatid["response"]["invite"];
-		
+	
+	/*	
 	if($rowX["url"] != $check_invite) {
 		echo "<p style='background:#FFFF00; padding:5px'>your chatid \"<b>".$rowX["chatid"]."</b>\" for \"<b>".$check_title."</b>\" is not correct, this channel invite URL is \"<b>".$check_invite."</b>\" please upgrade the chatid or give them the correct channel invite URL</p>";
 	} else {
-	
+	*/
 		echo "<h2>Channel: ". $rowX["name"] ."</h2>";
 		echo "<table><tr><td>Username</td><td>Rolle</td><td>UserID Telegram</td><td>UserID Datenbank</td><td>Abo endet</td></tr>";
 	
@@ -89,6 +90,6 @@ while($rowX = $result->fetch_array()) {
 		echo "<tr><td class='stat'>Abonnenten:</td><td class='stat' colspan='4'>".$i_user."</td></tr>";
 		echo "<tr><td class='stat'>banned User:</td><td class='stat' colspan='4'>".$i_bann."</td></tr>";
 		echo "</table>";
-	}
+	//}
 }
 ?>
