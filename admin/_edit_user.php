@@ -40,17 +40,15 @@ if($_POST["submit"] and $_POST["user"]) {
 		$useridnow = ", userid = NULL";
 	}
 	
+	mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."'".$useridnow.", pass = '".$passwd."' WHERE id = ".$row["id"]);
+	
 	if($use_map == "PMSF") {
 		$statement = "insert";
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 		
 		$loginName	= $_POST["email"];
-		
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."'".$useridnow.", pass = '".$passwd."' WHERE id = ".$row["id"]);				
 		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', session_id = NULL, WHERE id = ".$row["buyerEmail"]);
-	}
-	
-	elseif($use_map == "Rocketmap") {
+	} elseif($use_map == "Rocketmap") {
 		$statement = "insert";
 		$loginName	= $newAdd;
 						
@@ -59,8 +57,6 @@ if($_POST["submit"] and $_POST["user"]) {
 		$htpasswd = new Htpasswd('../.htpasswd');
 		$htpasswd->deleteUser($OldUser);
 		$htpasswd->addUser($newAdd, $passwd);
-					
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."', userid = '".$userid."', pass = '".$passwd."' WHERE id = ".$row["id"]);
 	}
 						
 	if($botSend == '1') {
