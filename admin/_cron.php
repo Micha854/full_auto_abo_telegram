@@ -77,7 +77,7 @@ while($get_user = $sql_abos->fetch_array()) {
 		$user_id = $output["response"]["InputPeer"]["user_id"];
 		
 	
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$row["id"]." ");
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$get_user["id"]." ");
 		
 		echo "set userid '".$user_id."' for ".$from_username."<br>";
 	}
