@@ -26,7 +26,7 @@ if($_POST) //Post Data received from product list page.
 	$days_to_end 	= $rowData["abo_days"];
 	
 	$InputChannel = array();
-	$InputChannel = mysqli_real_escape_string($mysqli, $_POST["added"]);
+	$InputChannel = $_POST["added"];
 	
 	$ItemDesc 	= mysqli_real_escape_string($mysqli, $_POST["itemdesc"]); //Item description
 	if(substr($ItemDesc,0,1) !== "@")
@@ -322,7 +322,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$empfaenger	= $buyEmail;
 					}
 					
-					$InputChannels = implode(',',$InputChannel);
+					$InputChannels = implode(',',mysqli_real_escape_string($mysqli, $InputChannel));
 					Logger::info("SELECTED CHANNELS ".$InputChannels); // LOGGER
 					
 					if($statement == "insert") {
