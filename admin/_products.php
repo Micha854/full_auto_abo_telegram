@@ -1,6 +1,5 @@
 <?php
 require_once(__DIR__.'/../config.php');
-require_once(__DIR__.'/../functions.php');
 					
 //Output any connection error
 if ($mysqli->connect_error) {
@@ -11,18 +10,21 @@ if($_POST["submit"]) {
 	
 	$felder = $_POST["id"];
 	foreach ($felder as $id) {
-    	$name	= mysqli_real_escape_string($mysqli, $_POST["name"]		[$id]);
-		$url	= mysqli_real_escape_string($mysqli, $_POST["url"]		[$id]);
-		$chatid	= mysqli_real_escape_string($mysqli, $_POST["chatid"]	[$id]);
+    	$months			= mysqli_real_escape_string($mysqli, $_POST["months"]		[$id]);
+		$item_number	= mysqli_real_escape_string($mysqli, $_POST["item_number"]	[$id]);
+		$item_price		= mysqli_real_escape_string($mysqli, $_POST["item_price"]	[$id]);
+		$abo_days		= mysqli_real_escape_string($mysqli, $_POST["abo_days"]		[$id]);
 		
-		mysqli_query($mysqli, "UPDATE channels SET name = '".$name."', url = '".$url."', chatid = '".$chatid."' WHERE id = ".$id);
+		$sum = str_replace(",",".", $item_price);
+		
+		mysqli_query($mysqli, "UPDATE products SET months = '".(int)$months."', item_number = '".(int)$item_number."', item_price = '".$sum."', abo_days = '".(int)$abo_days."' WHERE id = ".$id);
 		
 		$save = '<h3 style="background:#333333; color:#00CC00; padding:5px; text-align:center">&Auml;nderungen wurden gespeichert !</h3>';
 	}
 	
 }
 
-$query = "SELECT * FROM channels ORDER BY id DESC";
+$query = "SELECT * FROM products ORDER BY id DESC";
 $result = $mysqli->query($query);
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -40,37 +42,28 @@ $result = $mysqli->query($query);
 <div class="jumbotron">
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <?=$save?>
-<h1>Telegram Channels</h1>
+<h1>Abos verwalten</h1>
 <form method="post" action=""> 
 <?php
 while($row = $result->fetch_array()) {
-$chat_id = $row["chatid"];
-$getMember = callAPI('GET', $apiServer."getPWRchat/?id=$chat_id", false);
-
-	$check_chatid = json_decode($getMember, true);
-	$check_invite = $check_chatid["response"]["invite"];
-	
-if($row["url"] != $check_invite) {
-	$color 	= ";background:#FF0000;color:#FFFF00";
-	$txt	= "<br>evtl. stimmt die Url f&uuml;r diesem Channel nicht, bitte pr&uuml;fe dies! <span style='background:#009933;color:#FFF'>".$check_invite."</span>";
-} else {
-	$color 	= "";
-	$txt	= "";
-}
 ?>
-<h2 style="margin-top:10px; margin-bottom:10px; font-style:oblique"><a href="<?=$row["url"] ?>" target="_blank" title="<?=$row["name"] ?>">#<?=$row["id"] ?></a></h2>  
+<h2 style="margin-top:10px; margin-bottom:10px; font-style:oblique"><a href="#">product #<?=$row["id"] ?></a></h2>  
   <table>
 	<tr>
-      <th scope="col">Name: </th>
-	  <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="name[<?=$row["id"]?>]" value="<?=$row["name"] ?>" maxlength="155" style="width:100%" /></th>
+      <th scope="col">Monate: </th>
+	  <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="months[<?=$row["id"]?>]" value="<?=$row["months"] ?>" maxlength="2" style="width:100%" /></th>
 	</tr>
 	<tr>
-      <th scope="col">URL: </th>
-	  <th scope="col" style="width:100%"><input type="text" name="url[<?=$row["id"]?>]" value="<?=$row["url"] ?>" maxlength="155" style="width:100%<?=$color?>" /><?=$txt?></th>
+      <th scope="col">Art. Nr.: </th>
+	  <th scope="col" style="width:100%"><input type="text" name="item_number[<?=$row["id"]?>]" value="<?=$row["item_number"] ?>" maxlength="6" style="width:100%" /></th>
 	</tr>
 	<tr>
-	  <th scope="col">ChatID: </th>
-	  <th scope="col" style="width:100%"><input type="text" name="chatid[<?=$row["id"]?>]" value="<?=$row["chatid"] ?>" maxlength="15" style="width:100%" /></th>
+	  <th scope="col">Preis: </th>
+	  <th scope="col" style="width:100%"><input type="text" name="item_price[<?=$row["id"]?>]" value="<?=$row["item_price"] ?>" maxlength="5" style="width:100%" /></th>
+    </tr>
+	<tr>
+	  <th scope="col">Tage: </th>
+	  <th scope="col" style="width:100%"><input type="text" name="abo_days[<?=$row["id"]?>]" value="<?=$row["abo_days"] ?>" maxlength="3" style="width:100%" /></th>
     </tr>
   </table>
 <hr />

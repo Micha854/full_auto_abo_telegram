@@ -13,6 +13,7 @@
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Übersicht</a>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_newUser.php">Hinzufügen</a>
 		  <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_channels.php">Channels</a>
+		  <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_products.php">Abos</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Reset</a>
         </div>
