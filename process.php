@@ -344,9 +344,10 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 							$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
 						}
 						$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
-						include_once("admin/_add_user.php");
 					}
-
+					
+					include_once("admin/_add_user.php");
+					
 					if($mailSend == '1') {
 						Logger::info("USE MAIL TO SEND MESSAGE"); // LOGGER
 						

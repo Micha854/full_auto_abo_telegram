@@ -66,8 +66,9 @@ if($_POST["submit"] and $_POST["user"]) {
 			$botMessage = urlencode("Dein Abo endet am ".date('d.m.Y', strtotime($date)));
 		}
 		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
-		include_once("_add_user.php");
 	}
+	
+	include_once("_add_user.php");
 					
 	if($mailSend == '1') {
 		
