@@ -103,8 +103,12 @@ if($_POST["submit"] and $_POST["user"]) {
 
 		$mail->Send();
 	}
-					
-	$userSave = "<div style=\"margin-bottom:20px; background:#CCCCCC; color:#009900; padding:5px\"><h1>Benuzter ge&auml;ndert zu ".$newAdd."</h1></div>";
+	
+	$query = "SELECT * FROM ".$tbl." WHERE id = $id";
+	$result = $mysqli->query($query);
+	$row = $result->fetch_array();
+				
+	$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benuzter ge&auml;ndert zu ".$newAdd."</h3>";
 } elseif($_POST["submit2"] and $_POST["itemprice"]) {
 	
 	$query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
@@ -146,6 +150,7 @@ if($_POST["submit"] and $_POST["user"]) {
 					
 	if($mailSend == '1') {
 		
+		$statement = "update";
 		$empfaenger	= $row["buyerEmail"];
 		require_once('../mailer/class.phpmailer.php');
 
@@ -178,7 +183,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		$mail->Send();
 	}
 	
-	$userSave = "<div style=\"margin-bottom:20px; background:#CCCCCC; color:#009900; padding:5px\"><h1>Abo verl&auml;ngert auf ".$date."</h1></div>";
+	$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Abo verl&auml;ngert auf ".$date."</h3>";
 	
 }
 ?>

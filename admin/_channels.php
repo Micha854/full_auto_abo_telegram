@@ -6,6 +6,37 @@ require_once(__DIR__.'/../functions.php');
 if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<title><?=$WebsiteTitle ?> - ADMIN EDIT</title>
+</head>
+
+<body>
+<main role="main" class="container">
+<?php include "nav.php"; ?>
+<div class="jumbotron">
+<?php
+if($_GET["delete"]) {
+	$id		= mysqli_real_escape_string($mysqli, $_GET["delete"]);
+	$query	= "SELECT * FROM channels WHERE id = $id";
+	$result = $mysqli->query($query);
+	$row	= $result->fetch_array();
+	
+	echo "<div align='center'><h2>M&ouml;chtest du den Kanal</h2><h1 style='font-style:italic'><a href='".$row["url"]."' target='_blank'>".$row["name"]."</a></h1><h2>unwiderruflich l&ouml;schen?</h2>";
+	?>
+	<form method="post" action="_channels.php">
+		<a class="btn btn-sm btn-outline-secondary" href="_channels.php" role="button">abbrechen</a>
+		<input type="hidden" name="deleteChannel" value="<?=$row["id"]?>" />
+		<input type="submit" class="btn btn-sm btn-outline-secondary" value="Kanal l&ouml;schen" />
+	</form>
+	<?php
+	echo "</div>";
+} else {
 
 if($_POST["submit"]) {
 	
@@ -22,23 +53,23 @@ if($_POST["submit"]) {
 	
 }
 
+if($_POST["newField"]) {
+	mysqli_query($mysqli, "INSERT INTO channels SET name = '', url = '', chatid = NULL");
+}
+
+if($_POST["deleteChannel"]) {
+	$deleteChannel = mysqli_real_escape_string($mysqli, $_POST["deleteChannel"]);
+	mysqli_query($mysqli, "DELETE FROM channels WHERE id = $deleteChannel");
+}
+
 $query = "SELECT * FROM channels ORDER BY id DESC";
 $result = $mysqli->query($query);
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-<title><?=$WebsiteTitle ?> - ADMIN EDIT</title>
-</head>
 
-<body>
-<main role="main" class="container">
-<?php include "nav.php"; ?>
-<div class="jumbotron">
+<form method="post" action="">
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
+<input type="submit" class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" name="newField" value="Neuer Eintrag" />
+</form>
 <?=$save?>
 <h1>Telegram Channels</h1>
 <form method="post" action=""> 
@@ -58,8 +89,12 @@ if($row["url"] != $check_invite) {
 	$txt	= "";
 }
 ?>
-<h2 style="margin-top:10px; margin-bottom:10px; font-style:oblique"><a href="<?=$row["url"] ?>" target="_blank" title="<?=$row["name"] ?>">#<?=$row["id"] ?></a></h2>  
+
   <table>
+	<tr>
+      <th scope="col"><h2 style="margin-top:10px; margin-bottom:10px; font-style:oblique"><a href="<?=$row["url"] ?>" target="_blank" title="<?=$row["name"] ?>">#<?=$row["id"] ?></a></h2></th>
+	  <th scope="col"><a class="btn btn-sm btn-outline-secondary" href="?delete=<?=$row["id"] ?>" role="button">Channel l&ouml;schen</a></h2></th>
+	</tr>
 	<tr>
       <th scope="col">Name: </th>
 	  <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="name[<?=$row["id"]?>]" value="<?=$row["name"] ?>" maxlength="155" style="width:100%" /></th>
@@ -77,6 +112,9 @@ if($row["url"] != $check_invite) {
 <?php } ?>
 <input type="submit" class="btn btn-sm btn-outline-secondary" name="submit" value="Speichern" />
 </form>
+<?php
+}
+?>
 </div>
 </main>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
