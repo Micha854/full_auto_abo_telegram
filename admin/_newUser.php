@@ -166,7 +166,7 @@ if($_POST["submit"] and $_POST["user"]) {
 
 		$mail->Send();
 	}
-	$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Neuer Benuzter ".$newAdd." wurde erstellt!</h3>";
+	$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Neuer Benutzer ".$newAdd." wurde erstellt!</h3>";
 									
 }
 

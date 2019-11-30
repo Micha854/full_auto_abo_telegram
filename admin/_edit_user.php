@@ -108,7 +108,7 @@ if($_POST["submit"] and $_POST["user"]) {
 	$result = $mysqli->query($query);
 	$row = $result->fetch_array();
 				
-	$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benuzter ge&auml;ndert zu ".$newAdd."</h3>";
+	$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benutzer ge&auml;ndert zu ".$newAdd."</h3>";
 } elseif($_POST["submit2"] and $_POST["itemprice"]) {
 	
 	$query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
