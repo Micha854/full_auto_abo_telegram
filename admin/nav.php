@@ -25,3 +25,10 @@
         </form>
   </div>
 </nav>
+<?php
+$lastCron = file_get_contents('cron.txt');
+if(!$lastCron) {
+	$lastCron = 'UNKNOWN';
+}
+?>
+<div style="text-align:center; background:#009900; color:#FFFFFF; font-weight:bolder; font-size:11px">LAST CRON UPDATE: <?=$lastCron?></div>
