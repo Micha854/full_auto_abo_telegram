@@ -1,4 +1,5 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <a href="<?=dirname($_SERVER["SCRIPT_NAME"])?>"><img src="logo.png" width="48" style="margin:-4px 2px -4px -12px" /></a>
   <a class="navbar-brand" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Adminpanel</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -29,6 +30,11 @@
 $lastCron = file_get_contents('cron.txt');
 if(!$lastCron) {
 	$lastCron = 'UNKNOWN';
+	$cronColorBack = '#FF0000';
+	$cronColorText = '#FFFF00';
+} else {
+	$cronColorBack = '#009900';
+	$cronColorText = '#FFFFFF';
 }
 ?>
-<div style="text-align:center; background:#009900; color:#FFFFFF; font-weight:bolder; font-size:11px">LAST CRON UPDATE: <?=$lastCron?></div>
+<div style="text-align:center; background:<?=$cronColorBack?>; color:<?=$cronColorText?>; font-weight:bolder; font-size:11px">LAST CRON UPDATE: <?=$lastCron?></div>
