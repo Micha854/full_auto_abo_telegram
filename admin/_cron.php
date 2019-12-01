@@ -95,7 +95,7 @@ $result = $mysqli->query($query);
 
 if($result->num_rows) { 
 	//echo "<h2>ergebnisse vorhanden</h2>";
-	include("_delete_user.php");
+	include(__DIR__."/_delete_user.php");
 } else {
 	echo "<h2>nix zu tun!</h2>";
 }
@@ -103,7 +103,7 @@ if($result->num_rows) {
 $dauerScript = microtime(true) - $beginnScript;
 echo "<h4>Verarbeitung der Cron in ".sprintf('%.3f', $dauerScript)." Sek.</h4>";
 
-$datei = fopen("cron.txt","w");
+$datei = fopen(__DIR__."/cron.txt","w");
 echo fwrite($datei, date("d.m.Y - H:i:s"),100);
 fclose($datei);
 ?>
