@@ -12,9 +12,28 @@
   color: Royalblue;
   text-decoration: None;
  }
- a:hover {
+ a:hover, a:active {
   color: Red;
  }
+ #active {
+  color: #FF0000;
+ }
+ 
+@media only screen and (max-width: 500px) {
+  .destop {
+  	display:none
+  }
+  .table td, .table th {
+ 	padding-left:1px;
+ 	padding-right:1px;
+ }
+}
+
+@media only screen and (min-width: 500px) {
+  .mobile {
+  	display:none
+  }
+}
 </style>
 </head>
 
@@ -57,10 +76,22 @@ if (!in_array($sort, array('asc', 'desc'))) {
 				$row_cnt = $result->num_rows;
 				echo "<th colspan='4'><h3>".$row_cnt." Abonnenten</h3></th></tr><tr>";
 				foreach ($spalten as $spalte => $name) {
+					
+					if($_GET["spalte"] == $spalte) {
+						if($_GET["sort"] == 'asc') {
+							$active = 'id="active"';
+						} elseif($_GET["sort"] == 'desc') {
+							$active2 = 'id="active"';
+						}
+					} else {
+						$active = '';
+						$active2 = '';
+					}
+					
 					echo '<th>' .
 						ucfirst($name) .
-						'<a href="?spalte=' . $spalte . '&sort=asc" title="Aufsteigend sortieren">&#9650;</a>' .
-						'<a href="?spalte=' . $spalte . '&sort=desc" title="Absteigend sortieren">&#9660;</a>' .
+						'<a href="?spalte=' . $spalte . '&sort=asc" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
+						'<a href="?spalte=' . $spalte . '&sort=desc" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
 					'</th>';
 				} ?>
      			<th scope="col"></th>
@@ -74,9 +105,16 @@ if($row["endtime"] < date("Y-m-d H:i:s")) {
 } else {
 	$color = ' style="color:#000"';
 }
+
+if(strlen($row["TelegramUser"]) >= 16) {
+	$teleUser =	substr($row["TelegramUser"], 0, 14).'..';
+} else {
+	$teleUser = $row["TelegramUser"];
+}
 ?>
   <tr>
-	<td><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
+	<td class="mobile"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$teleUser ?></a></td>
+	<td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
     <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
     <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
     <td><a class="btn btn-sm btn-outline-secondary" href="_edit_user.php?id=<?=$row["id"]?>" role="button">edit</a></td>
