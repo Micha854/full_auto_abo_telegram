@@ -174,6 +174,7 @@ if($_POST["submit"] and $_POST["user"]) {
 <main role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
+<a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <?=$userSave?>
 <h1>Benutzer hinzuf&uuml;gen</h1>
   <form method="post" action="">
@@ -203,7 +204,6 @@ if($_POST["submit"] and $_POST["user"]) {
 	      ?>
 	    <tr>
 		  <td colspan="2"><button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
-	      <a class="btn btn-sm btn-outline-secondary" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a></td>
 	    </tr>
 	  </table>
 	</div>

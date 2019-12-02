@@ -41,7 +41,9 @@
 <main role="main" class="container">
 <?php 
 include "nav.php";
-					
+if($sortIndex and !$_GET["spalte"]) {
+	header("Location: $WebsiteUrl/admin/$sortIndex");
+}					
 //Output any connection error
 if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);

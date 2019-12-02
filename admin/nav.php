@@ -1,3 +1,14 @@
+<?php
+session_start();
+if($_GET["reset"]) {
+	session_destroy();
+} elseif($_GET["spalte"] and $_GET["sort"]) {
+	$_SESSION["sort"] = '?spalte='.$_GET["spalte"].'&sort='.$_GET["sort"];
+	$sortIndex = $_SESSION["sort"];
+} else {
+	$sortIndex = $_SESSION["sort"];
+}
+?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a href="<?=dirname($_SERVER["SCRIPT_NAME"])?>"><img src="logo.png" width="48" style="margin:-4px 2px -4px -12px" /></a>
   <a class="navbar-brand" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Adminpanel</a>
@@ -16,7 +27,7 @@
 		  <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_channels.php">Channels</a>
 		  <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_products.php">Abos</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Reset</a>
+          <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"]).'/?reset=1' ?>">Reset</a>
         </div>
       </li>
     </ul>
