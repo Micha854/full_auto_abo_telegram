@@ -41,7 +41,7 @@
 <main role="main" class="container">
 <?php 
 include "nav.php";
-if($sortIndex and !$_GET["spalte"]) {
+if($sortIndex and (!$_GET["spalte"] or !$_GET["sort"])) {
 	header("Location: $WebsiteUrl/admin/$sortIndex");
 }					
 //Output any connection error
