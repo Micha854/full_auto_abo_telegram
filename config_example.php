@@ -27,7 +27,8 @@ $mailSend       = '0';                  // set value '0' to off
 $mailSubject    = "Welcome to PoGO MAP";// mail betreff
 $mailSender     = 'pogo@YOURURL.COM';   // sender mail || ReplyTo
 $mailHost       = 'domain.com';         // SMTP server
-$smtpPort       = 25;                   // default 25
+$smtpPort       = 25;                   // usually the port for TLS is 587, for SSL is 465 and non-secure is 25
+$smtpSecure		= '';					// TLS, SSL or  empty the line
 $smtpUser       = '';                   // SMTP account username
 $smtpPass       = '';                   // SMTP account password
 
@@ -38,9 +39,18 @@ $paypallogo         = $WebsiteUrl."/logo_example.jpg";	// PayPal Logo
 
 $PayPalMode 		= 'live';                           // sandbox or live
 
-$PayPalApiUsername 	= 'YOUR_API_USERNAME';              // PayPal API Username
-$PayPalApiPassword 	= 'YOUR_API_PASSWORD';              // Paypal API password
-$PayPalApiSignature = 'YOUR_API_SIGNATURE';             // Paypal API Signature
+if($PayPalMode == 'live') {								// live mode
+	$PayPalApiUsername 	= 'YOUR_API_USERNAME';              // PayPal API Username
+	$PayPalApiPassword 	= 'YOUR_API_PASSWORD';              // Paypal API password
+	$PayPalApiSignature = 'YOUR_API_SIGNATURE';             // Paypal API Signature
+} elseif($PayPalMode == 'sandbox') {					// sandbox mode
+	$PayPalApiUsername 	= 'YOUR_API_USERNAME';              // PayPal API Username
+	$PayPalApiPassword 	= 'YOUR_API_PASSWORD';              // Paypal API password
+	$PayPalApiSignature = 'YOUR_API_SIGNATURE';             // Paypal API Signature
+} else {
+	echo "<h1>Paypal Mode Error - options 'live' or 'sandbox' Check this!</h1>";
+	exit();
+}
 
 $PayPalCurrencyCode = 'EUR';                            // Paypal Currency Code
 

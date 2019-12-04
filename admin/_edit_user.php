@@ -86,6 +86,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		$mail->IsSMTP(); // telling the class to use SMTP
 		$mail->Host       = $mailHost; // SMTP server
 		$mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
+		$mail->SMTPSecure = $smtpSecure;
 		$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
                                            // 1 = errors and messages
                                            // 2 = messages only
@@ -165,6 +166,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		$mail->IsSMTP(); // telling the class to use SMTP
 		$mail->Host       = $mailHost; // SMTP server
 		$mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
+		$mail->SMTPSecure = $smtpSecure;
 		$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
                                            // 1 = errors and messages
                                            // 2 = messages only
