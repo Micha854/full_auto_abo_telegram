@@ -104,7 +104,7 @@ $dauerScript = microtime(true) - $beginnScript;
 echo "<h4>Verarbeitung der Cron in ".sprintf('%.3f', $dauerScript)." Sek.</h4>";
 
 $datei = fopen(__DIR__."/cron.txt","w");
-echo fwrite($datei, date("d.m.Y - H:i:s"),100);
+fwrite($datei, date("d.m.Y - H:i:s"),100);
 fclose($datei);
 ?>
 </body>
