@@ -37,7 +37,7 @@ padding:3px;
 line-height:160%
 }
 
-.time {
+.left {
 background:#FF9900;
 color:#000000;
 padding:3px;
