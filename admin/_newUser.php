@@ -123,11 +123,13 @@ if($_POST["submit"] and $_POST["user"]) {
 		mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
 	}
 	
+	include_once("msg.php");
+	
 	if($botSend == '1') {
 		if($use_map == "PMSF" or $use_map == "Rocketmap") {
-			$botMessage = urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+			$botMessage = $UserMsg;
 		} else {
-			$botMessage = urlencode("Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+			$botMessage = $UserMsgShort;
 		}
 		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 	}

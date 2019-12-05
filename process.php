@@ -336,12 +336,14 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						Logger::info("UPDATE USER ON DATABASE"); // LOGGER
 					}
 
+					include_once("admin/msg.php");
+					
 					if($botSend == '1') {
 						Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
 						if($use_map == "PMSF" or $use_map == "Rocketmap") {
-							$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+							$botMessage = $userPayedMsg;
 						} else {
-							$botMessage = urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+							$botMessage = $userPayedMsgShort;
 						}
 						$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 					}
