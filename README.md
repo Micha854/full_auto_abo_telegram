@@ -90,8 +90,8 @@ ALTER TABLE `users`
 Wenn du alle vorhanden User aus der PMSF tabelle `users` in die tabelle `abos` kopieren möchtest kannst du folgenden SQL Befehl benutzten:
 
 ```
-INSERT INTO abos (id, buyerName, buyerEmail, Amount, TelegramUser, userid, channels, pass, TransID, paydate, endtime)  
-SELECT id, '', user, '', user, NULL, '1', '', NULL, now(), FROM_UNIXTIME(expire_timestamp)
+INSERT INTO abos (id, buyerName, buyerEmail, Amount, TelegramUser, userid, channels, pass, TransID, paydate, endtime, info)  
+SELECT id, '', user, '', user, NULL, '1', '', NULL, now(), FROM_UNIXTIME(expire_timestamp), NULL
 FROM users;
 ```
 
@@ -113,7 +113,8 @@ CREATE TABLE `abos` (
   `pass` varchar(8) NOT NULL,
   `TransID` varchar(25) DEFAULT NULL,
   `paydate` datetime NOT NULL,
-  `endtime` datetime NOT NULL
+  `endtime` datetime NOT NULL,
+  `info` int(1) 
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
