@@ -45,7 +45,8 @@ Wähle die Option "NVP/SOAP API integration" und erstelle API Username, Password
 ### Config
 folgende Dateien müssen angepasst werden:
 
-* config_example.php		--> config.php
+* config_example.php        --> config.php
+* admin/msg_example.php     --> /admin/msg.php
 * ggf. noch den admin/ per .htaccess schützen !
 
 Erstelle einen stündlichen Cronjob für YOURURL.COM/admin/_cron.php (hierbei werden abgelaufene Abos-User aus dem Kanal und der Datenbank entfernt)
