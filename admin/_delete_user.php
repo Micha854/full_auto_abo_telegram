@@ -72,6 +72,7 @@ while($rowX = $result->fetch_array()) {
 				}
 			} elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s", strtotime("+".$sequenceInfo." days")) and !$row["info"] ) {			// user ABO läuft bald aus, user informieren || user = user
 			
+				echo "<tr><td class='left'>@".$element["user"]["username"]."</td><td class='left'>".$element["role"]."</td><td class='left'>".$user_id."</td><td".$userid_check." class='left'>".$userid."</td><td class='left'>".$row["endtime"]."</td></tr>";
 				if($botSend == '1') {
 					$botMessage = urlencode("Dein Abo l&auml;ft am ".date('d.m.Y', strtotime($row["endtime"]))." aus, du kannst dein Abo hier verl&auml;ngern: \n\n$WebsiteUrl");
 					$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
