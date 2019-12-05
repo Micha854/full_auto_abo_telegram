@@ -49,6 +49,23 @@ if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
+if($_POST["deleteUser"]) {
+	$deleteUserId	 = mysqli_real_escape_string($mysqli, $_POST["deleteUser"]);
+	$deleteUserName	 = mysqli_real_escape_string($mysqli, $_POST["username"]);
+	$deleteUserEmail = mysqli_real_escape_string($mysqli, $_POST["email"]);
+	mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = $deleteUserId");
+	
+	if($use_map == "PMSF") {
+		mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$deleteUserEmail."' ");
+	} elseif($use_map == "Rocketmap") {
+		include '../Htpasswd.php';
+		$htpasswd = new Htpasswd('../.htpasswd');
+		$htpasswd->deleteUser($deleteUserName);
+	}
+	
+	$Save = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benutzer ".$deleteUserName." wurde gel&ouml;scht<div style=\"font-size:13px;padding-top:10px\"><p>Hinweis: Der Benutzer wird erst bei dem n&auml;chsten Cron Aufruf aus den Kan&auml;len gel&ouml;scht!</p></div></h3>";
+}
+
 $spalten = array(
 "TelegramUser"	=> "Telegram Username ",
 "paydate"		=> "Bezahlt am ",
@@ -69,6 +86,7 @@ if (!in_array($sort, array('asc', 'desc'))) {
 ?>
 
 <div class="jumbotron">
+<?=$Save?>
 	<table class="table">
 		<thead class="thead-light">
 			<tr>

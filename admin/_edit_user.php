@@ -47,7 +47,7 @@ if($_POST["submit"] and $_POST["user"]) {
 		$hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
 		
 		$loginName	= $_POST["email"];
-		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', session_id = NULL, WHERE id = ".$row["buyerEmail"]);
+		mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', session_id = NULL WHERE user = '".$loginName."' ");
 	} elseif($use_map == "Rocketmap") {
 		$statement = "insert";
 		$loginName	= $newAdd;
@@ -206,7 +206,22 @@ if($_POST["submit"] and $_POST["user"]) {
 <main role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
+<?php
+if($_GET["delete"]) {	
+	echo "<div align='center'><h2>M&ouml;chtest du den Benutzer</h2><h1 style='font-style:italic'><a href='#'>".$row["TelegramUser"]."</a></h1><h2>unwiderruflich l&ouml;schen?</h2>";
+	?>
+	<form method="post" action="index.php">
+		<a class="btn btn-sm btn-outline-secondary" href="_edit_user.php?id=<?=$id?>" role="button">abbrechen</a>
+		<input type="hidden" name="username" value="<?=$row["TelegramUser"]?>" />
+		<input type="hidden" name="email" value="<?=$row["buyerEmail"]?>" />
+		<input type="hidden" name="deleteUser" value="<?=$row["id"]?>" />
+		<input type="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer l&ouml;schen" />
+	</form>
+	<?php
+	echo "</div>";
+} else { ?>
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
+<a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="?id=<?=$id?>&delete=<?=$id?>" role="button">Benutzer l&ouml;schen</a>
 <?=$userSave?>
 <h1>Benutzer umbenennen</h1>
 <form name="one" method="post" action=""> 
@@ -252,6 +267,9 @@ if($_POST["submit"] and $_POST["user"]) {
     </tr>
   </table>
 </form>
+<?php
+}
+?>
 </div>
 </main>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
