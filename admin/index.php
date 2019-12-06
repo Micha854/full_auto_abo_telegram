@@ -41,7 +41,7 @@
 <main role="main" class="container">
 <?php 
 include "nav.php";
-if($sortIndex and (!$_GET["spalte"] or !$_GET["sort"])) {
+if(isset($sortIndex) and (!$_GET["spalte"] or !$_GET["sort"])) {
 	header("Location: $WebsiteUrl/admin/$sortIndex");
 }					
 //Output any connection error
@@ -49,7 +49,7 @@ if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
-if($_POST["deleteUser"]) {
+if(isset($_POST["deleteUser"])) {
 	$deleteUserId	 = mysqli_real_escape_string($mysqli, $_POST["deleteUser"]);
 	$deleteUserName	 = mysqli_real_escape_string($mysqli, $_POST["username"]);
 	$deleteUserEmail = mysqli_real_escape_string($mysqli, $_POST["email"]);
@@ -86,7 +86,7 @@ if (!in_array($sort, array('asc', 'desc'))) {
 ?>
 
 <div class="jumbotron">
-<?=$Save?>
+<?php if(isset($Save)) { echo $Save; } ?>
 	<table class="table">
 		<thead class="thead-light">
 			<tr>
@@ -97,10 +97,12 @@ if (!in_array($sort, array('asc', 'desc'))) {
 				echo "<th colspan='4'><h3>".$row_cnt." Abonnenten</h3></th></tr><tr>";
 				foreach ($spalten as $spalte => $name) {
 					
-					if($_GET["spalte"] == $spalte) {
+					if(isset($_GET["spalte"]) and $_GET["spalte"] == $spalte) {
 						if($_GET["sort"] == 'asc') {
 							$active = 'id="active"';
+							$active2 = '';
 						} elseif($_GET["sort"] == 'desc') {
+							$active = '';
 							$active2 = 'id="active"';
 						}
 					} else {

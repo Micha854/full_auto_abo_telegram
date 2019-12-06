@@ -21,7 +21,7 @@ if ($mysqli->connect_error) {
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
-if($_GET["delete"]) {
+if(isset($_GET["delete"])) {
 	$id		= mysqli_real_escape_string($mysqli, $_GET["delete"]);
 	$query	= "SELECT * FROM channels WHERE id = $id";
 	$result = $mysqli->query($query);
@@ -38,7 +38,7 @@ if($_GET["delete"]) {
 	echo "</div>";
 } else {
 
-if($_POST["submit"]) {
+if(isset($_POST["submit"])) {
 	
 	$felder = $_POST["id"];
 	foreach ($felder as $id) {
@@ -53,11 +53,11 @@ if($_POST["submit"]) {
 	
 }
 
-if($_POST["newField"]) {
+if(isset($_POST["newField"])) {
 	mysqli_query($mysqli, "INSERT INTO channels SET name = '', url = '', chatid = NULL");
 }
 
-if($_POST["deleteChannel"]) {
+if(isset($_POST["deleteChannel"])) {
 	$deleteChannel = mysqli_real_escape_string($mysqli, $_POST["deleteChannel"]);
 	mysqli_query($mysqli, "DELETE FROM channels WHERE id = $deleteChannel");
 }
@@ -70,7 +70,7 @@ $result = $mysqli->query($query);
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <input type="submit" class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" name="newField" value="Neuer Eintrag" />
 </form>
-<?=$save?>
+<?php if(isset($_POST["submit"])) { echo $save; } ?>
 <h1>Telegram Channels</h1>
 <form method="post" action=""> 
 <?php

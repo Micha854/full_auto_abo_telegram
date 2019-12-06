@@ -20,7 +20,7 @@ if ($mysqli->connect_error) {
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
-if($_GET["delete"]) {
+if(isset($_GET["delete"])) {
 	$id		= mysqli_real_escape_string($mysqli, $_GET["delete"]);
 	$query	= "SELECT * FROM products WHERE id = $id";
 	$result = $mysqli->query($query);
@@ -37,7 +37,7 @@ if($_GET["delete"]) {
 	echo "</div>";
 } else {
 
-if($_POST["submit"]) {
+if(isset($_POST["submit"])) {
 	
 	$felder = $_POST["id"];
 	foreach ($felder as $id) {
@@ -55,11 +55,11 @@ if($_POST["submit"]) {
 	
 }
 
-if($_POST["newField"]) {
+if(isset($_POST["newField"])) {
 	mysqli_query($mysqli, "INSERT INTO products SET months = '', item_number = '', item_price = '', abo_days = '' ");
 }
 
-if($_POST["deleteAbo"]) {
+if(isset($_POST["deleteAbo"])) {
 	$deleteAbo = mysqli_real_escape_string($mysqli, $_POST["deleteAbo"]);
 	mysqli_query($mysqli, "DELETE FROM products WHERE id = $deleteAbo");
 }
@@ -72,7 +72,7 @@ $result = $mysqli->query($query);
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <input type="submit" class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" name="newField" value="Neuer Eintrag" />
 </form>
-<?=$save?>
+<?php if(isset($_POST["submit"])) { echo $save; } ?>
 <h1>Abos verwalten</h1>
 <form method="post" action=""> 
 <?php

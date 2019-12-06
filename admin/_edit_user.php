@@ -14,7 +14,7 @@ $result = $mysqli->query($query);
 
 $row = $result->fetch_array();
 
-if($_POST["submit"] and $_POST["user"]) {
+if(isset($_POST["submit"]) and $_POST["user"]) {
 	
 	function generateRandomString($length = 10) {
 		//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
@@ -112,7 +112,7 @@ if($_POST["submit"] and $_POST["user"]) {
 	$row = $result->fetch_array();
 				
 	$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benutzer ge&auml;ndert zu ".$newAdd."</h3>";
-} elseif($_POST["submit2"] and $_POST["itemprice"]) {
+} elseif(isset($_POST["submit2"]) and $_POST["itemprice"]) {
 	
 	$query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
 	$result2 = $mysqli->query($query2);
@@ -207,7 +207,7 @@ if($_POST["submit"] and $_POST["user"]) {
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
-if($_GET["delete"]) {	
+if(isset($_GET["delete"])) {	
 	echo "<div align='center'><h2>M&ouml;chtest du den Benutzer</h2><h1 style='font-style:italic'><a href='#'>".$row["TelegramUser"]."</a></h1><h2>unwiderruflich l&ouml;schen?</h2>";
 	?>
 	<form method="post" action="index.php">
@@ -222,7 +222,7 @@ if($_GET["delete"]) {
 } else { ?>
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="?id=<?=$id?>&delete=<?=$id?>" role="button">Benutzer l&ouml;schen</a>
-<?=$userSave?>
+<?php if(isset($_POST["submit"]) or isset($_POST["submit2"])) { echo $userSave; } ?>
 <h1>Benutzer umbenennen</h1>
 <form name="one" method="post" action=""> 
   <table class="table">

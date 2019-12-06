@@ -1,11 +1,11 @@
 <?php
 session_start();
-if($_GET["reset"]) {
+if(isset($_GET["reset"])) {
 	session_destroy();
-} elseif($_GET["spalte"] and $_GET["sort"]) {
+} elseif(isset($_GET["spalte"]) and isset($_GET["sort"])) {
 	$_SESSION["sort"] = '?spalte='.$_GET["spalte"].'&sort='.$_GET["sort"];
 	$sortIndex = $_SESSION["sort"];
-} else {
+} elseif(isset($_SESSION["sort"])) {
 	$sortIndex = $_SESSION["sort"];
 }
 ?>

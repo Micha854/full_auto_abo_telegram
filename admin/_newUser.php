@@ -22,7 +22,7 @@ $row = $result->fetch_array();
 $schnitt = $row["total"]/$row["abo"];	// durchschnittlicher preis pro tag
 
 
-if($_POST["submit"] and $_POST["user"]) {
+if(isset($_POST["submit"]) and $_POST["user"]) {
 
 	require_once(__DIR__.'/../functions.php');
 	
@@ -178,7 +178,7 @@ if($_POST["submit"] and $_POST["user"]) {
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
-<?=$userSave?>
+<?php if(isset($_POST["submit"])) { echo $userSave; } ?>
 <h1>Benutzer hinzuf&uuml;gen</h1>
   <form method="post" action="">
     <div class="form-group">
