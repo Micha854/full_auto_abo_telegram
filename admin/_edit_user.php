@@ -26,7 +26,9 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	} $passwd = generateRandomString(8);
 	
 	$newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
-	$newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
+	if(isset($_POST["email"])) {
+		$newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
+	}
 	$newAdd = $_POST["user"];
 	$ItemDesc = $newAdd;
 	
@@ -149,6 +151,9 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	}
 	
 	mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$row["id"]);
+	
+	if(!isset($loginName))	{ $loginName	= ''; }
+	if(!isset($passwd))		{ $passwd		= ''; }
 	
 	include_once("msg.php");
 	
