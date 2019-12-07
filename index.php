@@ -6,6 +6,10 @@ $handle = fopen(__DIR__.'/.htpasswd', 'a');
 fclose($handle);
 }
 
+if(!file_exists(__DIR__.'/admin/msg.php') and file_exists(__DIR__.'/admin/msg_example.php')) {
+	copy(__DIR__."/admin/msg_example.php",__DIR__."/admin/msg.php");
+}
+
 $query = "SELECT * FROM products ORDER BY id ASC";
 $result = $mysqli->query($query);
 

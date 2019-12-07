@@ -7,6 +7,10 @@ if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
+if(!file_exists(__DIR__.'/msg.php') and file_exists(__DIR__.'/msg_example.php')) {
+	copy(__DIR__."/msg_example.php",__DIR__."/msg.php");
+}
+
 $id = mysqli_real_escape_string($mysqli, $_GET["id"]);
 					
 $query = "SELECT * FROM ".$tbl." WHERE id = $id";

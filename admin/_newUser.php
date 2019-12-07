@@ -15,6 +15,10 @@ if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
+if(!file_exists(__DIR__.'/msg.php') and file_exists(__DIR__.'/msg_example.php')) {
+	copy(__DIR__."/msg_example.php",__DIR__."/msg.php");
+}
+
 $query = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
 $result = $mysqli->query($query);
 $row = $result->fetch_array();
