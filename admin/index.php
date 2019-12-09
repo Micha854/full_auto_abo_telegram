@@ -43,6 +43,15 @@
 include "nav.php";
 if(isset($sortIndex) and (!$_GET["spalte"] or !$_GET["sort"])) {
 	header("Location: $WebsiteUrl/admin/$sortIndex");
+} else {
+	if(isset($sortIndex) and !isset($_GET['page'])) {
+		$getPage = '&';
+	} elseif(isset($sortIndex) and $_GET['page']) {
+		$getPage = '&';
+	} else {
+		$getPage = '?';
+		$sortIndex = '';
+	}
 }					
 //Output any connection error
 if ($mysqli->connect_error) {
@@ -83,18 +92,61 @@ if (!array_key_exists($spalte ,$spalten)) {
 if (!in_array($sort, array('asc', 'desc'))) {
 	$sort = 'desc'; // Default-Wert
 }
-?>
 
-<div class="jumbotron">
-<?php if(isset($Save)) { echo $Save; } ?>
+if(isset($_POST["searchSubmit"])) {
+	$result_tot	= "SELECT COUNT(*) as total FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%')";
+} else {
+	$result_tot	= "SELECT COUNT(*) as total FROM ".$tbl;
+}
+$row_total	= $mysqli->query($result_tot)->fetch_assoc();
+$gesamte_anzahl = $row_total['total'];
+if(!isset($ergebnisse_pro_seite)) { $ergebnisse_pro_seite = 50; }
+$gesamt_seiten = ceil($gesamte_anzahl/$ergebnisse_pro_seite); 
+
+
+if (empty($_GET['page'])) {
+    $seite = 1;
+	$gettingPage = '';
+} else {
+    $seite = $_GET['page'];
+    if ($seite > $gesamt_seiten) {
+        $seite = 1;
+    }
+	$gettingPage = '&page='.$seite;
+} 
+
+$limit = ($seite*$ergebnisse_pro_seite)-$ergebnisse_pro_seite;
+
+
+if(isset($_POST["searchSubmit"])) {
+	$query		= "SELECT * FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%') ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
+} else {
+	$query		= "SELECT * FROM ".$tbl." ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
+}
+$result = $mysqli->query($query);
+
+echo '<div class="jumbotron">';
+if(isset($Save)) { echo $Save; }
+echo '<h3>'.$gesamte_anzahl; if($gesamte_anzahl > 1) { echo ' Abonnenten'; } else { echo ' Abonnent'; } echo '</h3>'; 
+$sites = '';
+if($gesamte_anzahl > $ergebnisse_pro_seite) {
+	for ($i=1; $i<=$gesamt_seiten; ++$i) {
+    	if ($seite == $i) {
+    	    $site = '<a class="btn btn-sm btn-outline-secondary" href="'.$sortIndex.$getPage.'page='.$i.'" style="font-weight:bold;color:#FF0000" title="Seite '.$i.' von '.$gesamt_seiten.'">'.$i.'</a>&nbsp;&nbsp;&nbsp;';
+    	} else {
+    	    $site = '<a class="btn btn-sm btn-outline-secondary" href="'.$sortIndex.$getPage.'page='.$i.'" title="Seite '.$i.' von '.$gesamt_seiten.'">'.$i.'</a>&nbsp;&nbsp;&nbsp;';
+    	}
+		$sites .= $site;
+	}
+}
+?>
 	<table class="table">
 		<thead class="thead-light">
 			<tr>
      			<?php
-				$query = "SELECT * FROM ".$tbl." ORDER BY " . $spalte . " " . $sort;
-				$result = $mysqli->query($query);
-				$row_cnt = $result->num_rows;
-				echo "<th colspan='4'><h3>".$row_cnt." Abonnenten</h3></th></tr><tr>";
+				if($sites) {
+					echo "<th colspan='4'>".$sites."</th></tr><tr>";
+				}
 				foreach ($spalten as $spalte => $name) {
 					
 					if(isset($_GET["spalte"]) and $_GET["spalte"] == $spalte) {
@@ -112,8 +164,8 @@ if (!in_array($sort, array('asc', 'desc'))) {
 					
 					echo '<th>' .
 						ucfirst($name) .
-						'<a href="?spalte=' . $spalte . '&sort=asc" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
-						'<a href="?spalte=' . $spalte . '&sort=desc" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
+						'<a href="?spalte=' . $spalte . '&sort=asc'.$gettingPage.'" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
+						'<a href="?spalte=' . $spalte . '&sort=desc'.$gettingPage.'" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
 					'</th>';
 				} ?>
      			<th scope="col"></th>

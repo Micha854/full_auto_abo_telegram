@@ -31,9 +31,9 @@ if(isset($_GET["reset"])) {
         </div>
       </li>
     </ul>
-        <form class="form-inline mt-2 mt-md-0">
-          <input class="form-control mr-sm-2" type="text" placeholder="Suche" aria-label="Search">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Suche</button>
+        <form class="form-inline mt-2 mt-md-0" method="post" action="">
+          <input class="form-control mr-sm-2" type="text" placeholder="Suche" name="Search" aria-label="Search">
+		  <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="searchSubmit" value="Suche" />
         </form>
   </div>
 </nav>

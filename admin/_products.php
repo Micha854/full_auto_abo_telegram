@@ -66,13 +66,13 @@ if(isset($_POST["deleteAbo"])) {
 
 $query = "SELECT * FROM products ORDER BY id DESC";
 $result = $mysqli->query($query);
+if(isset($_POST["submit"])) { echo $save; }
 ?>
 
 <form method="post" action="">
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <input type="submit" class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" name="newField" value="Neuer Eintrag" />
 </form>
-<?php if(isset($_POST["submit"])) { echo $save; } ?>
 <h1>Abos verwalten</h1>
 <form method="post" action=""> 
 <?php

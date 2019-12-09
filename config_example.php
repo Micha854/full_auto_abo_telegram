@@ -25,7 +25,8 @@ $access_level   = "1";                          // access level for user
 $botSend        = '1';					// send message to user from your bot
 $mailSend       = '0';                  // set value '0' to off
 
-$sequenceInfo	= '3';													// x Tage vor Ablauf des Abos wird der User informiert || zum deaktivieren = "0"
+$sequenceInfo	= '3';					// x Tage vor Ablauf des Abos wird der User informiert || zum deaktivieren = "0"
+$ergebnisse_pro_seite = 50;				// x Abos pro Seite anzeigen || Admin Panel || default value 50
 
 $mailSubject    = "Welcome to PoGO MAP";// mail betreff
 $mailSender     = 'pogo@YOURURL.COM';   // sender mail || ReplyTo

@@ -216,6 +216,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
+if(isset($_POST["submit"]) or isset($_POST["submit2"])) { echo $userSave; }
 if(isset($_GET["delete"])) {	
 	echo "<div align='center'><h2>M&ouml;chtest du den Benutzer</h2><h1 style='font-style:italic'><a href='#'>".$row["TelegramUser"]."</a></h1><h2>unwiderruflich l&ouml;schen?</h2>";
 	?>
@@ -231,7 +232,6 @@ if(isset($_GET["delete"])) {
 } else { ?>
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="?id=<?=$id?>&delete=<?=$id?>" role="button">Benutzer l&ouml;schen</a>
-<?php if(isset($_POST["submit"]) or isset($_POST["submit2"])) { echo $userSave; } ?>
 <h1>Benutzer umbenennen</h1>
 <form name="one" method="post" action=""> 
   <table class="table">

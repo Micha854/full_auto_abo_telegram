@@ -181,8 +181,8 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 <main role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
-<a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <?php if(isset($_POST["submit"])) { echo $userSave; } ?>
+<a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <h1>Benutzer hinzuf&uuml;gen</h1>
   <form method="post" action="">
     <div class="form-group">
