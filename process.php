@@ -259,9 +259,10 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 							exit;
 						}
 						$statement = "update";
+						$passwd = $update["pass"];
 						$date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
 						$amountInsert = $update["Amount"];
-						$amountInsert+=$ItemTotalPrice;				
+						$amountInsert+=$ItemTotalPrice;			
 					} else {
 						$statement = "insert";
 						$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
