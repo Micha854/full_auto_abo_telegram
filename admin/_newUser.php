@@ -56,7 +56,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	if($row_cnt != 0) {
 		$update = $check->fetch_array();
 		$statement = "update";
-		$date = $update["endtime"];
+		$date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
 		$amountInsert = $update["Amount"];
 		$amountInsert+=$sumBar;
 	} else {
