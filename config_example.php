@@ -7,11 +7,12 @@ $tbl    = "abos";
 // Website- Url, Titel, Header
 $WebsiteUrl     = "https://YOUR_DOMAIN.COM";
 $WebsiteTitle   = "Pogo Dein Stadtteil";
-$header         = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
+$header         = "für den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugefügt!";
 
 
 // API Server URL
 $apiServer      = "http://YOURURL.COM:9503/api/";
+$BotToken		= "123456789:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";	// without "_bot" first !!!
 
 
 // Pogo Map Config
@@ -62,6 +63,7 @@ $PayPalReturnURL 	= $WebsiteUrl.'/process.php';       // Point to process.php pa
 $PayPalCancelURL 	= $WebsiteUrl.'/index.php';         // Cancel URL if user clicks cancel
 
 
+$DEBUG = 0;		// debug_mode, 0 OR 1
 
 
 
@@ -69,6 +71,30 @@ $PayPalCancelURL 	= $WebsiteUrl.'/index.php';         // Cancel URL if user clic
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*************** NO CHANGE ****************/
+
+if($DEBUG == 1) {
+	print_r('<h1>DEBUG MODE = ON</h1>');
+	error_reporting(E_ALL);
+	ini_set("display_errors", 1);
+}
+
+// SET DEFAULT CHARSETS TO UTF-8
+mysqli_query($mysqli, "SET NAMES 'utf8'");
+header("Content-Type: text/html; charset=utf-8");
 
 // DEBUGGING
 class Logger

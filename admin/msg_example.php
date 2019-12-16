@@ -1,48 +1,70 @@
 <?php
+$date		= isset($date)		? $date 		: '';
+$loginName	= isset($loginName)	? $loginName	: '';
+$passwd		= isset($passwd)	? $passwd		: '';
+
 /**********************************************************
-Link zur MAP	= $urlMap
+Link zur MAP	= $urlMap	OR	<a href=\"$urlMap\">$urlMap</a>
 Username		= $loginName
 Password		= $passwd
 Abo End Datum	= date('d.m.Y', strtotime($date))
-Channel Links	= utf8_decode($joinMail)
+Channel Links	= $joinMsg
+Zeilenumbruch	= \n	[NOT USE <br> !!!]
+Fetter Text		= <b>TEXT</b>
+
 **********************************************************/
+$endtime = date('d.m.Y', strtotime($date));
 
-############################################
-###### ****************************** ######
-######        TELEGRAM MESSAGES       ######
-###### **** .................... **** ######
-############################################
- 
-// wenn ein abo/user ge‰ndert oder neu ¸ber das Admin Panel hinzugef¸gt wird
-$UserMsg			= urlencode("Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
-$UserMsgShort		= urlencode("Dein Abo endet am ".date('d.m.Y', strtotime($date))); // es wird keine Map verwendet !!!
+// config emojis ---> https://www.alt-codes.net/smiley_alt_codes.php
+$emoji_confused		= "&#128533;"; // confused
+$emoji_point_down	= "&#128071;"; // point_down
+$emoji_point_right	= "&#128073;"; // point_right
+$emoji_smirk_cat	= "&#128572;"; // smirk_cat
 
 
-// wenn ein abo verl‰ngert wird
-$extendUserMsg		= urlencode("Dein Abo wurde verl&auml;ngert und endet folglich am ".date('d.m.Y', strtotime($date)));
+// DO NOT CHANGE THIS PART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!		
+$channels = $mysqli->query("SELECT * FROM channels");
+$joinMsg	= '';
+$chl_names	= '';
+if(!isset($channel)) {
+	while ($channel = $channels->fetch_array()) {
+		$joinMsg	.= $channel["name"] . ": $emoji_point_right <a href=\"" . $channel["url"] . "\">" . $channel["url"] . "</a>\n\n";
+		$chl_names	.= $channel["name"] . "\n";
+	}
+}
+// END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
-// User zahlt ¸ber PayPal
-$userPayedMsg		= urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Link zur MAP:<br>$urlMap<br><br>Deine Logindaten:<br>Username: $loginName<br>Passwort: <a href=\"$urlMap\">$passwd</a><br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
-$userPayedMsgShort	= urlencode("Vielen Dank, wir haben deine Zahlung erhalten!<br><br>Dein Abo endet am ".date('d.m.Y', strtotime($date)));
+// wenn ein user ge√§ndert oder neu √ºber das Admin Panel hinzugef√ºgt wird
+$UserMsg			= "Link zur MAP: $emoji_point_right <a href=\"$urlMap\">$urlMap</a>\n\n<b>Deine Logindaten:</b>\nUsername: $loginName\nPasswort: <a href=\"$urlMap\">$passwd</a>\n\nDein Abo endet am $endtime\n\n<b>Links zu den Kan√§len:</b>\n\n$joinMsg";
+$UserMsgShort		= "Dein Abo endet am $endtime"; // es wird keine Map verwendet !!!
 
-############################################
-###### ****************************** ######
-######         EMAIL MESSAGES         ######
-###### **** .................... **** ######
-############################################
 
-// wenn ein abo/user ge‰ndert oder neu ¸ber das Admin Panel hinzugef¸gt wird
-$emailInsertMsg = "<p>Dein Abo wurde eingerichtet und du erh&auml;ltst alle n&ouml;tigen Daten um die Map zu benutzen.</p>
-	<p>Um die Map zu verwenden, benutze die folgende URL mit folgenden Login Daten:</p>
-	<h3><a href=\"$urlMap\">$urlMap</a></h3>
-	<p>Login- Name: <b>$loginName</b><br />Passwort: <b>$passwd</b></p>
-	<p><b>Du kannst nun folgenden Kan&auml;len beitreten:</b></p>";
+// wenn ein abo verl√§ngert wird
+$extendUserMsg		= "Dein Abo wurde verl√§ngert und endet folglich am <b>$endtime</b>\n\nInformationen zu deinem Abo gibt dir jederzeit der $emoji_point_right <a href=\"https://t.me/meinAbo_bot\">@meinAbo_bot</a> aus!";
 
-// wenn ein abo verl‰ngert wird
-$emailUpdateMsg = "<p>Dein Abo wurde erfolgreich verl&auml;ngert. An deinen Login Daten hat sich nichts ge&auml;ndert!</p>
-	<p><b>Links zu den Kan&auml;len:</b></p>";
 
-// Abschluss Text in jeder Mail (unabh‰ngig ob Neues Abo oder verl‰ngert)	
-$emailLastMsg = "<p>Dein Abo endet automatisch am <b>".date('d.m.Y', strtotime($date))."</b> und wird nicht verl&auml;ngert! Du hast dann keinen Zugriff mehr auf unsere Kan&auml;le und die MAP</p>
-<p>Viel Erfolg und GO! Trainer!</p>";
+// User zahlt √ºber PayPal
+$userPayedMsg		= "Vielen Dank, wir haben deine Zahlung erhalten!\n\nLink zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: <a href=\"$urlMap\">$passwd</a>\n\nDein Abo endet am $endtime";
+$userPayedMsgShort	= "Vielen Dank, wir haben deine Zahlung erhalten!\n\nDein Abo endet am $endtime"; // es wird keine Map verwendet !!!
+
+
+// Info an den user, das er aus dem Kanal entfernt wurde
+$userKicked			= "Du wurdest aus dem Kanal $emoji_point_right <b>$channel</b> entfernt! Du kannst hier ein Abo abschliessen: \n\n<a href=\"$WebsiteUrl\">$WebsiteUrl</a>";
+
+
+// Info an den user, das sein Abo in X Tagen ausl√§uft
+$userInfo			= "Dein Abo l√§uft am $endtime aus, du kannst dein Abo hier verl√§ngern: \n\n$WebsiteUrl";
+
+
+// Info an den user, das Abo ist abgelaufen
+$aboEnds			= "Dein Abo ist am $endtime abgelaufen, du hast keinen Zutritt mehr zu $chl_names und zur MAP! Du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl";
+
+
+
+// TELEGRAM BOT HANDLING
+$botStartMsg		= "Willkommen bei Mein Abo-Bot!\nWas m√∂chtest du tun?";
+
+$botUserFalse		= "Du hast noch kein Abo! $emoji_confused Wenn du ein Abo abschlie√üt, wird es nicht automatisch verl√§ngert und l√§uft automatisch aus $emoji_point_down";
+
+$botUserTrue		= "Dein Abo ist Aktiv bis zum <b>*** $endtime ***</b>\n\nUm die Map zu verwenden, benutze folgende URL: $emoji_point_right $WebsiteUrl\n\n<b>*** Deine Login Daten: ***</b>\nUsername: $loginName\nPassword: $passwd\n\n<b>*** Links zu den Kan√§len: ***</b>\n\n$joinMsg Falls du Fragen hast wende dich an unseren Support $emoji_point_right @MonsHLSupport\n\nViel Spass beim Pokemon fangen $emoji_smirk_cat";

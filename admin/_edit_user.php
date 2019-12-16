@@ -66,17 +66,18 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	}
 	
 	include_once("msg.php");
-						
-	if($botSend == '1') {
-		if($use_map == "PMSF" or $use_map == "Rocketmap") {
-			$botMessage = $UserMsg;
-		} else {
-			$botMessage = $UserMsgShort;
-		}
-		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
-	}
 	
-	include_once("_add_user.php");
+	if($use_map == "PMSF" or $use_map == "Rocketmap") {
+		$botMessage = urlencode($UserMsg);
+		$mailMessage= nl2br($UserMsg);
+	} else {
+		$botMessage = urlencode($UserMsgShort);
+		$mailMessage= nl2br($UserMsgShort);
+	}
+							
+	if($botSend == '1') {
+		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html&data[no_webpage]=1", false);
+	}
 					
 	if($mailSend == '1') {
 		
@@ -84,12 +85,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 		require_once('../mailer/class.phpmailer.php');
 
 		$mail             = new PHPMailer();
-		$mail->CharSet	  = 'ISO-8859-1';
-		
-		ob_start();
-		include("../mail.php");
-		$body = ob_get_contents();
-		ob_end_clean();
+		$mail->CharSet	  = 'utf-8';
 
 		$mail->IsSMTP(); // telling the class to use SMTP
 		$mail->Host       = $mailHost; // SMTP server
@@ -106,8 +102,8 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 		$mail->AddReplyTo($mailSender, $WebsiteTitle);
 		
 		$mail->Subject    = $mailSubject;
-		$mail->AltBody    = strip_tags($body); // optional, comment out and test
-		$mail->MsgHTML($body);
+		$mail->AltBody    = strip_tags($mailMessage); // optional, comment out and test
+		$mail->MsgHTML($mailMessage);
 		$mail->AddAddress($empfaenger, $WebsiteTitle);
 
 		$mail->Send();
@@ -152,14 +148,12 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	
 	mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$row["id"]);
 	
-	if(!isset($loginName))	{ $loginName	= ''; }
-	if(!isset($passwd))		{ $passwd		= ''; }
-	
 	include_once("msg.php");
 	
 	if($botSend == '1') {
-		$botMessage = $extendUserMsg;
-		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
+		$botMessage = urlencode($extendUserMsg);
+		$mailMessage= nl2br($extendUserMsg);
+		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html&data[no_webpage]=1", false);
 	}
 					
 	if($mailSend == '1') {
@@ -169,12 +163,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 		require_once('../mailer/class.phpmailer.php');
 
 		$mail             = new PHPMailer();
-		$mail->CharSet	  = 'ISO-8859-1';
-		
-		ob_start();
-		include("../mail.php");
-		$body = ob_get_contents();
-		ob_end_clean();
+		$mail->CharSet	  = 'utf-8';
 
 		$mail->IsSMTP(); // telling the class to use SMTP
 		$mail->Host       = $mailHost; // SMTP server
@@ -191,8 +180,8 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 		$mail->AddReplyTo($mailSender, $WebsiteTitle);
 		
 		$mail->Subject    = $mailSubject;
-		$mail->AltBody    = strip_tags($body); // optional, comment out and test
-		$mail->MsgHTML($body);
+		$mail->AltBody    = strip_tags($mailMessage); // optional, comment out and test
+		$mail->MsgHTML($mailMessage);
 		$mail->AddAddress($empfaenger, $WebsiteTitle);
 
 		$mail->Send();
@@ -205,7 +194,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <title><?=$WebsiteTitle ?> - ADMIN EDIT</title>

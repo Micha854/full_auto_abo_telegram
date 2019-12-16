@@ -339,17 +339,18 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 
 					include_once("admin/msg.php");
 					
+					if($use_map == "PMSF" or $use_map == "Rocketmap") {
+						$botMessage = urlencode($userPayedMsg);
+						$mailMessage= nl2br($userPayedMsg);
+					} else {
+						$botMessage = urlencode($userPayedMsgShort);
+						$mailMessage= nl2br($userPayedMsgShort);
+					}
+						
 					if($botSend == '1') {
 						Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
-						if($use_map == "PMSF" or $use_map == "Rocketmap") {
-							$botMessage = $userPayedMsg;
-						} else {
-							$botMessage = $userPayedMsgShort;
-						}
 						$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
 					}
-					
-					include_once("admin/_add_user.php");
 					
 					if($mailSend == '1') {
 						Logger::info("USE MAIL TO SEND MESSAGE"); // LOGGER
@@ -357,13 +358,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						require_once('mailer/class.phpmailer.php');
 
 						$mail             = new PHPMailer();
-						$mail->CharSet	  = 'ISO-8859-1';
+						$mail->CharSet	  = 'utf-8';
 		
-						ob_start();
-						include("mail.php");
-						$body = ob_get_contents();
-						ob_end_clean();
-
 						$mail->IsSMTP(); // telling the class to use SMTP
 						$mail->Host       = $mailHost; // SMTP server
 						$mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
@@ -379,8 +375,8 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						$mail->AddReplyTo($mailSender, $WebsiteTitle);
 		
 						$mail->Subject    = $mailSubject;
-						$mail->AltBody    = strip_tags($body); // optional, comment out and test
-						$mail->MsgHTML($body);
+						$mail->AltBody    = strip_tags($mailMessage); // optional, comment out and test
+						$mail->MsgHTML($mailMessage);
 						$mail->AddAddress($empfaenger, $WebsiteTitle);
 
 						$mail->Send();

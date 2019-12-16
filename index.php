@@ -19,7 +19,7 @@ $result_cha = $mysqli->query($query_cha);
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title><?=$WebsiteTitle ?></title>
 <style type="text/css">
@@ -51,7 +51,7 @@ while($row = $result->fetch_array()) {
 <form method="post" action="process.php">
 <table class="procut_item" border="0" cellpadding="4">
   <tr>
-    <td width="70%"><h4><?=$row["months"].$monate?><span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> &euro;/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</td>
+    <td width="70%"><h4><?=$row["months"].$monate?><span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> €/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</td>
     <td width="30%">
 	<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
 	<input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
