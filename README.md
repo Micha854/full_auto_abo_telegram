@@ -35,6 +35,28 @@ redirect_stderr=true
 
 Nun müssen wir mit `supervisorctl reread` Supervisor über unser neues Programm informieren und ihm anschließend mit `supervisorctl update` mitteilen, dass er unser neues Programm aufnimmt. Damit sollte die API 24/7 laufen und im Falle eines Fehlers sowie beim reboot neugestartet werden
 
+### BotFather erstellen
+
+Starte einen Chat mit dem https://t.me/BotFather
+Mit `/newbot` wird ein neuer Bot erstellt. Anschließend müssen im Dialog der Botname und der Benutzername angelegt werden.
+
+Ist der bot erstellt notiere dir den bot Token, den brauchen wir aber erst später (config.php)
+
+Erstelle nun einen bot Befehl mit `/setcommands`:
+```
+abo - Zeige Infos zum Abo an
+```
+
+Füge noch eine Beschreibung hinzu mit `/setdescription`:
+```
+Hi, Willkommen im Abo Kanal von ..... Hier erfährst du alle Informationen zu deinem Abo!
+```
+
+Webhook setzen (einmalig):
+```
+https://api.telegram.org/bot123456789:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX/setWebhook?url=https://www.YOURURL.de/full_auto_abo_telegram/abo_bot.php
+```
+
 ### PayPal API einrichten
 Logge dich in deinen PayPal Account ein! Danach öffne im selben Browser-Tab folgende URL:
 
