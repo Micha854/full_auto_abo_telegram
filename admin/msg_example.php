@@ -67,4 +67,4 @@ $botStartMsg		= "Willkommen bei Mein Abo-Bot!\nWas möchtest du tun?";
 
 $botUserFalse		= "Du hast noch kein Abo! $emoji_confused Wenn du ein Abo abschließt, wird es nicht automatisch verlängert und läuft automatisch aus $emoji_point_down";
 
-$botUserTrue		= "Dein Abo ist Aktiv bis zum <b>*** $endtime ***</b>\n\nUm die Map zu verwenden, benutze folgende URL: $emoji_point_right $WebsiteUrl\n\n<b>*** Deine Login Daten: ***</b>\nUsername: $loginName\nPassword: $passwd\n\n<b>*** Links zu den Kanälen: ***</b>\n\n$joinMsg Falls du Fragen hast wende dich an unseren Support $emoji_point_right @MonsHLSupport\n\nViel Spass beim Pokemon fangen $emoji_smirk_cat";
+$botUserTrue		= "Dein Abo ist Aktiv bis zum <b>*** $endtime ***</b>\n\nUm die Map zu verwenden, benutze folgende URL: $emoji_point_right $urlMap\n\n<b>*** Deine Login Daten: ***</b>\nUsername: $loginName\nPassword: $passwd\n\n<b>*** Links zu den Kanälen: ***</b>\n\n" . $joinMsg . "Falls du Fragen hast wende dich an unseren Support $emoji_point_right @MonsHLSupport\n\nViel Spass beim Pokemon fangen $emoji_smirk_cat";
