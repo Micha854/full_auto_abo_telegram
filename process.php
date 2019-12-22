@@ -24,9 +24,7 @@ if($_POST) //Post Data received from product list page.
 	
 	$ItemPrice 	= $rowData["item_price"];
 	$days_to_end 	= $rowData["abo_days"];
-	
-	$InputChannel = array_map(array($mysqli, 'real_escape_string'), $_POST["added"]);
-	
+		
 	$ItemDesc 	= mysqli_real_escape_string($mysqli, $_POST["itemdesc"]); //Item description
 	if(substr($ItemDesc,0,1) !== "@")
 	{
@@ -110,7 +108,6 @@ if($_POST) //Post Data received from product list page.
 				$_SESSION['ShippinCost'] 		=  $ShippinCost; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
 				$_SESSION['GrandTotal'] 		=  $GrandTotal;
 				$_SESSION['days_to_end'] 		=  $days_to_end;
-				$_SESSION['InputChannel'] 		=  $InputChannel;
 
 
 		//We need to execute the "SetExpressCheckOut" method to obtain paypal token
@@ -159,7 +156,6 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 	$ShippinCost 		= $_SESSION['ShippinCost']; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
 	$GrandTotal 		= $_SESSION['GrandTotal'];
 	$days_to_end		= $_SESSION['days_to_end'];
-	$InputChannel		= $_SESSION['InputChannel'];
 
 	$padata = 	'&TOKEN='.urlencode($token).
 				'&PAYERID='.urlencode($payer_id).
@@ -321,12 +317,9 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 						Logger::warn("USE NO MAP IN YOUR CONFIG !!!"); // LOGGER
 						$empfaenger	= $buyEmail;
 					}
-					
-					$InputChannels = implode(',',$InputChannel);
-					Logger::info("SELECTED CHANNELS ".$InputChannels); // LOGGER
-					
+										
 					if($statement == "insert") {
-						$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+						$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
 						if($insert_row = $mysqli->query($sql_insert)) {
 							Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
 						} else {

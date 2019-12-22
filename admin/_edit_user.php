@@ -33,7 +33,6 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	$ItemDesc = $newAdd;
 	
 	$OldUser = $row["TelegramUser"]; // old Username delete
-	$InputChannel = array($row["channels"]);
 	
 	$getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
 	$getUserId	= json_decode($getInfo, true);

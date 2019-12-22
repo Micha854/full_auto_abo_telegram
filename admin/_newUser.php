@@ -45,9 +45,6 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	
 	$days_to_end = $_POST["itemprice"]/$schnitt;
 	$days_to_end = ceil($days_to_end);
-	
-	$InputChannel = array();
-	$InputChannel = $_POST["added"];
 					
 	// NEW USER OR UPDATE
 	$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' AND endtime > now()");
@@ -118,11 +115,9 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	else {
 		$empfaenger	= $newMail;
 	}
-					
-	$InputChannels = implode(',',$InputChannel);
 	
 	if($statement == "insert") {
-		$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+		$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '', pass = '$passwd', TransID = NULL, paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
 		$mysqli->query($sql_insert);
 	} elseif($statement == "update") {
 		mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
@@ -195,21 +190,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       <input type="text" name="itemprice" class="form-control" placeholder="&euro;" required>
     </div>
     <div>
-	  <table>
-		<tr>
-	      <td colspan="2"><b>Channels:</b><br></td>
-		</tr>
-	      <?php
-	      foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
-	        echo "<tr>";
-			echo "<td>".$channel["name"]."</td><td valign='top'>beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' /></td>";
-			echo "</tr>";
-	      }
-	      ?>
-	    <tr>
-		  <td colspan="2"><button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
-	    </tr>
-	  </table>
+		  <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
 	</div>
   </form>
 </div>
