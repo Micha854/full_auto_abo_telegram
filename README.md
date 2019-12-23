@@ -192,6 +192,7 @@ COMMIT;
 CREATE TABLE `channels` (
   `id` int(11) NOT NULL,
   `name` varchar(155) NOT NULL,
+  `sort` int(3) DEFAULT NULL,
   `url` varchar(155) NOT NULL,
   `chatid` bigint(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
@@ -200,11 +201,11 @@ CREATE TABLE `channels` (
 -- Daten für Tabelle `channels`
 --
 
-INSERT INTO `channels` (`id`, `name`, `url`, `chatid`) VALUES
-(1, 'Kanal 1', 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ', NULL),
-(2, 'Kanal 2', 'https://t.me/Kanal2', NULL),
-(3, 'Kanal 3', 'https://t.me/joinchat/XXXXXXgy6i4Y6WxnEQQNqw', NULL),
-(4, 'Kanal 4', 'https://t.me/Kanal4', NULL);
+INSERT INTO `channels` (`id`, `name`, `sort`, `url`, `chatid`) VALUES
+(1, 'Kanal 1', NULL, 'https://t.me/joinchat/XXXXXXXzl0uIG6rC2xuqjQ', NULL),
+(2, 'Kanal 2', NULL, 'https://t.me/Kanal2', NULL),
+(3, 'Kanal 3', NULL, 'https://t.me/joinchat/XXXXXXgy6i4Y6WxnEQQNqw', NULL),
+(4, 'Kanal 4', NULL, 'https://t.me/Kanal4', NULL);
 
 --
 -- Indizes für die Tabelle `channels`
