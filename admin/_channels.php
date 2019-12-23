@@ -43,10 +43,11 @@ if(isset($_POST["submit"])) {
 	$felder = $_POST["id"];
 	foreach ($felder as $id) {
     	$name	= mysqli_real_escape_string($mysqli, $_POST["name"]		[$id]);
+		$sort	= mysqli_real_escape_string($mysqli, $_POST["sort"]		[$id]);
 		$url	= mysqli_real_escape_string($mysqli, $_POST["url"]		[$id]);
 		$chatid	= mysqli_real_escape_string($mysqli, $_POST["chatid"]	[$id]);
 		
-		mysqli_query($mysqli, "UPDATE channels SET name = '".$name."', url = '".$url."', chatid = '".$chatid."' WHERE id = ".$id);
+		mysqli_query($mysqli, "UPDATE channels SET name = '".$name."', sort = '".$sort."', url = '".$url."', chatid = '".$chatid."' WHERE id = ".$id);
 		
 		$save = '<h3 style="background:#333333; color:#00CC00; padding:5px; text-align:center">&Auml;nderungen wurden gespeichert !</h3>';
 	}
@@ -54,7 +55,7 @@ if(isset($_POST["submit"])) {
 }
 
 if(isset($_POST["newField"])) {
-	mysqli_query($mysqli, "INSERT INTO channels SET name = '', url = '', chatid = NULL");
+	mysqli_query($mysqli, "INSERT INTO channels SET name = '', sort = NULL, url = '', chatid = NULL");
 }
 
 if(isset($_POST["deleteChannel"])) {
@@ -62,7 +63,7 @@ if(isset($_POST["deleteChannel"])) {
 	mysqli_query($mysqli, "DELETE FROM channels WHERE id = $deleteChannel");
 }
 
-$query = "SELECT * FROM channels ORDER BY id DESC";
+$query = "SELECT * FROM channels ORDER BY sort DESC, id DESC";
 $result = $mysqli->query($query);
 if(isset($_POST["submit"])) { echo $save; }
 ?>
@@ -79,7 +80,7 @@ $chat_id = $row["chatid"];
 $getMember = callAPI('GET', $apiServer."getPWRchat/?id=$chat_id", false);
 
 	$check_chatid = json_decode($getMember, true);
-	$check_invite = $check_chatid["response"]["invite"];
+	$check_invite = isset($check_chatid["response"]["invite"]);
 	
 if($row["url"] != $check_invite) {
 	$color 	= ";background:#FF0000;color:#FFFF00";
@@ -100,7 +101,11 @@ if($row["url"] != $check_invite) {
 	  <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="name[<?=$row["id"]?>]" value="<?=$row["name"] ?>" maxlength="155" style="width:100%" /></th>
 	</tr>
 	<tr>
-      <th scope="col">URL: </th>
+      <th scope="col">Sort: </th>
+	  <th scope="col" style="width:100%"><input type="text" name="sort[<?=$row["id"]?>]" value="<?=$row["sort"] ?>" maxlength="155" style="width:100%" /></th>
+	</tr>
+	<tr>
+      <th valign="top" scope="col">URL: </th>
 	  <th scope="col" style="width:100%"><input type="text" name="url[<?=$row["id"]?>]" value="<?=$row["url"] ?>" maxlength="155" style="width:100%<?=$color?>" /><?=$txt?></th>
 	</tr>
 	<tr>

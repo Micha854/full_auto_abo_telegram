@@ -23,7 +23,7 @@ $emoji_smirk_cat	= "&#128572;"; // smirk_cat
 
 
 // DO NOT CHANGE THIS PART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!		
-$channels = $mysqli->query("SELECT * FROM channels");
+$channels = $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC");
 $joinMsg	= '';
 $chl_names	= '';
 if(!isset($channel)) {

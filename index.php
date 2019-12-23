@@ -43,7 +43,7 @@ body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}
 <h4 align="center"><b>Du erhältst Zugriff auf folgende Kan&auml;le:</b></h4>
 <table align="center">
 <?php
-foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
+foreach ( $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC") as $channel ) {
 	echo "<tr>";
 	echo "<td>".$channel["name"]."</td>";
 	echo "</tr>";
