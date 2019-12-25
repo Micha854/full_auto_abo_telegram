@@ -133,6 +133,12 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 		$mailMessage= nl2br($UserMsgShort);
 	}
 	
+	$all_channels = $mysqli->query("SELECT * FROM channels");
+	while($unsert_bann = $all_channels->fetch_array()) {		
+		$chat_id = $unsert_bann["chatid"];
+		$editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
+	}
+	
 	if($botSend == '1') {
 		$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html&data[no_webpage]=1", false);
 	}
