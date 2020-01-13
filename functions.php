@@ -86,6 +86,3 @@ function callAPI($method, $url, $data){
    curl_close($curl);
    return $result;
 }
-
-// ping
-$ping = callAPI('GET', $apiServer."getSelf", false);
