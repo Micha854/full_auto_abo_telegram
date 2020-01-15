@@ -248,7 +248,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					} $passwd = generateRandomString(8);
 					
 					// NEW USER OR UPDATE
-					$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$ItemDesc."' AND endtime > now()");
+					$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$ItemDesc."' ");
 					$row_cnt = $check->num_rows;
 	
 					if($row_cnt != 0) {
