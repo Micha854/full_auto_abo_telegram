@@ -50,7 +50,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	$InputChannel = $_POST["added"];
 					
 	// NEW USER OR UPDATE
-	$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' AND endtime > now()");
+	$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' ");
 	$row_cnt = $check->num_rows;
 	
 	if($row_cnt != 0) {
