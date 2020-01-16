@@ -1,8 +1,8 @@
 <?php
 session_start();
-include_once("config.php");
-require_once("functions.php");
-include_once("paypal.class.php");
+require_once dirname(__FILE__) . '/config.php';
+require_once dirname(__FILE__) . '/functions.php';
+require_once dirname(__FILE__) . '/paypal.class.php';
 
 $paypalmode = ($PayPalMode=='sandbox') ? '.sandbox' : '';
 Logger::info("PAYPAL MODE SET TO ".$paypalmode); // LOGGER
@@ -244,7 +244,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					} $passwd = generateRandomString(8);
 					
 					// NEW USER OR UPDATE
-					$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$ItemDesc."' AND endtime > now()");
+					$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$ItemDesc."' ");
 					$row_cnt = $check->num_rows;
 	
 					if($row_cnt != 0) {

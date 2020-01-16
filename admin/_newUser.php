@@ -1,5 +1,5 @@
-<?php 
-require_once(__DIR__.'/../config.php'); ?>
+<?php
+require_once dirname(__FILE__) . '/../config.php'; ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -15,8 +15,8 @@ if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
-if(!file_exists(__DIR__.'/msg.php') and file_exists(__DIR__.'/msg_example.php')) {
-	copy(__DIR__."/msg_example.php",__DIR__."/msg.php");
+if(!file_exists(dirname(__FILE__) . '/msg.php') and file_exists(dirname(__FILE__) . '/msg_example.php')) {
+	copy(dirname(__FILE__) . "/msg_example.php",dirname(__FILE__) . "/msg.php");
 }
 
 $query = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
@@ -28,7 +28,7 @@ $schnitt = $row["total"]/$row["abo"];	// durchschnittlicher preis pro tag
 
 if(isset($_POST["submit"]) and $_POST["user"]) {
 
-	require_once(__DIR__.'/../functions.php');
+	require_once dirname(__FILE__) . '/../functions.php';
 	
 	function generateRandomString($length = 10) {
 		//return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
@@ -47,7 +47,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	$days_to_end = ceil($days_to_end);
 					
 	// NEW USER OR UPDATE
-	$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' AND endtime > now()");
+	$check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' ");
 	$row_cnt = $check->num_rows;
 	
 	if($row_cnt != 0) {

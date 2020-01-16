@@ -1,6 +1,6 @@
 <?php
-require_once(__DIR__.'/../config.php');
-require_once(__DIR__.'/../functions.php');
+require_once dirname(__FILE__) . '/../config.php';
+require_once dirname(__FILE__) . '/../functions.php';
 					
 //Output any connection error
 if ($mysqli->connect_error) {

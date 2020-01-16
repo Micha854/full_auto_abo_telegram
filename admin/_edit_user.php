@@ -1,14 +1,14 @@
 <?php
-require_once(__DIR__.'/../config.php');
-require_once(__DIR__.'/../functions.php');
+require_once dirname(__FILE__) . '/../config.php';
+require_once dirname(__FILE__) . '/../functions.php';
 					
 //Output any connection error
 if ($mysqli->connect_error) {
 	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
-if(!file_exists(__DIR__.'/msg.php') and file_exists(__DIR__.'/msg_example.php')) {
-	copy(__DIR__."/msg_example.php",__DIR__."/msg.php");
+if(!file_exists(dirname(__FILE__) . '/msg.php') and file_exists(dirname(__FILE__) . '/msg_example.php')) {
+	copy(dirname(__FILE__) . "/msg_example.php",dirname(__FILE__) . "/msg.php");
 }
 
 $id = mysqli_real_escape_string($mysqli, $_GET["id"]);

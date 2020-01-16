@@ -1,13 +1,13 @@
 <?php
-include_once("config.php");
+require_once dirname(__FILE__) . '/config.php';
 
-if($use_map == 'Rocketmap' and !file_exists(__DIR__.'/.htpasswd')) {
-$handle = fopen(__DIR__.'/.htpasswd', 'a');
+if($use_map == 'Rocketmap' and !file_exists(dirname(__FILE__) . '/.htpasswd')) {
+$handle = fopen(dirname(__FILE__) . '/.htpasswd', 'a');
 fclose($handle);
 }
 
-if(!file_exists(__DIR__.'/admin/msg.php') and file_exists(__DIR__.'/admin/msg_example.php')) {
-	copy(__DIR__."/admin/msg_example.php",__DIR__."/admin/msg.php");
+if(!file_exists(dirname(__FILE__) . '/admin/msg.php') and file_exists(dirname(__FILE__) . '/admin/msg_example.php')) {
+	copy(dirname(__FILE__) . "/admin/msg_example.php",dirname(__FILE__) . "/admin/msg.php");
 }
 
 $query = "SELECT * FROM products ORDER BY id ASC";

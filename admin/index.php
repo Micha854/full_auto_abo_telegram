@@ -1,8 +1,8 @@
 <?php
-require_once(__DIR__.'/../config.php');
+require_once dirname(__FILE__) . '/../config.php';
 
-if(!file_exists(__DIR__.'/cron.txt')) {
-$handle = fopen(__DIR__.'/cron.txt', 'a');
+if(!file_exists(dirname(__FILE__) . '/cron.txt')) {
+$handle = fopen(dirname(__FILE__) . '/cron.txt', 'a');
 fclose($handle);
 }
 
@@ -153,7 +153,7 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
 			<tr>
      			<?php
 				if($sites) {
-					echo "<th colspan='4'>".$sites."</th></tr><tr>";
+					echo "<th colspan='4'>".$sites."</th>";
 				}
 				foreach ($spalten as $spalte => $name) {
 					

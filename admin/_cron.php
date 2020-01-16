@@ -1,5 +1,5 @@
 <?php
-require_once(__DIR__.'/../config.php');
+require_once dirname(__FILE__) . '/../config.php';
 					
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -71,7 +71,7 @@ font-style:oblique
 </head>
 <body>
 <?php
-require_once(__DIR__.'/../functions.php');
+require_once dirname(__FILE__) . '/../functions.php';
 
 $sql_abos = $mysqli->query("SELECT * FROM ".$tbl);
 while($get_user = $sql_abos->fetch_array()) {
@@ -102,7 +102,7 @@ $result = $mysqli->query($query);
 
 if($result->num_rows) { 
 	//echo "<h2>ergebnisse vorhanden</h2>";
-	include(__DIR__."/_delete_user.php");
+	include(dirname(__FILE__) . "/_delete_user.php");
 } else {
 	echo "<h2>nix zu tun!</h2>";
 }
@@ -110,7 +110,7 @@ if($result->num_rows) {
 $dauerScript = microtime(true) - $beginnScript;
 echo "<h4>Verarbeitung der Cron in ".sprintf('%.3f', $dauerScript)." Sek.</h4>";
 
-$datei = fopen(__DIR__."/cron.txt","w");
+$datei = fopen(dirname(__FILE__) . "/cron.txt","w");
 fwrite($datei, date("d.m.Y - H:i:s"),100);
 fclose($datei);
 ?>

@@ -1,5 +1,5 @@
 <?php
-include_once("config.php");
+require_once dirname(__FILE__) . '/config.php';
 include dirname(__FILE__) . '/Telegram.php';
 
 $telegram = new Telegram($BotToken);
