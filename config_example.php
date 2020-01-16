@@ -52,7 +52,7 @@ if($PayPalMode == 'live') {								// live mode
 	$PayPalApiPassword 	= 'YOUR_API_PASSWORD';              // Paypal API password
 	$PayPalApiSignature = 'YOUR_API_SIGNATURE';             // Paypal API Signature
 } else {
-	echo "<h1>Paypal Mode Error - options 'live' or 'sandbox' Check this!</h1>";
+	echo '<h1 style="text-align:center;background:#FFFF00;padding:5px">Paypal Mode Error - options "live" or "sandbox" Check this!</h1>';
 	exit();
 }
 
@@ -62,6 +62,7 @@ $PayPalReturnURL 	= $WebsiteUrl.'/process.php';       // Point to process.php pa
 $PayPalCancelURL 	= $WebsiteUrl.'/index.php';         // Cancel URL if user clicks cancel
 
 
+$DEBUG = 0;		// debug_mode, 0 OR 1
 
 
 
@@ -69,6 +70,32 @@ $PayPalCancelURL 	= $WebsiteUrl.'/index.php';         // Cancel URL if user clic
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*************** NO CHANGE ****************/
+
+if($DEBUG == 1) {
+	print_r('<h1 style="text-align:center;background:#FFFF00;padding:5px">DEBUG MODE = ON</h1>');
+	error_reporting(E_ALL);
+	ini_set("display_errors", 1);
+}
+
+$apicall = file_get_contents($apiServer."getSelf");
+if (strpos($_SERVER['SCRIPT_NAME'], 'admin') !== false && $apicall == false) {
+    echo '<h1 style="text-align:center;background:#FFFF00;padding:5px">WARNING: your apiServer is not running !!!</h1>';
+	
+}
 
 // DEBUGGING
 class Logger
