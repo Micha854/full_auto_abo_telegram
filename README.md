@@ -3,15 +3,25 @@ Ein voll Automatisiertes Abo- System für einen/mehrere Telegram Kanal/Kanäle
 
 Support On <a href="https://discord.gg/jsvX9pz">Discord</a>
 
-### TelegramApiServer
+### Create a telegram App
+
+* go to https://my.telegram.org/ and sign in
+* go into "API development tools" and create a App
+* notice your "App api_id" and "App api_hash"
+
+### TelegramApiServer [requires php 7.4 or higher]
 
 `git clone https://github.com/xtrime-ru/TelegramApiServer.git`
 
-wechsel in das Verzeichniss und führe `composer install` aus, der TelegramAPIServer wird nun installiert.
+wechsel in das Verzeichniss und führe `composer install -o --no-dev` aus, der TelegramAPIServer wird nun installiert.
 
 anschließend die Datei `.env.example` in `.env` umbenennen und den `HOST` eintragen
 
-starten wir den Server mit `php server.php`
+Ebenfalls müssen hier die Daten von oben `App api_id` & `App api_hash` eingetragen werden
+
+starten wir den Server mit `php server.php --session=YOUR_SESSION_NAME` 
+
+```ersetze "YOUR_SESSION_NAME" durch einen belibigen Namen```
 
 #### TelegramApiServer in den Autostart migrieren
 
@@ -24,7 +34,7 @@ damit Supervisor startet führen wir noch einmal `service supervisor restart` au
 Um nun die API als Systemdienst zu migrieren gehen wir in das Verzeichniss `/etc/supervisor/conf.d/` und erstellen hier eine neue Datei `telegram_client.conf` mit folgendem Inhalt (den path zur api bitte anpassen!)
 ```
 [program:telegram_client]
-command=/usr/bin/php /home/USER/TelegramApiServer/server.php
+command=/usr/bin/php /home/USER/TelegramApiServer/server.php --session=YOUR_SESSION_NAME
 numprocs=1
 directory=/home/USER/TelegramApiServer/
 autostart=true
