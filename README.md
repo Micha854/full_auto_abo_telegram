@@ -3,12 +3,6 @@ Ein voll Automatisiertes Abo- System für einen/mehrere Telegram Kanal/Kanäle
 
 Support On <a href="https://discord.gg/jsvX9pz">Discord</a>
 
-### Create a telegram App
-
-* go to https://my.telegram.org/ and sign in
-* go into "API development tools" and create a App
-* notice your "App api_id" and "App api_hash"
-
 ### TelegramApiServer [requires php 7.4 or higher]
 
 `git clone https://github.com/xtrime-ru/TelegramApiServer.git`
@@ -17,7 +11,7 @@ wechsel in das Verzeichniss und führe `composer install -o --no-dev` aus, der T
 
 anschließend die Datei `.env.example` in `.env` umbenennen und den `HOST` eintragen
 
-Ebenfalls müssen hier die Daten von oben `App api_id` & `App api_hash` eingetragen werden
+Get app_id and app_hash at https://my.telegram.org/ or leave blank. MadelineProto will generate them on start.
 
 starten wir den Server mit `php server.php --session=YOUR_SESSION_NAME` 
 
