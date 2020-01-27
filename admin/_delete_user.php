@@ -7,7 +7,7 @@ while($rowX = $result->fetch_array()) {
 	
 	$check_chatid = json_decode($getMember, true);
 	$check_title = $check_chatid["response"]["title"];
-	$check_invite = $check_chatid["response"]["invite"];
+	//$check_invite = $check_chatid["response"]["invite"];
 	
 	/*	
 	if($rowX["url"] != $check_invite) {
@@ -68,7 +68,7 @@ while($rowX = $result->fetch_array()) {
 				if($botSend == '1') {
 					$botMessage = urlencode("Du wurdest aus dem Kanal $channel entfernt, du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl");
 					$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
-					time.sleep(1);
+					sleep(1);
 				}
 			} elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s", strtotime("+".$sequenceInfo." days")) and !$row["info"] and $sequenceInfo ) {			// user ABO läuft bald aus, user informieren || user = user
 			
@@ -76,7 +76,7 @@ while($rowX = $result->fetch_array()) {
 				if($botSend == '1') {
 					$botMessage = urlencode("Dein Abo l&auml;uft am ".date('d.m.Y', strtotime($row["endtime"]))." aus, du kannst dein Abo hier verl&auml;ngern: \n\n$WebsiteUrl");
 					$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
-					time.sleep(1);
+					sleep(1);
 				}	mysqli_query($mysqli, "UPDATE ".$tbl." SET info = '1' WHERE id = ".$row["id"]." ");
 			
 			} elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s") ) {			// user ABO abgelaufen || user = user
@@ -86,7 +86,7 @@ while($rowX = $result->fetch_array()) {
 					if($botSend == '1') {
 						$botMessage = urlencode("Dein Abo ist am ".date('d.m.Y', strtotime($row["endtime"]))." abgelaufen, du hast keinen Zutritt mehr zu $channel und zur MAP, du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl");
 						$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
-						time.sleep(1);
+						sleep(1);
 					}
 					mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$row["id"]." ");
 			
