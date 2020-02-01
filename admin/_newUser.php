@@ -7,6 +7,19 @@ require_once dirname(__FILE__) . '/../config.php'; ?>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <title><?=$WebsiteTitle ?> - ADMIN NEW USER</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <script>
+  $(function() {
+    $( "#datepicker" ).datepicker({
+      firstDay: 1,
+	  dateFormat: "yy-mm-dd"
+    });
+  });
+
+  </script>
 </head>
 <body>
 <?php					
@@ -41,7 +54,8 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	$ItemDesc = $newAdd;
 	
 	$sumBar = $_POST["itemprice"];
-	$sumBar = str_replace(",",".", $sumBar);
+	$sumBar = empty($sumBar) ? 0 : str_replace(",",".", $sumBar);
+	//$sumBar = str_replace(",",".", $sumBar);
 	
 	$days_to_end = $_POST["itemprice"]/$schnitt;
 	$days_to_end = ceil($days_to_end);
@@ -54,7 +68,13 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 		$update = $check->fetch_array();
 		$statement = "update";
 		$passwd = $update["pass"];
-		$date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+		if(isset($_POST["setAbo"]) && date("Y-m-d") < $_POST["setAbo"]) {
+			$date = mysqli_real_escape_string($mysqli, $_POST["setAbo"]);
+			$dateInsert = "cast('$date 23:59:59' AS datetime)";
+		} else {
+			$date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+			$dateInsert = "DATE_ADD(endtime,INTERVAL $days_to_end DAY)";
+		}
 		$amountInsert = $update["Amount"];
 		$amountInsert+=$sumBar;
 	} else {
@@ -62,8 +82,54 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 		//$date = new DateTime();
 		//$date->modify('+$days_to_end day');
 		//$date = $date->format('Y-m-d H:i:s');
-		$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
+		if(isset($_POST["setAbo"]) && date("Y-m-d") < $_POST["setAbo"]) {
+			$date = $_POST["setAbo"];
+			$dateInsert = "cast('$date 23:59:59' AS datetime)";
+		} else {
+			$date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
+			$dateInsert = "NOW() + INTERVAL $days_to_end DAY";
+		}
 		$amountInsert = $sumBar;
+	}
+	
+	if(empty($_POST["setAbo"]) && empty($_POST["itemprice"])) { 
+		$userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Bitte ein \"Abo Ende\" oder \"Betrag\" angeben!!</h3>";
+	?>
+<main role="main" class="container">
+<?php include "nav.php"; ?>
+<div class="jumbotron">
+<?php if(isset($_POST["submit"])) { echo $userSave; } ?>
+<a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
+<h1>Benutzer hinzuf&uuml;gen</h1>
+  <form method="post" action="">
+    <div class="form-group">
+      <p class="lead">Telegram Username:</p>
+      <input type="text" name="user" value="<?=$newUser?>" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
+    </div>
+    <div class="form-group">
+      <p class="lead">eMail:</p>
+      <input type="email" name="email" value="<?=$newMail?>" class="form-control" placeholder="Emailadresse" required>
+    </div>
+    <div class="form-group">
+      <p class="lead">Bar erhalten</p>
+      <input style="background:#FF0000; color:#FFFF00" type="text" name="itemprice" class="form-control" placeholder="&euro;">
+    </div>
+	<div class="form-group">
+      <p class="lead">Abo endet am (prio)</p>
+	  <input style="background:#FF0000; color:#FFFF00" type="text" id="datepicker" name="setAbo" class="form-control">
+    </div>
+    <div>
+		  <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
+	</div>
+  </form>
+</div>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+</html>
+<?php
+		die();
 	}
 	
 	$getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
@@ -117,10 +183,11 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 	}
 	
 	if($statement == "insert") {
-		$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '', pass = '$passwd', TransID = NULL, paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+		$sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '', pass = '$passwd', TransID = NULL, paydate = now(), endtime = ".$dateInsert;
+		print_r($sql_insert);
 		$mysqli->query($sql_insert);
 	} elseif($statement == "update") {
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
+		mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = ".$dateInsert." WHERE id = ".$update["id"]);
 	}
 	
 	include_once("msg.php");
@@ -193,7 +260,11 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     </div>
     <div class="form-group">
       <p class="lead">Bar erhalten</p>
-      <input type="text" name="itemprice" class="form-control" placeholder="&euro;" required>
+      <input type="text" name="itemprice" class="form-control" placeholder="&euro;">
+    </div>
+	<div class="form-group">
+      <p class="lead">Abo endet am (prio)</p>
+	  <input type="text" id="datepicker" name="setAbo" class="form-control">
     </div>
     <div>
 		  <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
@@ -201,7 +272,6 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
   </form>
 </div>
 </main>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
