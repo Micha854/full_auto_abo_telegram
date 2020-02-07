@@ -34,18 +34,9 @@ while($rowX = $result->fetch_array()) {
 			$userid = $row["userid"];
 			$channel= $rowX["name"];
 		
-			if($userid != $user_id) {
-				mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$row["id"]." ");
-				$delete = 'no';
-			} else {
-				$delete = 'yes';
-			}
-		
-			if($userid != $user_id and $element["role"] == 'user') {
-				$userid_check = " class='iderror'";
-			} else {
-				$userid_check = "";
-			}
+			// userid ist unbekannt !!!
+			$delete = is_null($row) ? 'no' : 'yes';
+			$userid_check = is_null($row) && $element["role"] == 'user' ? " class='iderror'" : "";
 		
 			if($element["role"] == 'banned') {
 				$i_bann++;
