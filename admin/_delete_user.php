@@ -7,7 +7,7 @@ while($rowX = $result->fetch_array()) {
 	
 	$check_chatid = json_decode($getMember, true);
 	$check_title = $check_chatid["response"]["title"];
-	$check_invite = $check_chatid["response"]["invite"];
+	//$check_invite = $check_chatid["response"]["invite"];
 	
 	/*	
 	if($rowX["url"] != $check_invite) {
@@ -31,13 +31,21 @@ while($rowX = $result->fetch_array()) {
 			$row_cnt = mysqli_num_rows($row_result);
 			$row = $row_result->fetch_array();
 
-			$date = $row["endtime"];
-			$empfaenger	= $row["buyerEmail"];
-			$userid = $row["userid"];
 			$channel= $rowX["name"];
 			
 			// userid ist unbekannt !!!
-			$delete = is_null($row) ? 'no' : 'yes';
+			if(is_null($row)) {
+				$delete = 'no';
+				$userid = $user_id;
+				$date = '';
+				$empfaenger	= '';
+			} else {
+				$delete = 'yes';
+				$userid = $row["userid"];
+				$date = $row["endtime"];
+				$empfaenger	= $row["buyerEmail"];
+			}
+						
 			$userid_check = is_null($row) && $element["role"] == 'user' ? " class='iderror'" : "";
 					
 			if($element["role"] == 'banned') {
@@ -64,34 +72,6 @@ while($rowX = $result->fetch_array()) {
 				if($botSend == '1') {
 					$sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
 					sleep(1);
-				}
-				if($mailSend == '1') {
-		
-					require_once('../mailer/class.phpmailer.php');
-
-					$mail             = new PHPMailer();
-					$mail->CharSet	  = 'utf-8';
-
-					$mail->IsSMTP(); // telling the class to use SMTP
-					$mail->Host       = $mailHost; // SMTP server
-					$mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
-					$mail->SMTPSecure = $smtpSecure;
-					$mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
-                                           // 1 = errors and messages
-                                           // 2 = messages only
-					$mail->SMTPAuth   = true;                  // enable SMTP authentication
-					$mail->Username   = $smtpUser; // SMTP account username
-					$mail->Password   = $smtpPass;        // SMTP account password
-		
-					$mail->SetFrom($mailSender, $WebsiteTitle);
-					$mail->AddReplyTo($mailSender, $WebsiteTitle);
-		
-					$mail->Subject    = mb_encode_mimeheader($mailSubject,"UTF-8");;
-					$mail->AltBody    = strip_tags($mailMessage); // optional, comment out and test
-					$mail->MsgHTML($mailMessage);
-					$mail->AddAddress($empfaenger, $WebsiteTitle);
-
-					$mail->Send();
 				}
 			} elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s", strtotime("+".$sequenceInfo." days")) and !$row["info"] and $sequenceInfo ) {			// user ABO läuft bald aus, user informieren || user = user
 			
