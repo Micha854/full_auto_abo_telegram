@@ -37,6 +37,12 @@ while($rowX = $result->fetch_array()) {
 			$delete = is_null($row) ? 'no' : 'yes';
 			$userid = is_null($row) ? $user_id : $row["userid"];
 			$userid_check = is_null($row) && $element["role"] == 'user' ? " class='iderror'" : "";
+			
+			if($element["role"] == 'banned') {
+				$i_bann++;
+			} else {
+				$i_user++;
+			}
 		
 			if($element["role"] == 'admin' or $element["role"] == 'creator') {	// admin && creator duerfen immer !!!
 				if($userid) {
