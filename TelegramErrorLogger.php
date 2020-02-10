@@ -63,7 +63,7 @@ class TelegramErrorLogger
     private function _log_to_file($error_text)
     {
         try {
-            $dir_name = 'logs';
+            $dir_name = 'admin/logs';
             if (!is_dir($dir_name)) {
                 mkdir($dir_name);
             }
