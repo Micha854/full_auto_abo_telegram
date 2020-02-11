@@ -37,7 +37,7 @@ switch ($text) {
             $row = $query->fetch_array();
 			if($use_map == "PMSF") {
 				$loginName = $row["buyerEmail"];
-			} elseif {
+			} else {
 				$loginName = $row["TelegramUser"];
 			}
 			$passwd = $row["pass"];
