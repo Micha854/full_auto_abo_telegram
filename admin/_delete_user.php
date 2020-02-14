@@ -2,7 +2,7 @@
 
 while($rowX = $result->fetch_array()) {
 	
-	$chat_id = $rowX["chatid"];
+	$chat_id = $rowX["url"];
 	$getMember = callAPI('GET', $apiServer."getPWRchat/?id=$chat_id", false);
 	
 	$check_chatid = json_decode($getMember, true);
@@ -47,7 +47,7 @@ while($rowX = $result->fetch_array()) {
 			if($element["role"] == 'admin' or $element["role"] == 'creator') {	// admin && creator duerfen immer !!!
 				if($userid) {
 					$admin_id = $userid;
-					$ending	= $row["endtime"];
+					$ending = 'does not expire';
 				} else {
 					$admin_id = 'Not in DB';
 					$ending = 'does not expire';
