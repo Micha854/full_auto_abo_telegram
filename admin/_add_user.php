@@ -5,7 +5,7 @@ $query = "SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).")";
 $result = $mysqli->query($query);
 while($channel = $result->fetch_array()) {		
 	
-	$chat_id = $channel["chatid"];
+	$chat_id = $channel["url"];
 	$editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
 	
 	$joinName = urlencode($channel["name"].": ".$channel["url"]);
