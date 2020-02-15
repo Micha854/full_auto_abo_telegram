@@ -36,12 +36,12 @@ while($rowX = $result->fetch_array()) {
 			// userid ist unbekannt !!!
 			if(is_null($row)) {
 				$delete = 'no';
-				$userid = $user_id;
+				$userid = $user_id;			// userid from API
 				$date = '';
 				$empfaenger	= '';
 			} else {
 				$delete = 'yes';
-				$userid = $row["userid"];
+				$userid = $row["userid"];	// userid from DB
 				$date = $row["endtime"];
 				$empfaenger	= $row["buyerEmail"];
 			}
@@ -57,7 +57,11 @@ while($rowX = $result->fetch_array()) {
 			if($element["role"] == 'admin' or $element["role"] == 'creator') {	// admin && creator duerfen immer !!!
 				if($userid) {
 					$admin_id = $userid;
-					$ending	= $row["endtime"];
+					if($row_cnt != 0) {
+                        $ending = $row["endtime"];
+                    } else {
+                        $ending = 'does not expire';
+                    }
 				} else {
 					$admin_id = 'Not in DB';
 					$ending = 'does not expire';
