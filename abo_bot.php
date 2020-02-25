@@ -20,7 +20,7 @@ $content = array();
 
 switch ($text) {
     case '/start':
-		include_once("admin/msg.php");
+        include_once("admin/msg.php");
         $content['text'] = $botStartMsg;
         $content['reply_markup'] = get_no_abo_buttons();
         break;
@@ -30,19 +30,19 @@ switch ($text) {
         $row_cnt = $query->num_rows;
 
         if ($row_cnt == 0) {
-			include_once("admin/msg.php");
+            include_once("admin/msg.php");
             $content['text'] = $botUserFalse;
             $content['reply_markup'] = get_no_abo_buttons();
         } else {
             $row = $query->fetch_array();
-			if($use_map == "PMSF") {
-				$loginName = $row["buyerEmail"];
-			} else {
-				$loginName = $row["TelegramUser"];
-			}
-			$passwd = $row["pass"];
-			$date = $row["endtime"];
-			
+            if($use_map == "PMSF") {
+                $loginName = $row["buyerEmail"];
+            } else {
+                $loginName = $row["TelegramUser"];
+            }
+            $passwd = $row["pass"];
+            $date = $row["endtime"];
+            
             include_once("admin/msg.php");
 
             $content['text'] = $botUserTrue;
@@ -64,7 +64,7 @@ if ($content) {
 }
 
 function get_no_abo_buttons() {
-	global $WebsiteUrl;
+    global $WebsiteUrl;
     $keyboard = array(
         'inline_keyboard' => array(
             array(

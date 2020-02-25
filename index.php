@@ -7,7 +7,7 @@ fclose($handle);
 }
 
 if(!file_exists(dirname(__FILE__) . '/admin/msg.php') and file_exists(dirname(__FILE__) . '/admin/msg_example.php')) {
-	copy(dirname(__FILE__) . "/admin/msg_example.php",dirname(__FILE__) . "/admin/msg.php");
+    copy(dirname(__FILE__) . "/admin/msg_example.php",dirname(__FILE__) . "/admin/msg.php");
 }
 
 $query = "SELECT * FROM products ORDER BY id ASC";
@@ -44,9 +44,9 @@ body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}
 <table align="center">
 <?php
 foreach ( $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC") as $channel ) {
-	echo "<tr>";
-	echo "<td>".$channel["name"]."</td>";
-	echo "</tr>";
+    echo "<tr>";
+    echo "<td>".$channel["name"]."</td>";
+    echo "</tr>";
 }
 ?>
 </table>
@@ -54,26 +54,26 @@ foreach ( $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC") a
 
 <?php
 while($row = $result->fetch_array()) { 
-	if($row["months"] > 1) {
-		$monate = " Monate ";
-	} else {
-		$monate = " Monat ";
-	}
+    if($row["months"] > 1) {
+        $monate = " Monate ";
+    } else {
+        $monate = " Monat ";
+    }
 ?>
 <form method="post" action="process.php">
 <table class="procut_item" border="0" cellpadding="4">
   <tr>
     <td width="70%"><h4><?=$row["months"].$monate?><span style="font-size:12px">(<?=number_format($row["item_price"]/$row["months"], 2, ',', '.');?> €/mtl.)</span></h4>(das Abo beginnt mit dem Tag der Zahlung und endet automatisch nach <?=$row["abo_days"]?> Tagen)</td>
     <td width="30%">
-	<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
-	<input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
+    <input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
+    <input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
     Dein Telegram Username: <br /><span style="font-size:11px">beginnend mit @</span> <input class="input" size="10" type="text" name="itemdesc" value="" required />
-	
-	<?php if($use_map == "PMSF") { ?>
-	<br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" />
-	<?php } ?> 
-	
-	<input type="hidden" name="itemprice" value="<?=$row["item_price"]?>" />
+    
+    <?php if($use_map == "PMSF") { ?>
+    <br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" />
+    <?php } ?> 
+    
+    <input type="hidden" name="itemprice" value="<?=$row["item_price"]?>" />
     <input type="hidden" name="itemQty" value="1" />
     <p><input class="dw_button" type="submit" name="submitbutt" value="PayPal (<?=$row["item_price"]?> EUR)" /></p>
     </td>

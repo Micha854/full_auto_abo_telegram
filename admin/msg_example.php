@@ -27,10 +27,10 @@ $channels = $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC")
 $joinMsg	= '';
 $chl_names	= '';
 if(!isset($channel)) {
-	while ($channel = $channels->fetch_array()) {
-		$joinMsg	.= $channel["name"] . ": $emoji_point_right <a href=\"" . $channel["url"] . "\">" . $channel["url"] . "</a>\n\n";
-		$chl_names	.= $channel["name"] . "\n";
-	}
+    while ($channel = $channels->fetch_array()) {
+        $joinMsg	.= $channel["name"] . ": $emoji_point_right <a href=\"" . $channel["url"] . "\">" . $channel["url"] . "</a>\n\n";
+        $chl_names	.= $channel["name"] . "\n";
+    }
 }
 // END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
