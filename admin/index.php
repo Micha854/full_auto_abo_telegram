@@ -21,17 +21,17 @@
  
 @media only screen and (max-width: 500px) {
   .destop {
-  	display:none
+      display:none
   }
   .table td, .table th {
- 	padding-left:1px;
- 	padding-right:1px;
+     padding-left:1px;
+     padding-right:1px;
  }
 }
 
 @media only screen and (min-width: 500px) {
   .mobile {
-  	display:none
+      display:none
   }
 }
 </style>
@@ -42,37 +42,37 @@
 <?php 
 include "nav.php";
 if(isset($sortIndex) and (empty($_GET["spalte"]) or empty($_GET["sort"]))) {
-	header("Location: $WebsiteUrl/admin/$sortIndex");
+    header("Location: $WebsiteUrl/admin/$sortIndex");
 } else {
-	if(isset($sortIndex) and !isset($_GET['page'])) {
-		$getPage = '&';
-	} elseif(isset($sortIndex) and $_GET['page']) {
-		$getPage = '&';
-	} else {
-		$getPage = '?';
-		$sortIndex = '';
-	}
+    if(isset($sortIndex) and !isset($_GET['page'])) {
+        $getPage = '&';
+    } elseif(isset($sortIndex) and $_GET['page']) {
+        $getPage = '&';
+    } else {
+        $getPage = '?';
+        $sortIndex = '';
+    }
 }					
 //Output any connection error
 if ($mysqli->connect_error) {
-	die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
+    die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 
 if(isset($_POST["deleteUser"])) {
-	$deleteUserId	 = mysqli_real_escape_string($mysqli, $_POST["deleteUser"]);
-	$deleteUserName	 = mysqli_real_escape_string($mysqli, $_POST["username"]);
-	$deleteUserEmail = mysqli_real_escape_string($mysqli, $_POST["email"]);
-	mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = $deleteUserId");
-	
-	if($use_map == "PMSF") {
-		mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$deleteUserEmail."' ");
-	} elseif($use_map == "Rocketmap") {
-		include '../Htpasswd.php';
-		$htpasswd = new Htpasswd('../.htpasswd');
-		$htpasswd->deleteUser($deleteUserName);
-	}
-	
-	$Save = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benutzer ".$deleteUserName." wurde gel&ouml;scht<div style=\"font-size:13px;padding-top:10px\"><p>Hinweis: Der Benutzer wird erst bei dem n&auml;chsten Cron Aufruf aus den Kan&auml;len gel&ouml;scht!</p></div></h3>";
+    $deleteUserId	 = mysqli_real_escape_string($mysqli, $_POST["deleteUser"]);
+    $deleteUserName	 = mysqli_real_escape_string($mysqli, $_POST["username"]);
+    $deleteUserEmail = mysqli_real_escape_string($mysqli, $_POST["email"]);
+    mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = $deleteUserId");
+    
+    if($use_map == "PMSF") {
+        mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$deleteUserEmail."' ");
+    } elseif($use_map == "Rocketmap") {
+        include '../Htpasswd.php';
+        $htpasswd = new Htpasswd('../.htpasswd');
+        $htpasswd->deleteUser($deleteUserName);
+    }
+    
+    $Save = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benutzer ".$deleteUserName." wurde gel&ouml;scht<div style=\"font-size:13px;padding-top:10px\"><p>Hinweis: Der Benutzer wird erst bei dem n&auml;chsten Cron Aufruf aus den Kan&auml;len gel&ouml;scht!</p></div></h3>";
 }
 
 $spalten = array(
@@ -86,17 +86,17 @@ $spalte = isset($_GET["spalte"]) ? $_GET["spalte"] : 'id'; // Default-Wert
 $sort = isset($_GET["sort"]) ? $_GET["sort"] : 'desc';
 
 if (!array_key_exists($spalte ,$spalten)) {
-	$spalte = 'id'; // Default-Wert
+    $spalte = 'id'; // Default-Wert
 }
 
 if (!in_array($sort, array('asc', 'desc'))) {
-	$sort = 'desc'; // Default-Wert
+    $sort = 'desc'; // Default-Wert
 }
 
 if(isset($_POST["searchSubmit"])) {
-	$result_tot	= "SELECT COUNT(*) as total FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%')";
+    $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%')";
 } else {
-	$result_tot	= "SELECT COUNT(*) as total FROM ".$tbl;
+    $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl;
 }
 $row_total	= $mysqli->query($result_tot)->fetch_assoc();
 $gesamte_anzahl = $row_total['total'];
@@ -106,22 +106,22 @@ $gesamt_seiten = ceil($gesamte_anzahl/$ergebnisse_pro_seite);
 
 if (empty($_GET['page'])) {
     $seite = 1;
-	$gettingPage = '';
+    $gettingPage = '';
 } else {
     $seite = $_GET['page'];
     if ($seite > $gesamt_seiten) {
         $seite = 1;
     }
-	$gettingPage = '&page='.$seite;
+    $gettingPage = '&page='.$seite;
 } 
 
 $limit = ($seite*$ergebnisse_pro_seite)-$ergebnisse_pro_seite;
 
 
 if(isset($_POST["searchSubmit"])) {
-	$query		= "SELECT * FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%') ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
+    $query		= "SELECT * FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%') ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
 } else {
-	$query		= "SELECT * FROM ".$tbl." ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
+    $query		= "SELECT * FROM ".$tbl." ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
 }
 $result = $mysqli->query($query);
 
@@ -130,65 +130,65 @@ if(isset($Save)) { echo $Save; }
 echo '<h3>'.$gesamte_anzahl; if($gesamte_anzahl > 1) { echo ' Abonnenten'; } else { echo ' Abonnent'; } echo '</h3>'; 
 $sites = '';
 if($gesamte_anzahl > $ergebnisse_pro_seite) {
-	for ($i=1; $i<=$gesamt_seiten; ++$i) {
-    	if ($seite == $i) {
-    	    $site = '<a class="btn btn-sm btn-outline-secondary" href="'.$sortIndex.$getPage.'page='.$i.'" style="font-weight:bold;color:#FF0000" title="Seite '.$i.' von '.$gesamt_seiten.'">'.$i.'</a>&nbsp;&nbsp;&nbsp;';
-    	} else {
-    	    $site = '<a class="btn btn-sm btn-outline-secondary" href="'.$sortIndex.$getPage.'page='.$i.'" title="Seite '.$i.' von '.$gesamt_seiten.'">'.$i.'</a>&nbsp;&nbsp;&nbsp;';
-    	}
-		$sites .= $site;
-	}
+    for ($i=1; $i<=$gesamt_seiten; ++$i) {
+        if ($seite == $i) {
+            $site = '<a class="btn btn-sm btn-outline-secondary" href="'.$sortIndex.$getPage.'page='.$i.'" style="font-weight:bold;color:#FF0000" title="Seite '.$i.' von '.$gesamt_seiten.'">'.$i.'</a>&nbsp;&nbsp;&nbsp;';
+        } else {
+            $site = '<a class="btn btn-sm btn-outline-secondary" href="'.$sortIndex.$getPage.'page='.$i.'" title="Seite '.$i.' von '.$gesamt_seiten.'">'.$i.'</a>&nbsp;&nbsp;&nbsp;';
+        }
+        $sites .= $site;
+    }
 }
 ?>
-	<table class="table">
-		<thead class="thead-light">
-			<tr>
-     			<?php
-				if($sites) {
-					echo "<th colspan='4'>".$sites."</th></tr><tr>";
-				}
-				foreach ($spalten as $spalte => $name) {
-					
-					if(isset($_GET["spalte"]) and $_GET["spalte"] == $spalte) {
-						if($_GET["sort"] == 'asc') {
-							$active = 'id="active"';
-							$active2 = '';
-						} elseif($_GET["sort"] == 'desc') {
-							$active = '';
-							$active2 = 'id="active"';
-						}
-					} else {
-						$active = '';
-						$active2 = '';
-					}
-					
-					echo '<th>' .
-						ucfirst($name) .
-						'<a href="?spalte=' . $spalte . '&sort=asc'.$gettingPage.'" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
-						'<a href="?spalte=' . $spalte . '&sort=desc'.$gettingPage.'" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
-					'</th>';
-				} ?>
-     			<th scope="col"></th>
-			</tr>
-		</thead>
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                 <?php
+                if($sites) {
+                    echo "<th colspan='4'>".$sites."</th></tr><tr>";
+                }
+                foreach ($spalten as $spalte => $name) {
+                    
+                    if(isset($_GET["spalte"]) and $_GET["spalte"] == $spalte) {
+                        if($_GET["sort"] == 'asc') {
+                            $active = 'id="active"';
+                            $active2 = '';
+                        } elseif($_GET["sort"] == 'desc') {
+                            $active = '';
+                            $active2 = 'id="active"';
+                        }
+                    } else {
+                        $active = '';
+                        $active2 = '';
+                    }
+                    
+                    echo '<th>' .
+                        ucfirst($name) .
+                        '<a href="?spalte=' . $spalte . '&sort=asc'.$gettingPage.'" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
+                        '<a href="?spalte=' . $spalte . '&sort=desc'.$gettingPage.'" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
+                    '</th>';
+                } ?>
+                 <th scope="col"></th>
+            </tr>
+        </thead>
 <?php
 while($row = $result->fetch_array()) {
 
 if($row["endtime"] < date("Y-m-d H:i:s")) {
-	$color = ' style="color:#FF0000;font-weight:bolder"';
+    $color = ' style="color:#FF0000;font-weight:bolder"';
 } else {
-	$color = ' style="color:#000"';
+    $color = ' style="color:#000"';
 }
 
 if(strlen($row["TelegramUser"]) >= 16) {
-	$teleUser =	substr($row["TelegramUser"], 0, 14).'..';
+    $teleUser =	substr($row["TelegramUser"], 0, 14).'..';
 } else {
-	$teleUser = $row["TelegramUser"];
+    $teleUser = $row["TelegramUser"];
 }
 ?>
   <tr>
-	<td class="mobile"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$teleUser ?></a></td>
-	<td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
+    <td class="mobile"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$teleUser ?></a></td>
+    <td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
     <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
     <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
     <td><a class="btn btn-sm btn-outline-secondary" href="_edit_user.php?id=<?=$row["id"]?>" role="button">edit</a></td>
@@ -196,7 +196,7 @@ if(strlen($row["TelegramUser"]) >= 16) {
 <?php
 }
 ?>
-	</table>
+    </table>
 <a class="btn btn-sm btn-outline-secondary" href="_newUser.php" role="button">Neuer User</a>
 <a class="btn btn-sm btn-outline-secondary" href="<?=$urlMap ?>" role="button">zur Map</a>
 </div>

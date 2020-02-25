@@ -1,12 +1,12 @@
 <?php
 session_start();
 if(isset($_GET["reset"])) {
-	session_destroy();
+  session_destroy();
 } elseif(isset($_GET["spalte"]) and isset($_GET["sort"])) {
-	$_SESSION["sort"] = '?spalte='.$_GET["spalte"].'&sort='.$_GET["sort"];
-	$sortIndex = $_SESSION["sort"];
+  $_SESSION["sort"] = '?spalte='.$_GET["spalte"].'&sort='.$_GET["sort"];
+  $sortIndex = $_SESSION["sort"];
 } elseif(isset($_SESSION["sort"])) {
-	$sortIndex = $_SESSION["sort"];
+  $sortIndex = $_SESSION["sort"];
 }
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
@@ -24,8 +24,8 @@ if(isset($_GET["reset"])) {
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>">Übersicht</a>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_newUser.php">Hinzufügen</a>
-		  <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_channels.php">Channels</a>
-		  <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_products.php">Abos</a>
+      <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_channels.php">Channels</a>
+      <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_products.php">Abos</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"]).'/?reset=1' ?>">Reset</a>
         </div>
@@ -33,19 +33,19 @@ if(isset($_GET["reset"])) {
     </ul>
         <form class="form-inline mt-2 mt-md-0" method="post" action="">
           <input class="form-control mr-sm-2" type="text" placeholder="Suche" name="Search" aria-label="Search">
-		  <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="searchSubmit" value="Suche" />
+      <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="searchSubmit" value="Suche" />
         </form>
   </div>
 </nav>
 <?php
 $lastCron = file_get_contents('cron.txt');
 if(!$lastCron) {
-	$lastCron = 'UNKNOWN';
-	$cronColorBack = '#FF0000';
-	$cronColorText = '#FFFF00';
+  $lastCron = 'UNKNOWN';
+  $cronColorBack = '#FF0000';
+  $cronColorText = '#FFFF00';
 } else {
-	$cronColorBack = '#009900';
-	$cronColorText = '#FFFFFF';
+  $cronColorBack = '#009900';
+  $cronColorText = '#FFFFFF';
 }
 ?>
 <div style="text-align:center; background:<?=$cronColorBack?>; color:<?=$cronColorText?>; font-weight:bolder; font-size:11px">LAST CRON UPDATE: <?=$lastCron?></div>

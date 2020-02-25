@@ -1,6 +1,6 @@
 <?php
 require_once(__DIR__.'/../config.php');
-					
+                    
 /* check connection */
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
@@ -75,19 +75,19 @@ require_once(__DIR__.'/../functions.php');
 
 $sql_abos = $mysqli->query("SELECT * FROM ".$tbl);
 while($get_user = $sql_abos->fetch_array()) {
-	if($get_user["userid"] == NULL) {
-		
-		$from_username = $get_user["TelegramUser"];
-		$getUserId = callAPI('GET', $apiServer."getInfo/?id=$from_username", false);
-		
-		$output = json_decode($getUserId, true);
-		$user_id = $output["response"]["InputPeer"]["user_id"];
-		
-	
-		mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$get_user["id"]." ");
-		
-		echo "set userid '".$user_id."' for ".$from_username."<br>";
-	}
+    if($get_user["userid"] == NULL) {
+        
+        $from_username = $get_user["TelegramUser"];
+        $getUserId = callAPI('GET', $apiServer."getInfo/?id=$from_username", false);
+        
+        $output = json_decode($getUserId, true);
+        $user_id = $output["response"]["InputPeer"]["user_id"];
+        
+    
+        mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$get_user["id"]." ");
+        
+        echo "set userid '".$user_id."' for ".$from_username."<br>";
+    }
 }
 
 
@@ -101,10 +101,10 @@ $query = "SELECT * FROM channels";
 $result = $mysqli->query($query);
 
 if($result->num_rows) { 
-	//echo "<h2>ergebnisse vorhanden</h2>";
-	include(__DIR__."/_delete_user.php");
+    //echo "<h2>ergebnisse vorhanden</h2>";
+    include(__DIR__."/_delete_user.php");
 } else {
-	echo "<h2>nix zu tun!</h2>";
+    echo "<h2>nix zu tun!</h2>";
 }
 
 $dauerScript = microtime(true) - $beginnScript;
