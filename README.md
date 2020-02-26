@@ -62,8 +62,14 @@ erstelle eine neue Datei "rocketmap.conf" in /etc/apache2/sites-available/
 
 ```
 ServerName YOURDOMAIN.de
-ProxyPass /go/ http://YOURIP:46516/
-ProxyPassReverse /go/ http://127.0.0.1:46516/
+
+    <Location /go/>
+        ProxyPass http://YOURIP:46516/go/
+        ProxyPassReverse http://127.0.0.1:46516/go/
+        ProxyAddHeaders On
+        ProxyPreserveHost On
+        RequestHeader append SCRIPT_NAME /go
+    </Location>
 
     <Proxy *>
         Order deny,allow
@@ -73,9 +79,6 @@ ProxyPassReverse /go/ http://127.0.0.1:46516/
         AuthUserFile /var/www/vhosts/YOURDOMAIN.de/httpdocs/.htpasswd
         Require valid-user
     </Proxy>
-
-RewriteCond %{HTTP_HOST} !^YOURDOMAIN\.de/go/$ [NC]
-RewriteRule ^/go/$ http://%{HTTP_HOST}/go/ [L,R=301]
 ```
 
 eingebunden wird die configuration in 000-default.conf mit der zeile "Include sites-available/rocketmap.conf
