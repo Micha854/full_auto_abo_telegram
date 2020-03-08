@@ -337,7 +337,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                             Logger::error("INSERT USER ON DATABASE FAILED\n".$sql_insert); // LOGGER
                         }
                     } else {
-                        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = '$TansID', paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY) WHERE id = ".$update["id"]);
+                        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = '$TansID', paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY), info = NULL WHERE id = ".$update["id"]);
                         Logger::info("UPDATE USER ON DATABASE"); // LOGGER
                     }
 
