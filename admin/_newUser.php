@@ -187,7 +187,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         print_r($sql_insert);
         $mysqli->query($sql_insert);
     } elseif($statement == "update") {
-        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = ".$dateInsert." WHERE id = ".$update["id"]);
+        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = ".$dateInsert.", info = NULL WHERE id = ".$update["id"]);
     }
     
     include_once("msg.php");
