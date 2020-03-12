@@ -149,21 +149,21 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
     $payer_id = $_GET["PayerID"];
     
     //get session variables
-    $ItemName 			= isset($_SESSION['ItemName']); //Item Name
-    $ItemPrice 			= isset($_SESSION['ItemPrice']); //Item Price
-    $ItemNumber 		= isset($_SESSION['ItemNumber']); //Item Number
-    $ItemDesc 			= isset($_SESSION['ItemDesc']); //Item Number
-    $ItemDesc2 			= isset($_SESSION['ItemDesc2']); //Item Number
-    $ItemQty 			= isset($_SESSION['ItemQty']); // Item Quantity
-    $ItemTotalPrice 	= isset($_SESSION['ItemTotalPrice']); //total amount of product; 
-    $TotalTaxAmount 	= isset($_SESSION['TotalTaxAmount']);  //Sum of tax for all items in this order. 
-    $HandalingCost 		= isset($_SESSION['HandalingCost']);  //Handling cost for this order.
-    $InsuranceCost 		= isset($_SESSION['InsuranceCost']);  //shipping insurance cost for this order.
-    $ShippinDiscount 	= isset($_SESSION['ShippinDiscount']); //Shipping discount for this order. Specify this as negative number.
-    $ShippinCost 		= isset($_SESSION['ShippinCost']); //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
-    $GrandTotal 		= isset($_SESSION['GrandTotal']);
-    $days_to_end		= isset($_SESSION['days_to_end']);
-    $InputChannel		= isset($_SESSION['InputChannel']);
+    $ItemName 			= $_SESSION['ItemName']; //Item Name
+    $ItemPrice 			= $_SESSION['ItemPrice']; //Item Price
+    $ItemNumber 		= $_SESSION['ItemNumber']; //Item Number
+    $ItemDesc 			= $_SESSION['ItemDesc']; //Item Number
+    $ItemDesc2 			= $_SESSION['ItemDesc2']; //Item Number
+    $ItemQty 			= $_SESSION['ItemQty']; // Item Quantity
+    $ItemTotalPrice 	= $_SESSION['ItemTotalPrice']; //total amount of product; 
+    $TotalTaxAmount 	= $_SESSION['TotalTaxAmount'];  //Sum of tax for all items in this order. 
+    $HandalingCost 		= $_SESSION['HandalingCost'];  //Handling cost for this order.
+    $InsuranceCost 		= $_SESSION['InsuranceCost'];  //shipping insurance cost for this order.
+    $ShippinDiscount 	= $_SESSION['ShippinDiscount']; //Shipping discount for this order. Specify this as negative number.
+    $ShippinCost 		= $_SESSION['ShippinCost']; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
+    $GrandTotal 		= $_SESSION['GrandTotal'];
+    $days_to_end		= $_SESSION['days_to_end'];
+    $InputChannel		= $_SESSION['InputChannel'];
 
     $padata = 	'&TOKEN='.urlencode($token).
                 '&PAYERID='.urlencode($payer_id).
