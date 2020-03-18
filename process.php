@@ -260,7 +260,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         $passwd = $update["pass"];
                         $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
                         $amountInsert = $update["Amount"];
-                        $amountInsert+=$ItemTotalPrice;			
+                        $amountInsert+=$ItemTotalPrice;
                     } else {
                         $statement = "insert";
                         $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
@@ -333,6 +333,15 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     }
 
                     include_once("admin/msg.php");
+					
+					if(isset($admins) and empty($admins) === false) {
+                        $sendAdmins = explode(",", trim($admins));
+                        $sendAdmins = explode(',', $admins);
+                        $sendAdmins = array_map('trim', $sendAdmins);
+                        for($i=0; $i < count($sendAdmins); $i++) {
+                            $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=".$sendAdmins[$i]."&data[message]=new $statement User: $ItemDesc, Amount payed $ItemTotalPrice, date to set $date&data[parse_mode]=html", false);
+                        }
+                    }
                     
                     if($use_map == "PMSF" or $use_map == "Rocketmap") {
                         $botMessage = urlencode($userPayedMsg);

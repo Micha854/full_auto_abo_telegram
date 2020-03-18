@@ -10,9 +10,10 @@ $WebsiteTitle   = "Pogo Dein Stadtteil";
 $header         = "für den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugefügt!";
 
 
-// API Server URL
+// API Server URL, bot token, Admins
 $apiServer      = "http://YOURURL.COM:9503/api/";
-$BotToken		    = "123456789:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";	// without "_bot" first !!!
+$BotToken	    = "123456789:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";	// without "_bot" first !!!
+$admins         = "Admin_1, Admin_2";           // send a message to Telegram admins when a subscription is completed or renewed
 
 
 // Pogo Map Config
@@ -26,14 +27,14 @@ $access_level   = "1";                          // access level for user
 $botSend        = '1';					          // send message to user from your bot
 $mailSend       = '0';                    // set value '0' to off
 
-$sequenceInfo	= '3';					            // x Tage vor Ablauf des Abos wird der User informiert || zum deaktivieren = "0"
+$sequenceInfo   = '3';					          // x Tage vor Ablauf des Abos wird der User informiert || zum deaktivieren = "0"
 $ergebnisse_pro_seite = 50;				        // x Abos pro Seite anzeigen || Admin Panel || default value 50
 
 $mailSubject    = "Welcome to PoGO MAP";  // mail betreff
 $mailSender     = 'pogo@YOURURL.COM';     // sender mail || ReplyTo
 $mailHost       = 'domain.com';           // SMTP server
 $smtpPort       = 25;                     // usually the port for TLS is 587, for SSL is 465 and non-secure is 25
-$smtpSecure		  = '';				          	  // TLS, SSL or  empty the line
+$smtpSecure     = '';				          	  // TLS, SSL or  empty the line
 $smtpUser       = '';                     // SMTP account username
 $smtpPass       = '';                     // SMTP account password
 
@@ -42,7 +43,7 @@ $smtpPass       = '';                     // SMTP account password
 $paypallogo     = $WebsiteUrl."/logo_example.jpg";	// PayPal Logo
 //$paypallogo   = ""; 							                // kein Logo anzeigen
 
-$PayPalMode 		= 'live';                           // sandbox or live
+$PayPalMode     = 'live';                           // sandbox or live
 
 if($PayPalMode == 'live') {								          // live mode
   $PayPalApiUsername 	= 'YOUR_API_USERNAME';        // PayPal API Username
@@ -59,11 +60,11 @@ if($PayPalMode == 'live') {								          // live mode
 
 $PayPalCurrencyCode = 'EUR';                        // Paypal Currency Code
 
-$PayPalReturnURL 	= $WebsiteUrl.'/process.php';     // Point to process.php page
-$PayPalCancelURL 	= $WebsiteUrl.'/index.php';       // Cancel URL if user clicks cancel
+$PayPalReturnURL  = $WebsiteUrl.'/process.php';     // Point to process.php page
+$PayPalCancelURL  = $WebsiteUrl.'/index.php';       // Cancel URL if user clicks cancel
 
 
-$DEBUG = 0;		// debug_mode, 0 OR 1
+$DEBUG = 0;                                         // debug_mode, 0 OR 1
 
 
 
