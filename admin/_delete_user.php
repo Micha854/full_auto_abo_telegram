@@ -2,7 +2,7 @@
 
 while($rowX = $result->fetch_array()) {
     
-    $chat_id = $rowX["url"];
+    $chat_id = $rowX["chatid"];
     $getMember = callAPI('GET', $apiServer."getPWRchat/?id=$chat_id", false);
     
     $check_chatid = json_decode($getMember, true);
