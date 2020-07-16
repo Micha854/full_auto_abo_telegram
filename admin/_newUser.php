@@ -33,7 +33,14 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     function generateRandomString($length = 10) {
         //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
         return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    } $passwd = generateRandomString(8);
+    }
+	
+	// give costum passwort or generate automaticle
+	if(isset($_POST["pass"])) {
+		$passwd = mysqli_real_escape_string($mysqli, $_POST["pass"]);
+	} else {
+		$passwd = generateRandomString(8);
+	}
     
     $newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
     $newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
@@ -189,6 +196,10 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     <div class="form-group">
       <p class="lead">Telegram Username:</p>
       <input type="text" name="user" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
+    </div>
+    <div class="form-group">
+      <p class="lead">Passwort:</p>
+      <input type="text" name="pass" class="form-control" aria-describedby="passwort" placeholder="leave blank to generate a password" />
     </div>
     <div class="form-group">
       <p class="lead">eMail:</p>
