@@ -248,7 +248,7 @@ if(isset($_GET["delete"])) {
     </tr>
     <tr>
       <th scope="col">Passwort</th>
-      <th scope="col"><input type="text" name="user" class="form-control" autocomplete="off" value="<?=$row["pass"] ?>" /></th>
+      <th scope="col"><input type="text" name="pass" class="form-control" autocomplete="off" placeholder="leave blank to generate a password" value="<?=$row["pass"] ?>" /></th>
     </tr>
     <tr>
       <th scope="col"><b>Neuer @Username</b></th>
