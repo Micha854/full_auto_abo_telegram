@@ -19,6 +19,7 @@ $urlMap         = "http://YOURURL.COM/map/";    // Url to your pogo map
 $use_map        = "PMSF";                       // settings --> "PMSF" or "Rocketmap" or "" for empty
 $login_system   = "native";                     // login type
 $access_level   = "1";                          // access level for user
+$maxAboLength   = 0;                            // Maximal days of abo length (0 if unrestricted)
 
 
 // Mail Config
@@ -94,7 +95,7 @@ if($DEBUG == 1) {
 $apicall = file_get_contents($apiServer."getSelf");
 if (strpos($_SERVER['SCRIPT_NAME'], 'admin') !== false && $apicall == false) {
     echo '<h1 style="text-align:center;background:#FFFF00;padding:5px">WARNING: your apiServer is not running !!!</h1>';
-  
+
 }
 
 // DEBUGGING
