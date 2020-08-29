@@ -103,7 +103,7 @@ $result_cha = $mysqli->query($query_cha);
                     </p>
                     <p>
                         Zahlungsweise:<br>
-                        <img src="images/paypal.png" alt="Bezahlung mit PayPal" title="Bezahlung mit PayPal" style="width:102px; height:33px;">
+                        <img src="paypal.png" alt="Bezahlung mit PayPal" title="Bezahlung mit PayPal" style="width:102px; height:33px;">
                     </p>
                     <p>
                         <input class="dw_button" type="submit" name="submitbutt" value="weiter" />
