@@ -176,13 +176,18 @@ $result_cha = $mysqli->query($query_cha);
                         Zahlungsweise:<br>
                         <img src="paypal.png" alt="Bezahlung mit PayPal" title="Bezahlung mit PayPal" style="width:102px; height:33px;">
                     </p>
+                    <?php if($showDisclaimer) { ?>
+                    <p>
+			<input id="3disclaimer" type='checkbox' name='disclaimer' required /> <label for="3disclaimer">Ich akzeptiere die Regeln im <a href="disclaimer.php">Disclaimer</a></label>
+                    </p>
+                    <?php } ?>
                     <p>
                         <input class="dw_button" type="submit" name="submitbutt" value="weiter" />
                     </p>
                 </td>
               </tr>
             </table>
-        </form>
+	</form>
     <?php
     }
     ///$array = implode(',',$_POST["added"]);
