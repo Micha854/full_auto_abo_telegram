@@ -236,7 +236,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
             echo '.dw_button{font-size:16px}';
             echo '';
             echo '.pageHeaderFacade {';
-            echo '    background-image: url("https://www.pogo-muc.de/images/pogo-muc/header.png");';
+            echo '    background-image: url("header.png");';
             echo '    background-color: rgba(58, 109, 156, 1);';
             echo '    background-size: cover;';
             echo '    background-position: center top;';
@@ -293,23 +293,24 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
             echo '}';
             echo '-->';
             echo '</style>';
-            echo '</head>';
-            echo '';
-            echo '<body>';
-            echo '<div id="pageHeaderFacade" class="pageHeaderFacade">';
-            echo '	<div class="layoutBoundary">';
-            echo '		<div id="pageHeaderLogo" class="pageHeaderLogo">';
-            echo '			<a href="https://www.pogo-muc.de/">';
-            echo '				<img src="https://www.pogo-muc.de/images/pogo-muc/logo.png" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">';
-            echo '				<img src="https://www.pogo-muc.de/images/pogo-muc/logosmall.png" alt="" class="pageHeaderLogoSmall">';
-            echo '			</a>';
-            echo '		</div>';
-            echo '	</div>';
-            echo '</div>';
-            echo '<div class="pageNavigation">';
-            echo '	<div class="layoutBoundary">';
-            echo '	</div>';
-            echo '</div>';
+    ?>
+    </head>
+    <body>
+        <div id="pageHeaderFacade" class="pageHeaderFacade">
+            <div class="layoutBoundary">
+                <div id="pageHeaderLogo" class="pageHeaderLogo">
+                    <a href="https://www.pogo-muc.de/">
+                        <img src="<?=$pageHeaderLogoLarge ?>" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">
+                        <img src="<?=$pageHeaderLogoSmall ?>" alt="" class="pageHeaderLogoSmall">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="pageNavigation">
+            <div class="layoutBoundary">
+            </div>
+        </div>
+        <?php
             echo '<h2>Zahlung erfolgreich!</h2>';
             echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
             echo '<div style="color:#00ff00"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
