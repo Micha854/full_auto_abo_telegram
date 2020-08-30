@@ -299,7 +299,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
         <div id="pageHeaderFacade" class="pageHeaderFacade">
             <div class="layoutBoundary">
                 <div id="pageHeaderLogo" class="pageHeaderLogo">
-                    <a href="https://www.pogo-muc.de/">
+                    <a href="<?=$WebsiteUrl ?>">
                         <img src="<?=$pageHeaderLogoLarge ?>" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">
                         <img src="<?=$pageHeaderLogoSmall ?>" alt="" class="pageHeaderLogoSmall">
                     </a>
