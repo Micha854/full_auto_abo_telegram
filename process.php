@@ -38,9 +38,9 @@ if($_POST) //Post Data received from product list page.
     {
         //Show error message
         $wrongName = htmlspecialchars($ItemDesc, ENT_QUOTES, 'UTF-8');
-        echo '<div style="color:red"><b>Error : </b>Den Telegram Username: '.$wrongName.' gibt es nicht!</div></br>';
+        echo '<div style="color:red"><b>Error : </b>Den Telegram Benutzername: '.$wrongName.' gibt es nicht!</div></br>';
         echo '<a href="/"><button>Zur&uuml;ck</button></a>';
-        Logger::warn("Telegram Username does not exist: ".$wrongName); // LOGGER
+        Logger::warn("Telegram Benutzername does not exist: ".$wrongName); // LOGGER
         return;
     }
 

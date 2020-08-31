@@ -76,11 +76,11 @@ if(isset($_POST["deleteUser"])) {
 }
 
 $spalten = array(
-"TelegramUser"	=> "Telegram Username ",
+"TelegramUser"	=> "Telegram Benutzername ",
 "paydate"		=> "Bezahlt am ",
 "endtime"		=> "L&auml;uft ab ");
 
-//$spaltenNamen = array("ID ", "Telegram Username ", "Bezahlt am ", "L&auml;uft ab ");
+//$spaltenNamen = array("ID ", "Telegram Benutzername ", "Bezahlt am ", "L&auml;uft ab ");
 
 $spalte = isset($_GET["spalte"]) ? $_GET["spalte"] : 'id'; // Default-Wert
 $sort = isset($_GET["sort"]) ? $_GET["sort"] : 'desc';
