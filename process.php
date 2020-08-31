@@ -217,14 +217,15 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
             if($mailSend == '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
 
             $TansID = urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-
-            echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">';
-            echo '<html xmlns="http://www.w3.org/1999/xhtml">';
-            echo '<head>';
-            echo '<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />';
-            echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">';
-            echo '<title><?=$WebsiteTitle ?></title>';
-            echo '<style type="text/css">';
+            ?>
+            <!DOCTYPE html>
+            <html dir="ltr" lang="de">
+            <head>
+                <meta charset="utf-8">
+                <meta name="viewport" content="width=device-width, initial-scale=1">
+                <title><?=$WebsiteTitle ?></title>
+                <style>
+            <?php
             echo '<!--';
             echo 'body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}';
             echo '.procut_item {width: 100%;margin-right: auto;margin-left: auto;padding: 20px;background: #F1F1F1;margin-bottom: 1px;font-size: 12px;border-radius: 5px;text-shadow: 1px 1px 1px #FCFCFC;}';
@@ -235,7 +236,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
             echo '.dw_button{font-size:16px}';
             echo '';
             echo '.pageHeaderFacade {';
-            echo '    background-image: url("https://www.pogo-muc.de/images/pogo-muc/header.png");';
+            echo '    background-image: url("header.png");';
             echo '    background-color: rgba(58, 109, 156, 1);';
             echo '    background-size: cover;';
             echo '    background-position: center top;';
@@ -292,26 +293,27 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
             echo '}';
             echo '-->';
             echo '</style>';
-            echo '</head>';
-            echo '';
-            echo '<body>';
-            echo '<div id="pageHeaderFacade" class="pageHeaderFacade">';
-            echo '	<div class="layoutBoundary">';
-            echo '		<div id="pageHeaderLogo" class="pageHeaderLogo">';
-            echo '			<a href="https://www.pogo-muc.de/">';
-            echo '				<img src="https://www.pogo-muc.de/images/pogo-muc/logo.png" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">';
-            echo '				<img src="https://www.pogo-muc.de/images/pogo-muc/logosmall.png" alt="" class="pageHeaderLogoSmall">';
-            echo '			</a>';
-            echo '		</div>';
-            echo '	</div>';
-            echo '</div>';
-            echo '<div class="pageNavigation">';
-            echo '	<div class="layoutBoundary">';
-            echo '	</div>';
-            echo '</div>';
+    ?>
+    </head>
+    <body>
+        <div id="pageHeaderFacade" class="pageHeaderFacade">
+            <div class="layoutBoundary">
+                <div id="pageHeaderLogo" class="pageHeaderLogo">
+                    <a href="<?=$WebsiteUrl ?>">
+                        <img src="<?=$pageHeaderLogoLarge ?>" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">
+                        <img src="<?=$pageHeaderLogoSmall ?>" alt="" class="pageHeaderLogoSmall">
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="pageNavigation">
+            <div class="layoutBoundary">
+            </div>
+        </div>
+        <?php
             echo '<h2>Zahlung erfolgreich!</h2>';
             echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-            echo '<div style="color:green"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
+            echo '<div style="color:#00ff00"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
 
                 /*
                 //Sometimes Payment are kept pending even when transaction is complete.
@@ -320,13 +322,13 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 
                 if('Completed' == $httpParsedResponseAr["PAYMENTINFO_0_PAYMENTSTATUS"])
                 {
-                    //echo '<div style="color:green"><br>Zahlung erfolgreich! Du bist dem Kanal soeben beigetreten!</div>';
+                    //echo '<div style="color:#00ff00"><br>Zahlung erfolgreich! Du bist dem Kanal soeben beigetreten!</div>';
                     $nix = '';
                 }
                 elseif('Pending' == $httpParsedResponseAr["PAYMENTINFO_0_PAYMENTSTATUS"])
                 {
                     echo '<div style="color:red">Transaction Complete, but payment is still pending! '.
-                    'You need to manually authorize this payment in your <a target="_new" href="http://www.paypal.com">Paypal Account</a></div>';
+                    'You need to manually authorize this payment in your <a target="_blank" href="http://www.paypal.com">Paypal Account</a></div>';
                     Logger::warn("AN NEWER PAYPAL ACC, PENDING..."); // LOGGER
                 }
 
@@ -517,7 +519,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     //print_r($httpParsedResponseAr);
                     //echo '</pre>';
                 } else  {
-                    echo '<div style="color:red"><b>GetTransactionDetails failed:</b>'.urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]).'</div>';
+                    echo '<div style="color:#ff0000"><b>GetTransactionDetails failed:</b>'.urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]).'</div>';
                     echo '<pre>';
                     print_r($httpParsedResponseAr);
                     echo '</pre>';
@@ -525,7 +527,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                 }
 
     }else{
-            echo '<div style="color:red"><b>Error : </b>'.urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]).'</div>';
+            echo '<div style="color:#ff0000"><b>Error : </b>'.urldecode($httpParsedResponseAr["L_LONGMESSAGE0"]).'</div>';
             echo '<pre>';
             print_r($httpParsedResponseAr);
             echo '</pre>';
