@@ -5,12 +5,12 @@ $tbl    = "abos";
 
 
 // Website- Url, Titel, Header
-$WebsiteUrl     = "https://YOUR_DOMAIN.COM";
-$WebsiteTitle   = "Pogo Dein Stadtteil";
-$pageHeaderLogoLarge   = "logo.png";
-$pageHeaderLogoSmall   = "logosmall.png";
-$header         = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
-$showDisclaimer = false;
+$WebsiteUrl           = "https://YOUR_DOMAIN.COM";
+$WebsiteTitle         = "Pogo Dein Stadtteil";
+$pageHeaderLogoLarge  = "logo.png";
+$pageHeaderLogoSmall  = "logosmall.png";
+$header               = "f&uuml;r den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugef&uuml;gt!";
+$showDisclaimer       = false;  // to use disclaimer set it true, rename the disclaimer_example.php to disclaimer.php and config the up part in the file !!!
 
 
 // API Server URL
