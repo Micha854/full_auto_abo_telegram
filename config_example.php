@@ -6,6 +6,7 @@ $tbl    = "abos";
 
 // Website- Url, Titel, Header
 $WebsiteUrl           = "https://YOUR_DOMAIN.COM";
+$WebsiteUrlHeader     = "https://YOUR_DOMAIN.COM";
 $WebsiteTitle         = "Pogo Dein Stadtteil";
 $pageHeaderLogoLarge  = "logo.png";
 $pageHeaderLogoSmall  = "logosmall.png";
