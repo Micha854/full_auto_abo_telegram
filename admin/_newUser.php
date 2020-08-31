@@ -194,7 +194,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 <h1>Benutzer hinzuf&uuml;gen</h1>
   <form method="post" action="">
     <div class="form-group">
-      <p class="lead">Telegram Username:</p>
+      <p class="lead">Telegram Benutzername:</p>
       <input type="text" name="user" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
     </div>
     <div class="form-group">

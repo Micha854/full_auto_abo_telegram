@@ -38,9 +38,9 @@ if($_POST) //Post Data received from product list page.
     {
         //Show error message
         $wrongName = htmlspecialchars($ItemDesc, ENT_QUOTES, 'UTF-8');
-        echo '<div style="color:red"><b>Error : </b>Den Telegram Username: '.$wrongName.' gibt es nicht!</div></br>';
+        echo '<div style="color:red"><b>Error : </b>Den Telegram Benutzername: '.$wrongName.' gibt es nicht!</div></br>';
         echo '<a href="/"><button>Zur&uuml;ck</button></a>';
-        Logger::warn("Telegram Username does not exist: ".$wrongName); // LOGGER
+        Logger::warn("Telegram Benutzername does not exist: ".$wrongName); // LOGGER
         return;
     }
 
@@ -210,108 +210,37 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
     $paypal= new MyPayPal();
     $httpParsedResponseAr = $paypal->PPHttpPost('DoExpressCheckoutPayment', $padata, $PayPalApiUsername, $PayPalApiPassword, $PayPalApiSignature, $PayPalMode);
 
-    //Check if everything went ok..
-    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"]))
-    {
+//Check if everything went ok..
+	if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+		if($mailSend == '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
 
-            if($mailSend == '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
-
-            $TansID = urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-            ?>
-            <!DOCTYPE html>
-            <html dir="ltr" lang="de">
-            <head>
-                <meta charset="utf-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1">
-                <title><?=$WebsiteTitle ?></title>
-                <style>
-            <?php
-            echo '<!--';
-            echo 'body{font-family: arial;color: #7A7A7A;margin:0px;padding:0px;}';
-            echo '.procut_item {width: 100%;margin-right: auto;margin-left: auto;padding: 20px;background: #F1F1F1;margin-bottom: 1px;font-size: 12px;border-radius: 5px;text-shadow: 1px 1px 1px #FCFCFC;}';
-            echo '.channel_item {width: 100%;margin-right: auto;margin-left: auto;padding: 20px 0 20px 0;background: #F1F1F1; border-top:solid 2px #00CC00;border-bottom:solid 2px #00CC00;margin-bottom: 1px;font-size: 12px;text-shadow: 1px 1px 1px #FCFCFC; font-weight:bolder}';
-            echo '.procut_item h4 {margin: 0px;padding: 0px;font-size: 20px;}';
-            echo '.channel_item h4 {margin: 0px;padding: 0 0 10px 0;font-size: 14px;}';
-            echo '.input{font-size:22px; padding:1px}';
-            echo '.dw_button{font-size:16px}';
-            echo '';
-            echo '.pageHeaderFacade {';
-            echo '    background-image: url("header.png");';
-            echo '    background-color: rgba(58, 109, 156, 1);';
-            echo '    background-size: cover;';
-            echo '    background-position: center top;';
-            echo '    background-repeat: no-repeat;';
-            echo '    min-height: 260px;';
-            echo '    height: 260px;';
-            echo '    max-height: 260px;';
-            echo '}';
-            echo '';
-            echo '.layoutBoundary {';
-            echo '	min-width: 90%;';
-            echo '	width: 90%;';
-            echo '	max-width: 90%;';
-            echo '	padding: 0px 0px;';
-            echo '}';
-            echo '';
-            echo '.pageHeaderLogo {';
-            echo '	height: 30px !important;';
-            echo '	width: 100% !important;';
-            echo '	text-align: center;';
-            echo '}';
-            echo '';
-            echo '@media screen and (max-width:1024px){';
-            echo '	.pageHeaderLogo .pageHeaderLogoLarge{';
-            echo '		display:none';
-            echo '	}';
-            echo '';
-            echo '	.pageHeaderLogo .pageHeaderLogoSmall{';
-            echo '		max-height:30px;max-width:100%';
-            echo '	}';
-            echo '}';
-            echo '';
-            echo '@media screen and (min-width:1025px),print{';
-            echo '	.pageHeaderLogo{flex:1 1 auto}.pageHeaderLogo .pageHeaderLogoLarge{';
-            echo '		max-width:100%';
-            echo '	}';
-            echo '';
-            echo '	.pageHeaderLogo .pageHeaderLogoSmall{';
-            echo '		display:none';
-            echo '	}';
-            echo '';
-            echo '	.pageHeaderLogo > a{';
-            echo '		display:block;padding:10px 0';
-            echo '	}';
-            echo '}';
-            echo '';
-            echo '.pageNavigation {';
-            echo '    background-color: rgba(58, 109, 156, 1);';
-            echo '    flex: 0 0 auto;';
-            echo '    padding: 0px 0px;';
-            echo '    min-width: 100%;';
-            echo '    max-width: 100%;';
-            echo '    height: 40px;';
-            echo '}';
-            echo '-->';
-            echo '</style>';
-    ?>
-    </head>
-    <body>
-        <div id="pageHeaderFacade" class="pageHeaderFacade">
-            <div class="layoutBoundary">
-                <div id="pageHeaderLogo" class="pageHeaderLogo">
-                    <a href="<?=$WebsiteUrl ?>">
-                        <img src="<?=$pageHeaderLogoLarge ?>" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">
-                        <img src="<?=$pageHeaderLogoSmall ?>" alt="" class="pageHeaderLogoSmall">
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="pageNavigation">
-            <div class="layoutBoundary">
-            </div>
-        </div>
-        <?php
-            echo '<h2>Zahlung erfolgreich!</h2>';
+		$TansID = urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
+		?>
+<!DOCTYPE html>
+<html dir="ltr" lang="de">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><?=$WebsiteUrlHeader ?></title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div id="pageHeaderFacade" class="pageHeaderFacade">
+			<div class="layoutBoundary">
+				<div id="pageHeaderLogo" class="pageHeaderLogo">
+					<a href="<?=$WebsiteUrl ?>">
+						<img src="<?=$pageHeaderLogoLarge ?>" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">
+						<img src="<?=$pageHeaderLogoSmall ?>" alt="" class="pageHeaderLogoSmall">
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="pageNavigation">
+			<div class="layoutBoundary">
+			</div>
+		</div>
+		<h2>Zahlung erfolgreich!</h2>
+		<?php
             echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
             echo '<div style="color:#00ff00"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
 
