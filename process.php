@@ -223,7 +223,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
             <head>
                 <meta charset="utf-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1">
-                <title><?=$WebsiteTitle ?></title>
+                <title><?=$WebsiteUrlHeader ?></title>
                 <style>
             <?php
             echo '<!--';

@@ -117,7 +117,7 @@ $payPalSpendenLink     = 'your donate link';
 <div id="pageHeaderFacade" class="pageHeaderFacade">
 	<div class="layoutBoundary">
 		<div id="pageHeaderLogo" class="pageHeaderLogo">
-			<a href="<?=$WebsiteUrl ?>">
+			<a href="<?=$WebsiteUrlHeader ?>">
 				<img src="<?=$pageHeaderLogoLarge ?>" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">
 				<img src="<?=$pageHeaderLogoSmall ?>" alt="" class="pageHeaderLogoSmall">
 			</a>
