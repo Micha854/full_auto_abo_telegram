@@ -35,7 +35,7 @@ $payPalSpendenLink     = 'your donate link';
 			</div>
 		</div>
 		
-		<div style="padding-bottom:5px; padding-top:15px; padding-left:20px; padding-right:20px; font-size:24px; font-weight:bolder"><?=$organization ?> - Spenden Disclaimer</div>
+		<div style="padding-bottom:5px; padding-top:15px; padding-left:20px; padding-right:20px; font-size:24px; font-weight:bold"><?=$organization ?> - Spenden Disclaimer</div>
 		<div class="product_wrapper">
 		Version 1 (2020-08-23)<br>
 		<br>
