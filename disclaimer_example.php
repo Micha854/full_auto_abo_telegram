@@ -4,7 +4,6 @@ include_once("config.php");
 #########################################################################
 #//////////////   CONFIG THIS PART   ///////////////////////////////////#
 #
-$organization          = 'your organization';
 $telegramSupport       = 'your support channel';
 $payPalSpendenLink     = 'your donate link';
 #
