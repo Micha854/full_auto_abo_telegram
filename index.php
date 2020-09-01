@@ -40,7 +40,7 @@ $result_cha = $mysqli->query($query_cha);
 			</div>
 		</div>
 		
-		<div style="padding-bottom:5px; padding-top:15px; font-size:24px; font-weight:bolder; text-align: center;">Abo</div>
+		<div style="padding-bottom:5px; padding-top:15px; font-size:24px; font-weight:bold; text-align: center;"><?=$organization ?> - Spende</div>
 		<div style="padding-bottom:8px; text-align: center;"><?=$header ?></div>
 		<div class="product_wrapper">
 		<?php
