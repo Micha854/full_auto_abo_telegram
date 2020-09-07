@@ -4,7 +4,6 @@ include_once("config.php");
 #########################################################################
 #//////////////   CONFIG THIS PART   ///////////////////////////////////#
 #
-$organization          = 'your organization';
 $telegramSupport       = 'your support channel';
 $payPalSpendenLink     = 'your donate link';
 #
@@ -36,7 +35,7 @@ $payPalSpendenLink     = 'your donate link';
 			</div>
 		</div>
 		
-		<div style="padding-bottom:5px; padding-top:15px; padding-left:20px; padding-right:20px; font-size:24px; font-weight:bolder"><?=$organization ?> - Spenden Disclaimer</div>
+		<div style="padding-bottom:5px; padding-top:15px; padding-left:20px; padding-right:20px; font-size:24px; font-weight:bold"><?=$organization ?> - Spenden Disclaimer</div>
 		<div class="product_wrapper">
 		Version 1 (2020-08-23)<br>
 		<br>
@@ -67,7 +66,7 @@ $payPalSpendenLink     = 'your donate link';
 		Au&szlig;erdem <u>erfolgt eine Verl&auml;ngerung fr&uuml;hestens 7 Tage vor Ablauf des jeweils g&uuml;ltigen Zeitraums</u>, so dass beispielsweise zweimal mal kurz hintereinander gespendete 12,00 &euro; nicht zu einem Zugang von 12 Monaten f&uuml;hren.<br>
 		F&uuml;r <b>mehrmalige Spenden w&auml;hrend eines noch laufenden Zeitraums</b> wird gedankt; diese werden aber allgemein f&uuml;r die <?=$organization?> Map verwendet und <b>f&uuml;hren nicht zur Verl&auml;ngerung des Zeitraums.</b><br>
 		<br>
-		Dar&uuml;ber hinaus k&ouml;nnen auch <a href="<?=$payPalSpendenLink?>" target="_blank">&#8222;allgemeine&#8220; Spenden</a> geleistet werden, die <b>nicht mit einem Zugang zu den beschr&auml;nkten Diensten verbunden sind.</b><br>
+		Besteht der Wunsch sich dar&uuml;ber hinausgehend am Community-Projekt zu beteiligen und damit zu dessen Verbesserung beizutragen, k&ouml;nnen auch <a href="<?=$payPalSpendenLink?>" target="_blank">zus&auml;tzliche Spenden</a> geleistet werden, die jedoch zu <b>keiner Verl&auml;ngerung des Zeitraums f&uuml;hren.</b><br>
 		<br>
 		<br>
 		<b>Die <?=$organization?> Map wird von Freiwilligen auf "best effort" Basis betrieben, was hei&szlig;t, dass keinerlei Anspr&uuml;che auf vollst&auml;ndige oder teilweise Erf&uuml;llung ihrer Dienste besteht.</b><br>
