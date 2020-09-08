@@ -147,10 +147,8 @@ if($use_map == "Rocketmap") {
         $linecount = $linecount + substr_count($line, PHP_EOL);
     }
     fclose($handle);
-    if($gesamte_anzahl == $linecount) {
-        $htpasswd_count = "<span style='background:#333333; color:#00CC00; padding:3px'>$linecount Benutzer in .htpasswd</span>";
-    } else {
-        $htpasswd_count = "<span style='background:#333333; color:#FF0000; padding:3px; font-weight:bolder'>$linecount Benutzer in .htpasswd</span>";
+    if($gesamte_anzahl != $linecount) {
+        $htpasswd_count = "<span style='font-size:15px; background:#333333; color:#FF0000; padding:3px; font-weight:bolder'>$linecount User in .htpasswd</span>";
     }
 }
 
