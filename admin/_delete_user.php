@@ -34,17 +34,10 @@ while($rowX = $result->fetch_array()) {
             $channel= $rowX["name"];
             
             // userid ist unbekannt !!!
-            if(is_null($row)) {
-                $delete = 'no';
-                $userid = $user_id;			// userid from API
-                $date = '';
-                $empfaenger	= '';
-            } else {
-                $delete = 'yes';
-                $userid = $row["userid"];	// userid from DB
-                $date = $row["endtime"];
-                $empfaenger	= $row["buyerEmail"];
-            }
+            $delete = is_null($row) ? 'no' : 'yes';
+            $userid = is_null($row) ? $user_id : $row["userid"];
+            $date = is_null(row) ? '' : $row["endtime"];
+            $empfaenger = is_null(row) ? '' : $row["buyerEmail"];
                         
             $userid_check = is_null($row) && $element["role"] == 'user' ? " class='iderror'" : "";
                     
@@ -160,7 +153,6 @@ while($rowX = $result->fetch_array()) {
                     if($use_map == "PMSF") {
                         mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$row["buyerEmail"]."' ");
                     } elseif($use_map == "Rocketmap") {
-                        include '../Htpasswd.php';
                         $htpasswd = new Htpasswd('../.htpasswd');
                         $htpasswd->deleteUser($row["TelegramUser"]);
                     }

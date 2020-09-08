@@ -1,5 +1,6 @@
 <?php
 require_once dirname(__FILE__) . '/../config.php';
+require_once dirname(__FILE__) . '/../Htpasswd.php';
                     
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -105,6 +106,23 @@ if($result->num_rows) {
     include(dirname(__FILE__) . "/_delete_user.php");
 } else {
     echo "<h2>nix zu tun!</h2>";
+}
+
+// User löschen die in keinen Kanälen sind !!!
+$non_exists_user = $mysqli->query("SELECT * FROM ".$tbl);
+while($manual = $non_exists_user->fetch_array()) {
+    if($manual["userid"]) {
+        if($manual["endtime"] < date("Y-m-d H:i:s") ) {
+            mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$manual['id']." ");
+            echo "<p>delete".$manual['TelegramUser'].'</p>';
+            if($use_map == "PMSF") {
+                mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$manual['buyerEmail']."' ");
+            } elseif($use_map == "Rocketmap") {
+                $htpasswd = new Htpasswd('../.htpasswd');
+                $htpasswd->deleteUser($manual["TelegramUser"]);
+            }
+        }
+    }
 }
 
 $dauerScript = microtime(true) - $beginnScript;

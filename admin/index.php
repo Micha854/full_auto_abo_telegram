@@ -135,7 +135,26 @@ $result = $mysqli->query($query);
 
 echo '<div class="jumbotron">';
 if(isset($Save)) { echo $Save; }
-echo '<h3>'.$gesamte_anzahl; if($gesamte_anzahl > 1) { echo ' Abonnenten'; } else { echo ' Abonnent'; } echo '</h3>'; 
+
+$htpasswd_count = '';
+if($use_map == "Rocketmap") {
+    // .htpasswd auslesen
+    $file="../.htpasswd";
+    $linecount = 0;
+    $handle = fopen($file, "r");
+    while(!feof($handle)){
+        $line = fgets($handle, 4096);
+        $linecount = $linecount + substr_count($line, PHP_EOL);
+    }
+    fclose($handle);
+    if($gesamte_anzahl == $linecount) {
+        $htpasswd_count = "<span style='background:#333333; color:#00CC00; padding:3px'>$linecount Benutzer in .htpasswd</span>";
+    } else {
+        $htpasswd_count = "<span style='background:#333333; color:#FF0000; padding:3px; font-weight:bolder'>$linecount Benutzer in .htpasswd</span>";
+    }
+}
+
+echo '<h3 style="text-align:left;float:left">'.$gesamte_anzahl; if($gesamte_anzahl > 1) { echo ' Abonnenten'; } else { echo ' Abonnent'; } echo '</h3><div style="text-align:right">'.$htpasswd_count.' </div>'; 
 $sites = '';
 if($gesamte_anzahl > $ergebnisse_pro_seite) {
     for ($i=1; $i<=$gesamt_seiten; ++$i) {
