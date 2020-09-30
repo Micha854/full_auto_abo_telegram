@@ -72,7 +72,7 @@ $result_cha = $mysqli->query($query_cha);
 								<?php
 									foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
 										?>
-										<input id="<?=$row["item_price"].$channel["id"]?>" type="checkbox" name="added[]" value="<?=$channel["id"]?>" checked="checked" /> <label for="<?=$row["item_price"].$channel["id"]?>"><?=$channel["name"]?> beitreten</label>
+										<input id="<?=$row["item_price"].$channel["id"]?>" type="checkbox" name="added[]" value="<?=$channel["id"]?>" checked="checked" /> <label for="<?=$row["item_price"].$channel["id"]?>"><?=$channel["name"]?> beitreten</label><br>
 										<?php
 									}
 								?>
