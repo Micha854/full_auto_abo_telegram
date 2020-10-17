@@ -83,7 +83,7 @@ $result_cha = $mysqli->query($query_cha);
 							</p>
 							<?php if($showDisclaimer) { ?>
 							<p>
-								<input id="3disclaimer" type='checkbox' name='disclaimer' required /> <label for="3disclaimer">Ich akzeptiere die Regeln im <a href="disclaimer.php">Disclaimer</a></label>
+								<input id="<?=$row["item_price"]?>disclaimer" type='checkbox' name='disclaimer' required /> <label for="<?=$row["item_price"]?>disclaimer">Ich akzeptiere die Regeln im <a href="disclaimer.php">Disclaimer</a></label>
 							</p>
 							<?php } ?>
 							<p>
