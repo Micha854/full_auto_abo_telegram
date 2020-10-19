@@ -59,10 +59,10 @@ $result_cha = $mysqli->query($query_cha);
 							<input type="hidden" name="itemname" value="<?=$row["months"]?> Monat Abo" /> 
 		
 							<input type="hidden" name="itemnumber" value="<?=$row["item_number"]?>" /> 
-							Dein Telegram Benutzername: <br /><input class="input" size="10" type="text" name="itemdesc" value="" required /> <span style="font-size:11px">(beginnend mit @)</span>
+							Dein Telegram Benutzername: <br><input class="input" size="10" type="text" name="itemdesc" value="" required /> <span style="font-size:11px">(beginnend mit @)</span>
 		
 							<?php if($use_map == "PMSF") { ?>
-							<br />Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" />
+							<br>Deine eMail: <input class="input" size="10" type="text" name="itemdesc2" value="" />
 							<?php } ?> 
 		
 							<input type="hidden" name="itemprice" value="<?=$row["item_price"]?>" />
@@ -72,7 +72,7 @@ $result_cha = $mysqli->query($query_cha);
 								<?php
 									foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
 										?>
-										<input id="<?=$row["item_price"].$channel["id"]?>" type="checkbox" name="added[]" value="<?=$channel["id"]?>" checked="checked" /><br /> <label for="<?=$row["item_price"].$channel["id"]?>"><?=$channel["name"]?> beitreten</label>
+										<input id="<?=$row["item_price"].$channel["id"]?>" type="checkbox" name="added[]" value="<?=$channel["id"]?>" checked="checked" /> <label for="<?=$row["item_price"].$channel["id"]?>"><?=$channel["name"]?> beitreten</label><br>
 										<?php
 									}
 								?>
@@ -83,11 +83,11 @@ $result_cha = $mysqli->query($query_cha);
 							</p>
 							<?php if($showDisclaimer) { ?>
 							<p>
-								<input id="3disclaimer" type='checkbox' name='disclaimer' required /> <label for="3disclaimer">Ich akzeptiere die Regeln im <a href="disclaimer.php">Disclaimer</a></label>
+								<input id="<?=$row["item_price"]?>disclaimer" type='checkbox' name='disclaimer' required /> <label for="<?=$row["item_price"]?>disclaimer">Ich akzeptiere die Regeln im <a href="disclaimer.php">Disclaimer</a></label>
 							</p>
 							<?php } ?>
 							<p>
-								<input class="dw_button" type="submit" name="submitbutt" value="weiter" />
+								<input class="dw_button" type="submit" name="submitbutt" value="Weiter zu Paypal" />
 							</p>
 						</td>
 					</tr>
