@@ -28,7 +28,10 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     $newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
     if(isset($_POST["email"])) {
         $newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
+    } else {
+        $newMail = $row["buyerEmail"];
     }
+
     $newAdd = $_POST["user"];
     $ItemDesc = $newAdd;
     
@@ -45,13 +48,13 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         $useridnow = ", userid = NULL";
     }
     
-    mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."'".$useridnow.", pass = '".$passwd."' WHERE id = ".$row["id"]);
+    mysqli_query($mysqli, "UPDATE ".$tbl." SET TelegramUser = '".$newUser."'".$useridnow.", buyerEmail = '".$newMail."', pass = '".$passwd."' WHERE id = ".$row["id"]);
     
     if($use_map == "PMSF") {
         $statement = "insert";
         $hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
         
-        $loginName	= $_POST["email"];
+        $loginName	= $newMail;
         mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', session_id = NULL WHERE user = '".$loginName."' ");
     } elseif($use_map == "Rocketmap") {
         $statement = "insert";

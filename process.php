@@ -339,7 +339,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         $sendAdmins = explode(',', $admins);
                         $sendAdmins = array_map('trim', $sendAdmins);
                         for($i=0; $i < count($sendAdmins); $i++) {
-                            $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=".$sendAdmins[$i]."&data[message]=new $statement User: $ItemDesc, Amount payed $ItemTotalPrice, date to set $date&data[parse_mode]=html", false);
+                            $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=".$sendAdmins[$i]."&data[message]=new%20$statement%20User:%20$ItemDesc,%20Amount%20payed%20$ItemTotalPrice,%20date%20to%20set%20$date&data[parse_mode]=html", false);
                         }
                     }
                     
