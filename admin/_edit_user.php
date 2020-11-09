@@ -240,7 +240,7 @@ if(isset($_GET["delete"])) {
   <table class="table">
     <tr>
       <th width="50%" scope="col">Aktueller @Username</th>
-      <th scope="col"><?=$row["TelegramUser"] ?></th>
+      <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px">(<?=$row["buyerEmail"] ?>)</span></th>
     </tr>
     <tr>
       <th scope="col">Passwort</th>
