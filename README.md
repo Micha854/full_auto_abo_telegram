@@ -138,7 +138,7 @@ CREATE TABLE `abos` (
   `Amount` varchar(5) NOT NULL,
   `TelegramUser` varchar(155) NOT NULL,
   `userid` bigint(10) DEFAULT NULL,
-  `channels` varchar(55) NOT NULL,
+  `channels` varchar(55) DEFAULT NULL,
   `pass` varchar(8) NOT NULL,
   `TransID` varchar(25) DEFAULT NULL,
   `paydate` datetime NOT NULL,

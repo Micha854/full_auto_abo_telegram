@@ -13,7 +13,7 @@ $pageHeaderLogoSmall  = "logosmall.png";
 $header               = "für den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugefügt!";
 $organization         = 'your organization';
 $showDisclaimer       = false;  // to use disclaimer set it true, rename the disclaimer_example.php to disclaimer.php and config the up part in the file !!!
-$AccessAllChannels    = false;  // Access to all Channels = false or true for costum
+$AccessAllChannels    = false;  // set true to Access for all Channels or false(default) for costum handling
 
 
 // API Server URL, bot token, Admins
