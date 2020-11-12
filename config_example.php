@@ -5,14 +5,20 @@ $tbl    = "abos";
 
 
 // Website- Url, Titel, Header
-$WebsiteUrl     = "https://YOUR_DOMAIN.COM";
-$WebsiteTitle   = "Pogo Dein Stadtteil";
-$header         = "für den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugefügt!";
+$WebsiteUrl           = "https://YOUR_DOMAIN.COM";
+$WebsiteUrlHeader     = $WebsiteUrl; // If you want to link another Website in the header image
+$WebsiteTitle         = "Pogo Dein Stadtteil";
+$pageHeaderLogoLarge  = "logo.png";
+$pageHeaderLogoSmall  = "logosmall.png";
+$header               = "für den DEIN STADTTEIL Mon IV - Telegram Kanal (nur Innenstadt). Du wirst dem Kanal automatisch nach deiner Zahlung hinzugefügt!";
+$organization         = 'your organization';
+$showDisclaimer       = false;  // to use disclaimer set it true, rename the disclaimer_example.php to disclaimer.php and config the up part in the file !!!
+$AccessAllChannels    = false;  // Access to all Channels = false or true for costum
 
 
 // API Server URL, bot token, Admins
 $apiServer      = "http://YOURURL.COM:9503/api/";
-$BotToken	    = "123456789:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";	// without "_bot" first !!!
+$BotToken	      = "123456789:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";	// without "_bot" first !!!
 $admins         = "Admin_1, Admin_2";           // send a message to Telegram admins when a subscription is completed or renewed
 
 
@@ -21,6 +27,7 @@ $urlMap         = "http://YOURURL.COM/map/";    // Url to your pogo map
 $use_map        = "PMSF";                       // settings --> "PMSF" or "Rocketmap" or "" for empty
 $login_system   = "native";                     // login type
 $access_level   = "1";                          // access level for user
+$maxAboLength   = 0;                            // Maximal days of abo length (0 if unrestricted)
 
 
 // Mail Config
@@ -40,7 +47,7 @@ $smtpPass       = '';                     // SMTP account password
 
 
 //PayPal Config
-$paypallogo     = $WebsiteUrl."/logo_example.jpg";	// PayPal Logo
+$paypallogo     = $WebsiteUrl."images/logo_example.jpg";	// PayPal Logo
 //$paypallogo   = ""; 							                // kein Logo anzeigen
 
 $PayPalMode     = 'live';                           // sandbox or live

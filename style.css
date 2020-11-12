@@ -1,0 +1,133 @@
+body{
+	font-family: "Open Sans", Arial, Helvetica, sans-serif;
+	color: #7A7A7A;
+	margin:0px;
+	padding:0px;
+	font-size: 13px;
+}
+
+.procut_item {
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding-left: 20px;
+	padding-right: 20px;
+	padding-top: 10px;
+	padding-bottom: 0px;
+	background: #F1F1F1;
+	margin-bottom: 1px;
+}
+
+.channel_item {
+	width: 100%;
+	margin-right: auto;
+	margin-left: auto;
+	padding: 20px 0 20px 0;
+	background: #F1F1F1;
+	border-top:solid 2px #00CC00;
+	border-bottom:solid 2px #00CC00;
+	margin-bottom: 1px;
+	font-size: 12px;
+	font-weight:bold;
+}
+
+.procut_item h4 {
+	margin: 0px;
+	padding: 0px;
+	font-size: 20px;
+}
+
+.channel_item h4 {
+	margin: 0px;
+	padding: 0 0 10px 0;
+	font-size: 14px;
+}
+
+.input{
+	font-size:22px;
+	padding:1px
+}
+
+.dw_button{
+	font-size:16px
+}
+
+a {
+	color: rgb(61, 12, 234);
+	text-decoration: underline;
+}
+
+a:hover {
+	color: rgb(54, 36, 117);
+	text-decoration: underline;
+}
+
+.pageHeaderFacade {
+	background-image: url("images/header.png");
+	background-color: rgba(58, 109, 156, 1);
+	background-size: cover;
+	background-position: center top;
+	background-repeat: no-repeat;
+	min-height: 260px;
+	height: 260px;
+	max-height: 260px;
+}
+
+.layoutBoundary {
+	min-width: 90%;
+	width: 90%;
+	max-width: 90%;
+	padding: 0px 0px;
+	padding-top:3px; padding-left:10px;
+	font-size:28px;
+	font-weight:bold;
+}
+
+.layoutBoundary a {
+	color: rgb(207, 206, 212);
+	text-decoration: none;
+}
+
+.layoutBoundary a:hover {
+	color: rgb(207, 206, 212);
+	text-decoration: underline;
+}
+
+.pageHeaderLogo {
+	height: 30px !important;
+	width: 100% !important;
+	text-align: center;
+}
+
+@media screen and (max-width:1024px){
+	.pageHeaderLogo .pageHeaderLogoLarge{
+		display:none
+	}
+
+	.pageHeaderLogo .pageHeaderLogoSmall{
+		max-height:30px;max-width:100%
+	}
+}
+
+@media screen and (min-width:1025px),print{
+	.pageHeaderLogo{flex:1 1 auto}.pageHeaderLogo .pageHeaderLogoLarge{
+		max-width:100%
+	}
+
+	.pageHeaderLogo .pageHeaderLogoSmall{
+		display:none
+	}
+
+	.pageHeaderLogo > a{
+		display:block;padding:10px 0
+	}
+}
+
+.pageNavigation {
+	background-color: rgba(58, 109, 156, 1);
+	flex: 0 0 auto;
+	padding: 0px 0px;
+	min-width: 100%;
+	max-width: 100%;
+	height: 40px;
+}

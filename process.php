@@ -24,10 +24,28 @@ if($_POST) //Post Data received from product list page.
     
     $ItemPrice 	= $rowData["item_price"];
     $days_to_end 	= $rowData["abo_days"];
-        
+
+    if($AccessAllChannels === false) {
+        $InputChannel = array_map(array($mysqli, 'real_escape_string'), $_POST["added"]);
+    } else {
+        $InputChannel = NULL;
+    }
+
     $ItemDesc 	= mysqli_real_escape_string($mysqli, $_POST["itemdesc"]); //Item description
     if(substr($ItemDesc,0,1) !== "@") {
         $ItemDesc = "@".$ItemDesc;
+    }
+    $getInfo    = callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
+    $getUserId  = json_decode($getInfo, true);
+    $userid     = $getUserId["response"]["InputPeer"]["user_id"];
+    if(is_null($userid))
+    {
+        //Show error message
+        $wrongName = htmlspecialchars($ItemDesc, ENT_QUOTES, 'UTF-8');
+        echo '<div style="color:red"><b>Error : </b>Den Telegram Benutzername: '.$wrongName.' gibt es nicht!</div></br>';
+        echo '<a href="/"><button>Zur&uuml;ck</button></a>';
+        Logger::warn("Telegram Benutzername does not exist: ".$wrongName); // LOGGER
+        return;
     }
     
     if(isset($_POST["itemdesc2"])) {
@@ -110,6 +128,7 @@ if($_POST) //Post Data received from product list page.
                 $_SESSION['ShippinCost'] 		=  $ShippinCost; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
                 $_SESSION['GrandTotal'] 		=  $GrandTotal;
                 $_SESSION['days_to_end'] 		=  $days_to_end;
+                $_SESSION['InputChannel'] 		=  $InputChannel;
 
 
         //We need to execute the "SetExpressCheckOut" method to obtain paypal token
@@ -158,6 +177,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
     $ShippinCost 		= $_SESSION['ShippinCost']; //Although you may change the value later, try to pass in a shipping amount that is reasonably accurate.
     $GrandTotal 		= $_SESSION['GrandTotal'];
     $days_to_end		= $_SESSION['days_to_end'];
+    $InputChannel		= $_SESSION['InputChannel'];
 
     $padata = 	'&TOKEN='.urlencode($token).
                 '&PAYERID='.urlencode($payer_id).
@@ -193,17 +213,38 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
     $httpParsedResponseAr = $paypal->PPHttpPost('DoExpressCheckoutPayment', $padata, $PayPalApiUsername, $PayPalApiPassword, $PayPalApiSignature, $PayPalMode);
     
     //Check if everything went ok..
-    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) 
-    {
+    if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) {
+		if($mailSend == '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
 
-            if($mailSend == '1') { $output_message = "<br><b>Schau in deinem Email Postfach nach...<b>"; }
-            
-            $TansID = urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-            
-            echo '<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">';
-            echo '<h2>Zahlung erfolgreich!</h2>';
+		$TansID = urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
+		?>
+<!DOCTYPE html>
+<html dir="ltr" lang="de">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title><?=$WebsiteUrlHeader ?></title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+	<body>
+		<div id="pageHeaderFacade" class="pageHeaderFacade">
+			<div class="layoutBoundary">
+				<div id="pageHeaderLogo" class="pageHeaderLogo">
+					<a href="<?=$WebsiteUrl ?>">
+						<img src="<?=$pageHeaderLogoLarge ?>" alt="" class="pageHeaderLogoLarge" style="width: 350px;height: 165px">
+						<img src="<?=$pageHeaderLogoSmall ?>" alt="" class="pageHeaderLogoSmall">
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="pageNavigation">
+			<div class="layoutBoundary">
+			</div>
+		</div>
+		<h2>Zahlung erfolgreich!</h2>
+		<?php
             echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-            echo '<div style="color:green"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
+            echo '<div style="color:#00ff00"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
             
                 /*
                 //Sometimes Payment are kept pending even when transaction is complete. 
@@ -258,7 +299,20 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         }
                         $statement = "update";
                         $passwd = $update["pass"];
-                        $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+                        if($maxAboLength > 0){
+                            $maxDate = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s',time()). " + {$maxAboLength} days"));
+                            $maxDateD = date_create($maxDate);
+                            $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+                            $checkDate = date_create($date);
+                            if($checkDate > $maxDateD){
+                                $interval = date_diff($checkDate, $maxDateD);
+                                $date = $maxDate;
+                                $days_to_end = $days_to_end - $interval->days;
+                            }
+                        }
+                        else {
+                            $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+                        }
                         $amountInsert = $update["Amount"];
                         $amountInsert+=$ItemTotalPrice;
                     } else {
@@ -319,9 +373,14 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         Logger::warn("USE NO MAP IN YOUR CONFIG !!!"); // LOGGER
                         $empfaenger	= $buyEmail;
                     }
+
+                    if($AccessAllChannels === false) {
+                        $InputChannels = implode(',',$InputChannel);
+                        Logger::info("SELECTED CHANNELS ".$InputChannels); // LOGGER
+                    }
                                         
                     if($statement == "insert") {
-                        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+                        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
                         if($insert_row = $mysqli->query($sql_insert)) {
                             Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
                         } else {
@@ -351,7 +410,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         $mailMessage= nl2br($userPayedMsgShort);
                     }
                     
-                    $all_channels = $mysqli->query("SELECT * FROM channels");
+                    if($AccessAllChannels === false) {
+                        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).")");
+                    } else {
+                        $all_channels = $mysqli->query("SELECT * FROM channels");
+                    }
                     while($unsert_bann = $all_channels->fetch_array()) {		
                         $chat_id = $unsert_bann["chatid"];
                         $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);

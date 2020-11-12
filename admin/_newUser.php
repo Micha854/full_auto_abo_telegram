@@ -46,8 +46,15 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     function generateRandomString($length = 10) {
         //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
         return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    } $passwd = generateRandomString(8);
+    }
     
+    // give costum passwort or generate automaticle
+    if(isset($_POST["pass"])) {
+      $passwd = mysqli_real_escape_string($mysqli, $_POST["pass"]);
+    } else {
+      $passwd = generateRandomString(8);
+    }
+
     $newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
     $newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
     $newAdd = $_POST["user"];
@@ -59,6 +66,13 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     
     $days_to_end = $_POST["itemprice"]/$schnitt;
     $days_to_end = ceil($days_to_end);
+
+    if($AccessAllChannels === false) {
+        $InputChannel = array();
+        $InputChannel = $_POST["added"];  
+    } else {
+        $InputChannel = NULL;
+    }
                     
     // NEW USER OR UPDATE
     $check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' ");
@@ -107,6 +121,10 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       <input type="text" name="user" value="<?=$newUser?>" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
     </div>
     <div class="form-group">
+      <p class="lead">Passwort:</p>
+      <input type="text" name="pass" value="<?=$passwd?>" class="form-control" aria-describedby="passwort" placeholder="leave blank to generate a password" />
+    </div>
+    <div class="form-group">
       <p class="lead">eMail:</p>
       <input type="email" name="email" value="<?=$newMail?>" class="form-control" placeholder="Emailadresse" required>
     </div>
@@ -119,7 +137,27 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       <input style="background:#FF0000; color:#FFFF00" type="text" id="datepicker" name="setAbo" class="form-control">
     </div>
     <div>
-          <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
+      <table>
+        <tr>
+          <td colspan="2"><b>Channels:</b><br></td>
+        </tr>
+          <?php
+          if($AccessAllChannels === false) {
+            foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
+              echo "<tr>";
+              echo "<td>".$channel["name"]."</td><td valign='top'>beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' /></td>";
+              echo "</tr>";
+            }
+          } else {
+            echo "<tr>";
+            echo "<td>Zugang zu allen Channels</td>";
+            echo "</tr>";
+          }
+          ?>
+        <tr>
+          <td colspan="2"><button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
+        </tr>
+      </table>
     </div>
   </form>
 </div>
@@ -183,11 +221,11 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     }
     
     if($statement == "insert") {
-        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '', pass = '$passwd', TransID = NULL, paydate = now(), endtime = ".$dateInsert;
+        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = ".$dateInsert;
         print_r($sql_insert);
         $mysqli->query($sql_insert);
     } elseif($statement == "update") {
-        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, endtime = ".$dateInsert.", info = NULL WHERE id = ".$update["id"]);
+        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, channels = '$InputChannels', endtime = ".$dateInsert.", info = NULL WHERE id = ".$update["id"]);
     }
     
     include_once("msg.php");
@@ -200,7 +238,12 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         $mailMessage= nl2br($UserMsgShort);
     }
     
-    $all_channels = $mysqli->query("SELECT * FROM channels");
+    if($AccessAllChannels === false) {
+        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).")");
+    } else {
+        $all_channels = $mysqli->query("SELECT * FROM channels");
+    }
+
     while($unsert_bann = $all_channels->fetch_array()) {		
         $chat_id = $unsert_bann["chatid"];
         $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
@@ -255,6 +298,10 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       <input type="text" name="user" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
     </div>
     <div class="form-group">
+      <p class="lead">Passwort:</p>
+      <input type="text" name="pass" class="form-control" aria-describedby="passwort" placeholder="leave blank to generate a password" />
+    </div>
+    <div class="form-group">
       <p class="lead">eMail:</p>
       <input type="email" name="email" class="form-control" placeholder="Emailadresse" required>
     </div>
@@ -262,16 +309,33 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       <p class="lead">Bar erhalten</p>
       <input type="text" name="itemprice" class="form-control" placeholder="&euro;">
     </div>
-    <div class="form-group">
-      <p class="lead">Abo endet am (prio)</p>
-      <input type="text" id="datepicker" name="setAbo" class="form-control">
-    </div>
     <div>
-          <button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
+      <table>
+        <tr>
+          <td colspan="2"><b>Channels:</b><br></td>
+        </tr>
+          <?php
+          if($AccessAllChannels === false) {
+            foreach ( $mysqli->query("SELECT * FROM channels ORDER BY name ASC") as $channel ) {
+              echo "<tr>";
+              echo "<td>".$channel["name"]."</td><td valign='top'>beitreten <input type='checkbox' name='added[]' value='".$channel["id"]."' checked='checked' /></td>";
+              echo "</tr>";
+            }
+          } else {
+            echo "<tr>";
+            echo "<td>Zugang zu allen Channels</td>";
+            echo "</tr>";
+          }
+          ?>
+        <tr>
+          <td colspan="2"><button type="submit" name="submit" class="btn btn-sm btn-outline-secondary" value="Benutzer erstellen">Erstellen</button>
+        </tr>
+      </table>
     </div>
   </form>
 </div>
 </main>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

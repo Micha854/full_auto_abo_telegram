@@ -23,7 +23,14 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     function generateRandomString($length = 10) {
         //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
         return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    } $passwd = generateRandomString(8);
+    }
+
+    // give costum passwort or generate automaticle
+    if(isset($_POST["pass"])) {
+      $passwd = mysqli_real_escape_string($mysqli, $_POST["pass"]);
+    } else {
+      $passwd = generateRandomString(8);
+    }
     
     $newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
     if(isset($_POST["email"])) {
@@ -36,6 +43,12 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     $ItemDesc = $newAdd;
     
     $OldUser = $row["TelegramUser"]; // old Username delete
+
+    if($AccessAllChannels === false) {
+        $InputChannel = array($row["channels"]);  
+    } else {
+        $InputChannel = NULL;
+    }
     
     $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
     $getUserId	= json_decode($getInfo, true);
@@ -77,7 +90,12 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         $mailMessage= nl2br($UserMsgShort);
     }
     
-    $all_channels = $mysqli->query("SELECT * FROM channels");
+    if($AccessAllChannels === false) {
+        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).")");
+    } else {
+        $all_channels = $mysqli->query("SELECT * FROM channels");
+    }
+
     while($unsert_bann = $all_channels->fetch_array()) {		
         $chat_id = $unsert_bann["chatid"];
         $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
@@ -244,7 +262,7 @@ if(isset($_GET["delete"])) {
     </tr>
     <tr>
       <th scope="col">Passwort</th>
-      <th scope="col"><?=$row["pass"] ?></th>
+      <th scope="col"><input type="text" name="pass" class="form-control" autocomplete="off" placeholder="leave blank to generate a password" value="<?=$row["pass"] ?>" /></th>
     </tr>
     <tr>
       <th scope="col"><b>Neuer @Username</b></th>
