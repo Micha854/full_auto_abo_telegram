@@ -81,10 +81,10 @@ $payPalSpendenLink     = 'your donate link';
 			Es sei auch darauf hingewiesen, dass sich Technologien weiterentwickeln oder durch andere ersetzt werden können. Ein Anspruch auf Unveränderlichkeit besteht nicht.</li>
 			<li>Datenschutz<br>
 			Von Seiten der <?=$organization?> werden nur jene Daten erhoben und verarbeitet, die für den technischen Betrieb (zum Beispiel IP-Adressen auf Server-Logs oder Cookies für die Einstellungen der Web-Dienste) sowie Abwicklung der Spenden-Zeiträume (Telegram-Benutzername und Laufzeit) erforderlich sind.<br>
-			Eine <u>Löschung dieser Daten kann in der Telegram-Gruppe <a href="<?=$telegramSupport?>" target="_blank"><?=$telegramSupportTitle?> Support</a> beantragt werden</u>, bedeutet aber auch den Ausschluss von den Diensten.<br>
+			Eine <u>Löschung dieser Daten kann in der Telegram-Gruppe <a href="<?=$telegramSupport?>" target="_blank"><?=$telegramSupportTitle?></a> beantragt werden</u>, bedeutet aber auch den Ausschluss von den Diensten.<br>
 			Bezüglich Telegram und PayPal wird auf deren Datenschutz-Dokumente verwiesen.</li>
 		</ul>
-		<p>Bei Fragen oder Problemen kann man sich an die Telegram-Gruppe <a href="<?=$telegramSupport?>" target="_blank"><?=$telegramSupportTitle?> Support</a> wenden.<br>
+		<p>Bei Fragen oder Problemen kann man sich an die Telegram-Gruppe <a href="<?=$telegramSupport?>" target="_blank"><?=$telegramSupportTitle?></a> wenden.<br>
 		Es handelt sich aber auch hierbei um einen “best effort” Dienst und insbesondere besteht kein Anspruch auf zeitnahe Rückantwort oder erfolgreiche Problemlösung.</p>
 		</div>
 	</body>
