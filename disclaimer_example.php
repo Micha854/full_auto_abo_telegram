@@ -44,7 +44,7 @@ $payPalSpendenLink     = 'your donate link';
 		Die <?=$organization?> Map sowie die damit verbundenen Dienste (Scannen nach Raids, Quests, Team Go Rocket Invasionen, Pok&eacute;mon+IV, etc.) sind ein <u>Community-Projekt.</u><br>
 		<br>
 		<br>
-		Das Projekt ist <u>nicht profitorientiert</u>:
+		Das Projekt ist <u>nicht gewinnorientiert</u>:
 		<ul>
 			<li><b>Finanziellen Aufwendungen</b> (Kosten f&uuml;r Server, Scanner, Lizenzen, Unterst&uuml;tzung von genutzten Dritt-Projekten, etwaig notwendige Entwicklungsarbeiten zum Erhalt der <?=$organization?> Map, etc.) <b>werden durch Spenden aus der Community getragen.</b></li>
 			<li>Die erheblichen technischen Arbeiten (also die Administration des gesamten Systems) sowie das Hosten der Scanner wird von Freiwilligen aus der Community <b>ohne jedwede Verg&uuml;tung der Arbeitszeit &uuml;bernommen.</b></li>
@@ -58,15 +58,14 @@ $payPalSpendenLink     = 'your donate link';
 		<br>
 		<br>
 		Spenden erfolgen zu folgenden S&auml;tzen (f&uuml;r neue Spenden, k&ouml;nnen sich diese bei Bedarf jederzeit &auml;ndern):<br>
-		3,00 &euro;: Zugang zu den beschr&auml;nkten Diensten f&uuml;r 1 Monat<br>
-		7,50 &euro;: Zugang zu den beschr&auml;nkten Diensten f&uuml;r 3 Monate<br>
-		12,00 &euro;: Zugang zu den beschr&auml;nkten Diensten f&uuml;r 6 Monate<br>
+		4,00 &euro;: Zugang zu den beschr&auml;nkten Diensten f&uuml;r 1 Monat<br>
+		11,50 &euro;: Zugang zu den beschr&auml;nkten Diensten f&uuml;r 3 Monate<br>
 		 <br>
 		Es erfolgt keine automatische Verl&auml;ngerung.<br>
-		Au&szlig;erdem <u>erfolgt eine Verl&auml;ngerung fr&uuml;hestens 7 Tage vor Ablauf des jeweils g&uuml;ltigen Zeitraums</u>, so dass beispielsweise zweimal mal kurz hintereinander gespendete 12,00 &euro; nicht zu einem Zugang von 12 Monaten f&uuml;hren.<br>
-		F&uuml;r <b>mehrmalige Spenden w&auml;hrend eines noch laufenden Zeitraums</b> wird gedankt; diese werden aber allgemein f&uuml;r die <?=$organization?> Map verwendet und <b>f&uuml;hren nicht zur Verl&auml;ngerung des Zeitraums.</b><br>
+		Au&szlig;erdem <u>erfolgt eine Verl&auml;ngerung fr&uuml;hestens 7 Tage vor Ablauf des jeweils g&uuml;ltigen Zeitraums</u>, so dass beispielsweise zweimal mal kurz hintereinander gespendete 11,00 &euro; nicht zu einem Zugang von 6 Monaten f&uuml;hren.<br>
+		F&uuml;r <b>zusätzliche</b> (also &uuml;ber das entsprechende Feld) <b>oder mehrmalige</b> Spenden w&auml;hrend eines noch laufenden Zeitraums</b> wird gedankt; diese werden aber allgemein f&uuml;r die <?=$organization?> Map verwendet und <b>f&uuml;hren nicht zur Verl&auml;ngerung des Zeitraums.</b><br>
 		<br>
-		Besteht der Wunsch sich dar&uuml;ber hinausgehend am Community-Projekt zu beteiligen und damit zu dessen Verbesserung beizutragen, k&ouml;nnen auch <a href="<?=$payPalSpendenLink?>" target="_blank">zus&auml;tzliche Spenden</a> geleistet werden, die jedoch zu <b>keiner Verl&auml;ngerung des Zeitraums f&uuml;hren.</b><br>
+		Dar&uuml;ber hinaus k&ouml;nnen auch <a href="<?=$payPalSpendenLink?>" target="_blank">„allgemeine” Spenden</a> geleistet werden, die <b>nicht mit einem Zugang zu den beschränkten Diensten verbunden</b> sind.<br>
 		<br>
 		<br>
 		<b>Die <?=$organization?> Map wird von Freiwilligen auf "best effort" Basis betrieben, was hei&szlig;t, dass keinerlei Anspr&uuml;che auf vollst&auml;ndige oder teilweise Erf&uuml;llung ihrer Dienste besteht.</b><br>
@@ -76,7 +75,7 @@ $payPalSpendenLink     = 'your donate link';
 			<li>Die <?=$organization?> Map <u>kann jederzeit vollst&auml;ndig oder teilweise ausfallen</u>, zum Beispiel (aber nicht nur) wegen &auml;u&szlig;erer Einfl&uuml;sse, h&ouml;herer Gewalt, technischer Probleme jedweder Art, Soft- oder Hardware-Ausf&auml;lle, R&uuml;ckzug eines oder mehrerer Administratoren beziehungsweise Scanner-Hoster, gestiegene Kosten f&uuml;r den Betrieb (die nicht mehr durch die Spenden der Community gedeckt werden k&ouml;nnen), etc..<br>
 			Diese <u>Ausf&auml;lle k&ouml;nnen sowohl tempor&auml;r als auch permanent sein</u>.</li>
 			<li><u>Sollte es</u> (aus welchen Gr&uuml;nden auch immer) <u>zu einem permanenten Ausfall und/oder Aufl&ouml;sung der <?=$organization?> Map kommen, erfolgt keinerlei R&uuml;ckverg&uuml;tung oder &auml;hnliches und zwar weder f&uuml;r noch laufende Zeitr&auml;ume, noch f&uuml;r dar&uuml;ber hinausgehende finanzielle oder Sachspenden.</u><br>
-			Die Spender stimmen zu, dass (nach einer optionalen und angemessenen Wartezeit, in der gepr&uuml;ft werden kann ob eine &#8222;Wiederbelebung&#8220; m&ouml;glich w&auml;re) verbleibende Mittel (sowohl finanzielle- als auch Sach-Werte) erst zur Abwicklung und dann als Spende an eine gemeinn&uuml;tzige Organisation verwendet w&uuml;rden.</li>
+			Die Spender stimmen zu, dass (nach einer optionalen und angemessenen Wartezeit, in der gepr&uuml;ft werden kann ob eine &#8222;Wiederbelebung&#8220; m&ouml;glich w&auml;re) verbleibende Mittel (sowohl finanzielle- als auch Sach-Werte) erst zur Abwicklung und dann als Spende an eine gemeinn&uuml;tzige Organisation verwendet werden w&uuml;rden.</li>
 			<li>Soweit nicht anders vereinbart, gehen finanzielle und Sachspenden (zum Beispiel Scanner) ins Eigentum der Community &uuml;ber, welches durch die Map-Administratoren nach besten Wissen und Gewissen verwaltet wird.<br>
 			<u>Anspr&uuml;che auf Auszahlung oder R&uuml;ckerstattung des anteiligen Eigentums bestehen nicht.</u> Wie oben beschrieben, auch nicht im Fall einer etwaigen Aufl&ouml;sung der <?=$organization?> Map.</li>
 			<li>Es gibt <u>keinerlei Garantie, dass die bereitgestellten Daten und Dienste vollst&auml;ndig, richtig oder f&uuml;r irgendeinen Zweck verwendbar sind</u>.<br>
