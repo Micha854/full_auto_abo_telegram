@@ -51,8 +51,9 @@ $payPalSpendenLink     = 'your donate link';
 		Hierzu ist ein Telegram-Account erforderlich, der beim Spenden angegeben werden muss.</p>
 		<p>Spenden erfolgen zu folgenden Sätzen (für neue Spenden, können sich diese bei Bedarf jederzeit ändern):</p>
 		<ul>
-			<li>4,00 €: Zugang zu den beschränkten Diensten für 1 Monat</li>
-			<li>11,00 €: Zugang zu den beschränkten Diensten für 3 Monate</li>
+			<li>3,00 €: Zugang zu den beschränkten Diensten für 1 Monat</li>
+			<li>7,50 €: Zugang zu den beschränkten Diensten für 3 Monate</li>
+			<li>12,00 €: Zugang zu den beschränkten Diensten für 6 Monate</li>
 		</ul>
 		<p>Es erfolgt keine automatische Verlängerung.<br>
 		Außerdem <u>erfolgt eine Verlängerung frühestens 7 Tage vor Ablauf des jeweils gültigen Zeitraums</u>, so dass beispielsweise zweimal mal kurz hintereinander gespendete 11,00 € nicht zu einem Zugang von 6 Monaten führen.<br>
