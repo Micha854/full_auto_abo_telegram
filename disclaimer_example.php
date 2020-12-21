@@ -5,7 +5,7 @@ include_once("config.php");
 #//////////////   CONFIG THIS PART   ///////////////////////////////////#
 #
 $telegramSupport       = 'your support channel';
-$telegramSupportTitle       = 'your title of the support channel';
+$telegramSupportTitle  = 'your title of the support channel';
 $payPalSpendenLink     = 'your donate link';
 #
 #########################################################################
@@ -56,7 +56,7 @@ $payPalSpendenLink     = 'your donate link';
 			<li>12,00 €: Zugang zu den beschränkten Diensten für 6 Monate</li>
 		</ul>
 		<p>Es erfolgt keine automatische Verlängerung.<br>
-		Außerdem <u>erfolgt eine Verlängerung frühestens 7 Tage vor Ablauf des jeweils gültigen Zeitraums</u>, so dass beispielsweise zweimal mal kurz hintereinander gespendete 12,00 € nicht zu einem Zugang von 6 Monaten führen.<br>
+		Außerdem <u>erfolgt eine Verlängerung frühestens 7 Tage vor Ablauf des jeweils gültigen Zeitraums</u>, so dass beispielsweise zweimal mal kurz hintereinander gespendete 12,00 € nicht zu einem Zugang von 12 Monaten führen.<br>
 		Für <b>zusätzliche</b> (also über das entsprechende Feld) <b>oder mehrmalige</b> (also während eines noch laufenden Zeitraums) <b>Spenden</b> wird gedankt; diese werden aber allgemein für die <?=$organization?> verwendet und <b>führen nicht zur Verlängerung des Zeitraums.</b></p>
 		<p>Darüber hinaus können auch <a href="<?=$payPalSpendenLink?>" target="_blank">„allgemeine” Spenden</a> geleistet werden, die <b>nicht mit einem Zugang zu den beschränkten Diensten verbunden</b> sind.</p>
 		<p><b>Die <?=$organization?> wird von Freiwilligen auf “best effort” Basis betrieben, was heißt, dass keinerlei Ansprüche auf vollständige oder teilweise Erfüllung ihrer Dienste besteht.</b></p>
