@@ -302,8 +302,17 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         if($maxAboLength > 0){
                             $maxDate = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s',time()). " + {$maxAboLength} days"));
                             $maxDateD = date_create($maxDate);
-                            $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
-                            $checkDate = date_create($date);
+                            $testDate1 = date_create(date('Y-m-d H:i:s',time()));
+                            $testDate2 = date_create(date('Y-m-d H:i:s',strtotime($update["endtime"])));
+                            if($testDate1 < $testDate2){
+                                $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+                                $checkDate = date_create($date);
+                            }
+                            else{
+                                $date = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s',time()). " + {$days_to_end} days"));
+                                $checkDate = date_create($date);
+                            }
+                            
                             if($checkDate > $maxDateD){
                                 $interval = date_diff($checkDate, $maxDateD);
                                 $date = $maxDate;
