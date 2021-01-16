@@ -26,7 +26,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     }
 
     // give costum passwort or generate automaticle
-    if(isset($_POST["pass"])) {
+    if($_POST["pass"] != '') {
       $passwd = mysqli_real_escape_string($mysqli, $_POST["pass"]);
     } else {
       $passwd = generateRandomString(8);
