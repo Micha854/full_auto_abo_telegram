@@ -8,6 +8,9 @@ if(isset($_GET["reset"])) {
 } elseif(isset($_SESSION["sort"])) {
   $sortIndex = $_SESSION["sort"];
 }
+
+$path = $_SERVER['DOCUMENT_ROOT'].$_SERVER['PHP_SELF'];
+$file = basename($path, ".php");
 ?>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
   <a href="<?=dirname($_SERVER["SCRIPT_NAME"])?>"><img src="logo.png" width="48" style="margin:-4px 2px -4px -12px" /></a>
@@ -31,10 +34,13 @@ if(isset($_GET["reset"])) {
         </div>
       </li>
     </ul>
+    <?php
+      if($file == 'index') { ?>
         <form class="form-inline mt-2 mt-md-0" method="post" action="">
           <input class="form-control mr-sm-2" type="text" placeholder="Suche" name="Search" aria-label="Search">
-      <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="searchSubmit" value="Suche" />
+          <input class="btn btn-outline-success my-2 my-sm-0" type="submit" name="searchSubmit" value="Suche" />
         </form>
+      <?php } ?>
   </div>
 </nav>
 <?php
