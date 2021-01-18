@@ -1,5 +1,8 @@
 <?php
-require_once dirname(__FILE__) . '/../config.php'; ?>
+require_once dirname(__FILE__) . '/../config.php';
+require_once dirname(__FILE__) . '/../functions.php';
+?>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -40,8 +43,6 @@ $schnitt = $row["total"]/$row["abo"];	// durchschnittlicher preis pro tag
 
 
 if(isset($_POST["submit"]) and $_POST["user"]) {
-
-    require_once dirname(__FILE__) . '/../functions.php';
     
     function generateRandomString($length = 10) {
         //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
