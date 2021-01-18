@@ -222,7 +222,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     
     if($statement == "insert") {
         $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = ".$dateInsert;
-        print_r($sql_insert);
+        #print_r($sql_insert);
         $mysqli->query($sql_insert);
     } elseif($statement == "update") {
         mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, channels = '$InputChannels', endtime = ".$dateInsert.", info = NULL WHERE id = ".$update["id"]);

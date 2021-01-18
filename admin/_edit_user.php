@@ -268,11 +268,9 @@ if(isset($_GET["delete"])) {
     if(isset($_POST["setAbo"]) && date("Y-m-d") < $_POST["setAbo"]) {
       $date = mysqli_real_escape_string($mysqli, $_POST["setAbo"]);
       $dateInsert = "cast('$date 23:59:59' AS datetime)";
-      echo $dateInsert;
     } else {
       $date = date('Y-m-d H:i:s', strtotime($row["endtime"]. " + {$days_to_end} days"));
       $dateInsert = "DATE_ADD(endtime,INTERVAL $days_to_end DAY)";
-      echo 'amount update';
     }
     
     if($use_map == "PMSF") {
