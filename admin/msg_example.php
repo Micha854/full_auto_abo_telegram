@@ -59,6 +59,7 @@ $extendUserMsg		= "Dein Abo wurde verlängert und endet folglich am <b>$endtime<
 // User zahlt über PayPal
 $userPayedMsg		= "Vielen Dank, wir haben deine Zahlung erhalten!\n\nLink zur MAP:\n$urlMap\n\nDeine Logindaten:\nUsername: $loginName\nPasswort: <a href=\"$urlMap\">$passwd</a>\n\nDein Abo endet am $endtime";
 $userPayedMsgShort	= "Vielen Dank, wir haben deine Zahlung erhalten!\n\nDein Abo endet am $endtime"; // es wird keine Map verwendet !!!
+$notifyAdmin		= "Es wurde ein neues Abo abgeschlossen von <b>$loginName</b>, laufzeit bis <b>$endtime</b>";
 
 
 // Info an den user, das er aus dem Kanal entfernt wurde
