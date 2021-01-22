@@ -118,23 +118,23 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
   <form method="post" action="">
     <div class="form-group">
       <p class="lead">Telegram Username:</p>
-      <input type="text" name="user" value="<?=$newUser?>" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
+      <input type="text" name="user" value="<?=$newUser?>" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
     </div>
     <div class="form-group">
-      <p class="lead">Passwort:</p>
-      <input type="text" name="pass" value="<?=$passwd?>" class="form-control" aria-describedby="passwort" placeholder="leave blank to generate a password" />
+      <p class="lead">Passwort: (max. 16 Zeichen)</p>
+      <input type="text" name="pass" value="<?=$passwd?>" class="form-control" autocomplete="off" maxlength="16" aria-describedby="passwort" placeholder="leave blank to generate a password" />
     </div>
     <div class="form-group">
       <p class="lead">eMail:</p>
-      <input type="email" name="email" value="<?=$newMail?>" class="form-control" placeholder="Emailadresse" required>
+      <input type="email" name="email" value="<?=$newMail?>" class="form-control" autocomplete="off" placeholder="Emailadresse" required>
     </div>
     <div class="form-group">
       <p class="lead">Bar erhalten</p>
-      <input style="background:#FF0000; color:#FFFF00" type="text" name="itemprice" class="form-control" placeholder="&euro;">
+      <input style="background:#FF0000; color:#FFFF00" type="text" name="itemprice" autocomplete="off" class="form-control" placeholder="&euro;">
     </div>
     <div class="form-group">
       <p class="lead">Abo endet am (prio)</p>
-      <input style="background:#FF0000; color:#FFFF00" type="text" id="datepicker" name="setAbo" class="form-control">
+      <input style="background:#FF0000; color:#FFFF00" type="text" id="datepicker" autocomplete="off" name="setAbo" class="form-control" placeholder="YYYY-MM-DD">
     </div>
     <div>
       <table>
@@ -295,23 +295,23 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
   <form method="post" action="">
     <div class="form-group">
       <p class="lead">Telegram Username:</p>
-      <input type="text" name="user" class="form-control" aria-describedby="telegramname @" placeholder="@" required>
+      <input type="text" name="user" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
     </div>
     <div class="form-group">
-      <p class="lead">Passwort:</p>
-      <input type="text" name="pass" class="form-control" aria-describedby="passwort" placeholder="leave blank to generate a password" />
+      <p class="lead">Passwort: (max. 16 Zeichen)</p>
+      <input type="text" name="pass" class="form-control" autocomplete="off" maxlength="16" aria-describedby="passwort" placeholder="leave blank to generate a password" />
     </div>
     <div class="form-group">
       <p class="lead">eMail:</p>
-      <input type="email" name="email" class="form-control" placeholder="Emailadresse" required>
+      <input type="email" name="email" class="form-control" autocomplete="off" placeholder="Emailadresse" required>
     </div>
     <div class="form-group">
       <p class="lead">Bar erhalten</p>
-      <input type="text" name="itemprice" class="form-control" placeholder="&euro;">
+      <input type="text" name="itemprice" class="form-control" autocomplete="off" placeholder="&euro;">
     </div>
     <div class="form-group">
       <p class="lead">Abo endet am (prio)</p>
-      <input type="text" id="datepicker" name="setAbo" class="form-control">
+      <input type="text" id="datepicker" name="setAbo" class="form-control" autocomplete="off" placeholder="YYYY-MM-DD">
     </div>
     <div>
       <table>

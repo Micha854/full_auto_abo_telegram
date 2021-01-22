@@ -196,8 +196,8 @@ if(isset($_GET["delete"])) {
       <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px">(<?=$row["buyerEmail"] ?>)</span></th>
     </tr>
     <tr>
-      <th scope="col">Passwort</th>
-      <th scope="col"><input type="text" name="pass" class="form-control" autocomplete="off" placeholder="leave blank to generate a password" value="<?=$row["pass"] ?>" /></th>
+      <th scope="col">Passwort<br><span style="font-size:12px;font-weight:normal">max. 16 Zeichen</span></th>
+      <th scope="col"><input type="text" name="pass" class="form-control" autocomplete="off" maxlength="16" placeholder="leave blank to generate a password" value="<?=$row["pass"] ?>" /></th>
     </tr>
     <tr>
       <th scope="col"><b>Neuer @Username</b></th>
@@ -224,11 +224,11 @@ if(isset($_GET["delete"])) {
     </tr>
     <tr>
       <th scope="col">Bar erhalten</th>
-      <th scope="col"><input style="background:#FF0000; color:#FFFF00" type="text" name="itemprice" class="form-control" placeholder="&euro;"></th>
+      <th scope="col"><input style="background:#FF0000; color:#FFFF00" type="text" name="itemprice" class="form-control" autocomplete="off" placeholder="&euro;"></th>
     </tr>
     <tr>
       <th scope="col">Abo endet am (prio)</th>
-      <th scope="col"><input style="background:#FF0000; color:#FFFF00" type="text" id="datepicker" name="setAbo" class="form-control"></th>
+      <th scope="col"><input style="background:#FF0000; color:#FFFF00" type="text" id="datepicker" name="setAbo" class="form-control" autocomplete="off" placeholder="YYYY-MM-DD"></th>
     </tr>
     <tr>
       <th scope="col">&nbsp;</th>
@@ -364,8 +364,8 @@ if(isset($_GET["delete"])) {
       <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px">(<?=$row["buyerEmail"] ?>)</span></th>
     </tr>
     <tr>
-      <th scope="col">Passwort</th>
-      <th scope="col"><input type="text" name="pass" class="form-control" autocomplete="off" placeholder="leave blank to generate a password" value="<?=$row["pass"] ?>" /></th>
+      <th scope="col">Passwort<br><span style="font-size:12px;font-weight:normal">max. 16 Zeichen</span></th>
+      <th scope="col"><input type="text" name="pass" class="form-control" autocomplete="off" maxlength="16" placeholder="leave blank to generate a password" value="<?=$row["pass"] ?>" /></th>
     </tr>
     <tr>
       <th scope="col"><b>Neuer @Username</b></th>
@@ -392,11 +392,11 @@ if(isset($_GET["delete"])) {
     </tr>
     <tr>
       <th scope="col">Bar erhalten</th>
-      <th scope="col"><input type="text" name="itemprice" class="form-control" placeholder="&euro;"></th>
+      <th scope="col"><input type="text" name="itemprice" class="form-control" autocomplete="off" placeholder="&euro;"></th>
     </tr>
     <tr>
       <th scope="col">Abo endet am (prio)</th>
-      <th scope="col"><input type="text" id="datepicker" name="setAbo" class="form-control"></th>
+      <th scope="col"><input type="text" id="datepicker" name="setAbo" class="form-control" autocomplete="off" placeholder="YYYY-MM-DD"></th>
     </tr>
     <tr>
       <th scope="col">&nbsp;</th>
