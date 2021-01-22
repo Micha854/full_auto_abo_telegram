@@ -7,7 +7,7 @@ $telegram = new Telegram($BotToken);
 $result = $telegram->getData();
 
 //log every interaction with the bot
-file_put_contents('admin/request.txt', date('Y-m-d H:i:s') . ': ' . var_export($result, true) . PHP_EOL, FILE_APPEND);
+//file_put_contents('admin/request.txt', date('Y-m-d H:i:s') . ': ' . var_export($result, true) . PHP_EOL, FILE_APPEND);
 
 $text = $telegram->Text();
 $chat_id = $telegram->ChatID();
