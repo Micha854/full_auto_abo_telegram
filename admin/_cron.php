@@ -1,6 +1,7 @@
 <?php
 require_once dirname(__FILE__) . '/../config.php';
 require_once dirname(__FILE__) . '/../Htpasswd.php';
+require_once dirname(__FILE__) . '/../functions.php';
                     
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -71,9 +72,8 @@ font-style:oblique
 </style>
 </head>
 <body>
-<?php
-require_once dirname(__FILE__) . '/../functions.php';
 
+<?php
 $sql_abos = $mysqli->query("SELECT * FROM ".$tbl);
 while($get_user = $sql_abos->fetch_array()) {
     if($get_user["userid"] == NULL) {
@@ -113,8 +113,8 @@ $non_exists_user = $mysqli->query("SELECT * FROM ".$tbl);
 while($manual = $non_exists_user->fetch_array()) {
     if($manual["userid"]) {
         if($manual["endtime"] < date("Y-m-d H:i:s") ) {
-            mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$manual['id']." ");
-            echo "<p>delete".$manual['TelegramUser'].'</p>';
+            //mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$manual['id']." ");
+            //echo "<p>delete".$manual['TelegramUser'].'</p>';
             if($use_map == "PMSF") {
                 mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$manual['buyerEmail']."' ");
             } elseif($use_map == "Rocketmap") {

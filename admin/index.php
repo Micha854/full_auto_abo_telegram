@@ -101,10 +101,20 @@ if (!in_array($sort, array('asc', 'desc'))) {
     $sort = 'desc'; // Default-Wert
 }
 
+// switch between active and inactive users
+$show_inactive  = '';
+$where_inactive = ' WHERE endtime > CURRENT_TIMESTAMP()';
+$show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '&inactive=true">inaktive zeigen</a>';
+if($_GET["inactive"] == 'true') {
+    $show_inactive  = '&inactive=true';
+    $where_inactive = ' WHERE endtime < CURRENT_TIMESTAMP()';
+    $show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '">aktive zeigen</a>';
+}
+
 if(isset($_POST["searchSubmit"])) {
     $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%')";
 } else {
-    $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl;
+    $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl.$where_inactive;
 }
 $row_total	= $mysqli->query($result_tot)->fetch_assoc();
 $gesamte_anzahl = $row_total['total'];
@@ -129,7 +139,7 @@ $limit = ($seite*$ergebnisse_pro_seite)-$ergebnisse_pro_seite;
 if(isset($_POST["searchSubmit"])) {
     $query		= "SELECT * FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%') ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
 } else {
-    $query		= "SELECT * FROM ".$tbl." ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
+    $query		= "SELECT * FROM ".$tbl.$where_inactive."  ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
 }
 $result = $mysqli->query($query);
 
@@ -152,7 +162,7 @@ if($use_map == "Rocketmap") {
     }
 }
 
-echo '<h3 style="text-align:left;float:left">'.$gesamte_anzahl; if($gesamte_anzahl > 1) { echo ' Abonnenten'; } else { echo ' Abonnent'; } echo '</h3><div style="text-align:right">'.$htpasswd_count.' </div>'; 
+echo '<h3 style="text-align:left;float:left">'.$gesamte_anzahl; if($gesamte_anzahl == 1) { echo ' Abonnent'; } else { echo ' Abonnenten'; } echo '</h3>'. $show_user .'<div style="text-align:right">'.$htpasswd_count.' </div>'; 
 $sites = '';
 if($gesamte_anzahl > $ergebnisse_pro_seite) {
     for ($i=1; $i<=$gesamt_seiten; ++$i) {
@@ -189,8 +199,8 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
                     
                     echo '<th>' .
                         ucfirst($name) .
-                        '<a href="?spalte=' . $spalte . '&sort=asc'.$gettingPage.'" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
-                        '<a href="?spalte=' . $spalte . '&sort=desc'.$gettingPage.'" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
+                        '<a href="?spalte=' . $spalte . '&sort=asc'.$gettingPage.$show_inactive.'" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
+                        '<a href="?spalte=' . $spalte . '&sort=desc'.$gettingPage.$show_inactive.'" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
                     '</th>';
                 } ?>
                  <th scope="col"></th>

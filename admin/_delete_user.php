@@ -148,7 +148,7 @@ while($rowX = $result->fetch_array()) {
                         $mail->AddAddress($empfaenger, $WebsiteTitle);
 
                         $mail->Send();
-                    } mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$row["id"]." ");
+                    } //mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$row["id"]." ");
             
                     if($use_map == "PMSF") {
                         mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$row["buyerEmail"]."' ");

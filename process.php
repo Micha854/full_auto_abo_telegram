@@ -299,11 +299,14 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         }
                         $statement = "update";
                         $passwd = $update["pass"];
+
+                        // give current datetime and aboend datetime
+                        $testDate1 = date_create(date('Y-m-d H:i:s',time()));
+                        $testDate2 = date_create(date('Y-m-d H:i:s',strtotime($update["endtime"])));
+
                         if($maxAboLength > 0){
                             $maxDate = date('Y-m-d H:i:s', strtotime(date('Y-m-d H:i:s',time()). " + {$maxAboLength} days"));
                             $maxDateD = date_create($maxDate);
-                            $testDate1 = date_create(date('Y-m-d H:i:s',time()));
-                            $testDate2 = date_create(date('Y-m-d H:i:s',strtotime($update["endtime"])));
                             if($testDate1 < $testDate2){
                                 $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
                                 $checkDate = date_create($date);
@@ -320,7 +323,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                             }
                         }
                         else {
-                            $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+                            if($testDate1 > $testDate2) {
+                                $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
+                            } else {
+                                $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+                            }
                         }
                         $amountInsert = $update["Amount"];
                         $amountInsert+=$ItemTotalPrice;

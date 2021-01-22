@@ -117,7 +117,7 @@ class Logger
   {
     $t = microtime(true);
   $micro = sprintf("%06d",($t - floor($t)) * 1000000);
-  $handle = fopen(__DIR__.'/admin/log.txt', 'a');
+  $handle = fopen(dirname(__FILE__).'/admin/log.txt', 'a');
     fwrite($handle, sprintf("%s %s\n", "[".date("m-d H:i:s.".$micro,$t)."]", $str));
     fclose($handle);
   }
