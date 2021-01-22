@@ -403,11 +403,9 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     include_once("admin/msg.php");
 					
 					if(isset($admins) and empty($admins) === false) {
-                        $sendAdmins = explode(",", trim($admins));
-                        $sendAdmins = explode(',', $admins);
-                        $sendAdmins = array_map('trim', $sendAdmins);
-                        for($i=0; $i < count($sendAdmins); $i++) {
-                            $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=".$sendAdmins[$i]."&data[message]=$notifyAdmin&data[parse_mode]=html", false);
+                        $sendAdminMessage = urlencode($notifyAdmin);
+                        foreach($admins as $sendAdmins) {
+                            $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$sendAdmins&data[message]=$sendAdminMessage&data[parse_mode]=html", false);
                         }
                     }
                     

@@ -19,7 +19,7 @@ $AccessAllChannels    = false;  // set true to Access for all Channels or false(
 // API Server URL, bot token, Admins
 $apiServer      = "http://YOURURL.COM:9503/api/";
 $BotToken	      = "123456789:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX";	// without "_bot" first !!!
-$admins         = "Admin_1, Admin_2";           // send a message to Telegram admins when a subscription is completed or renewed
+$admins         = ["Admin_1", "Admin_2"];           // send a message to Telegram admins when a subscription is completed or renewed
 
 
 // Pogo Map Config
