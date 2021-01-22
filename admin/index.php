@@ -102,6 +102,10 @@ if (!in_array($sort, array('asc', 'desc'))) {
 }
 
 // switch between active and inactive users
+if(!$_GET['spalte']) {
+    $_GET['spalte'] = 'none';
+    $_GET['sort']   = 'none';
+}
 $show_inactive  = '';
 $where_inactive = ' WHERE endtime > CURRENT_TIMESTAMP()';
 $show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '&inactive=true">inaktive zeigen</a>';
