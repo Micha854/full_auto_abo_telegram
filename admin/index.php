@@ -96,11 +96,11 @@ $sort = isset($_GET["sort"]) ? $_GET["sort"] : 'desc';
 if (!array_key_exists($spalte ,$spalten)) {
     $spalte = 'id'; // Default-Wert
     $_GET['spalte'] = $spalte;
+    $_GET['sort'] = 'desc';
 }
 
 if (!in_array($sort, array('asc', 'desc'))) {
     $sort = 'desc'; // Default-Wert
-    $_GET['sort']   = $sort;
 }
 
 // switch between active and inactive users
