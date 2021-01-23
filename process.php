@@ -49,7 +49,9 @@ if($_POST) //Post Data received from product list page.
     }
     
     if(isset($_POST["itemdesc2"])) {
-        $ItemDesc2 	= mysqli_real_escape_string($mysqli, $_POST["itemdesc2"]); //Item description
+        $ItemDesc2 = mysqli_real_escape_string($mysqli, $_POST["itemdesc2"]); //Item description
+    } else {
+        $ItemDesc2 = '';
     }
     
     $ItemQty 	= $_POST["itemQty"]; // Item Quantity
@@ -244,7 +246,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 		<h2>Zahlung erfolgreich!</h2>
 		<?php
             echo 'Deine Transaction ID : '.urldecode($httpParsedResponseAr["PAYMENTINFO_0_TRANSACTIONID"]);
-            echo '<div style="color:#00ff00"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!'.$output_message.'</div>';
+            echo '<div style="color:#00ff00"><br>Vielen Dank, du hast einen Link zu den ausgew&auml;hlten Kan&auml;len soeben erhalten!';
+            if(isset($output_message)) {
+                echo $output_message;
+            }
+            echo '</div>';
             
                 /*
                 //Sometimes Payment are kept pending even when transaction is complete. 
@@ -388,6 +394,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     else {
                         Logger::warn("USE NO MAP IN YOUR CONFIG !!!"); // LOGGER
                         $empfaenger	= $buyEmail;
+                        $loginName	= $ItemDesc;
                     }
 
                     if($AccessAllChannels === false) {
