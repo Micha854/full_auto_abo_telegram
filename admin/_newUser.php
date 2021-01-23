@@ -9,6 +9,9 @@ require_once dirname(__FILE__) . '/../functions.php';
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="logo.png" sizes="32x32">
+<link rel="icon" type="image/png" href="logo.png" sizes="96x96">
 <title><?=$WebsiteTitle ?> - ADMIN NEW USER</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>

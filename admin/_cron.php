@@ -16,6 +16,9 @@ $beginnScript = microtime(true);
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="logo.png" sizes="32x32">
+<link rel="icon" type="image/png" href="logo.png" sizes="96x96">
 <title><?=$WebsiteTitle?> - Cron</title>
 <style type="text/css">
 .admin {

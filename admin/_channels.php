@@ -13,6 +13,9 @@ if ($mysqli->connect_error) {
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="shortcut icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="logo.png" sizes="32x32">
+<link rel="icon" type="image/png" href="logo.png" sizes="96x96">
 <title><?=$WebsiteTitle ?> - ADMIN EDIT</title>
 </head>
 
