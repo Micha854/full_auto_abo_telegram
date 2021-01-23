@@ -95,17 +95,15 @@ $sort = isset($_GET["sort"]) ? $_GET["sort"] : 'desc';
 
 if (!array_key_exists($spalte ,$spalten)) {
     $spalte = 'id'; // Default-Wert
+    $_GET['spalte'] = $spalte;
 }
 
 if (!in_array($sort, array('asc', 'desc'))) {
     $sort = 'desc'; // Default-Wert
+    $_GET['sort']   = $sort;
 }
 
 // switch between active and inactive users
-if(!$_GET['spalte']) {
-    $_GET['spalte'] = 'none';
-    $_GET['sort']   = 'none';
-}
 $show_inactive  = '';
 $where_inactive = ' WHERE endtime > CURRENT_TIMESTAMP()';
 $show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '&inactive=true">inaktive zeigen</a>';
