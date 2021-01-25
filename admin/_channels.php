@@ -76,6 +76,7 @@ if(isset($_POST["submit"])) { echo $save; }
 <input type="submit" class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" name="newField" value="Neuer Eintrag" />
 </form>
 <h1>Telegram Channels</h1>
+<p>höchster wert in Feld "Sort" zeigt den Kanal an erster Stelle</p>
 <form method="post" action=""> 
 <?php
 while($row = $result->fetch_array()) {

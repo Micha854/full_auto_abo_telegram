@@ -55,3 +55,30 @@ if(!$lastCron) {
 }
 ?>
 <div style="text-align:center; background:<?=$cronColorBack?>; color:<?=$cronColorText?>; font-weight:bolder; font-size:11px">LAST CRON UPDATE: <?=$lastCron?></div>
+<style>
+.container {
+  position: relative;
+  padding-right: 0;
+  padding-left: 0;
+}
+.jumbotron {
+  margin-bottom: 0;
+  padding: 4rem 1.5rem 5rem 1.5rem;
+}
+@media only screen and (max-width: 575px) {
+  .jumbotron {
+    padding: 2rem 0.7rem 4rem 0.7rem;
+  }
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+  background: #212529;
+  color: #f8f9fa;
+  padding-top: 2px;
+  padding-bottom: 5px;
+}
+</style>
+<div class="footer">Script by @Micha854 | <a href="https://www.paypal.com/pools/c/8hBamIhqR6" target="_blank">Donate</a> | <a href="https://discord.gg/jsvX9pz" target="_blank">Help on Discord</a></div>

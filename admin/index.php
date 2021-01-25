@@ -89,7 +89,7 @@ if(isset($_POST["deleteUser"])) {
 $spalten = array(
 "TelegramUser"	=> "Telegram Username ",
 "paydate"		=> "Bezahlt am ",
-"endtime"		=> "L&auml;uft ab ");
+"endtime"		=> "L&auml;uft bis ");
 
 //$spaltenNamen = array("ID ", "Telegram Username ", "Bezahlt am ", "L&auml;uft ab ");
 
