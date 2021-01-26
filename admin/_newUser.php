@@ -57,11 +57,19 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     } else {
       $passwd = generateRandomString(8);
     }
+    
+    $newUser   = $_POST["user"];
+    $getInfo   = callAPI('GET', $apiServer."getfullInfo/?id=".$newUser, false);
+    $getUserId = json_decode($getInfo, true);
+    $userid		 = $getUserId["response"]["InputPeer"]["user_id"];
 
-    $newUser = mysqli_real_escape_string($mysqli, $_POST["user"]);
+    if($userid) {
+      $useridnow = ", userid = '$userid'";
+      $newUser   = '@'.$getUserId["response"]["User"]["username"];
+    }
+
+    $newCity = ucfirst(mysqli_real_escape_string($mysqli, $_POST["city"]));
     $newMail = mysqli_real_escape_string($mysqli, $_POST["email"]);
-    $newAdd = $_POST["user"];
-    $ItemDesc = $newAdd;
     
     $sumBar = $_POST["itemprice"];
     $sumBar = empty($sumBar) ? 0 : str_replace(",",".", $sumBar);
@@ -109,8 +117,16 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         $amountInsert = $sumBar;
     }
     
-    if(empty($_POST["itemprice"]) && date("Y-m-d") >= $_POST["setAbo"] or empty($_POST["setAbo"]) && empty($_POST["itemprice"])) { 
+    if(empty($_POST["itemprice"]) && date("Y-m-d") >= $_POST["setAbo"] or empty($_POST["setAbo"]) && empty($_POST["itemprice"]) or !$useridnow) {
+      if(!$useridnow) {
+        $userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Username \"$newUser\" existiert nicht!!</h3>";
+        $username_err = 'background:#FF0000; color:#FFFF00';
+        $abo_err = '';
+      } else {
         $userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Bitte ein \"Abo Ende\" oder \"Betrag\" angeben!!</h3>";
+        $username_err = '';
+        $abo_err = 'background:#FF0000; color:#FFFF00';
+      }
     ?>
 <main role="main" class="container">
 <?php include "nav.php"; ?>
@@ -121,7 +137,11 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
   <form method="post" action="">
     <div class="form-group">
       <p class="lead">Telegram Username:</p>
-      <input type="text" name="user" value="<?=$newUser?>" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
+      <input style="<?=$username_err ?>" type="text" name="user" value="<?=$newUser?>" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
+    </div>
+    <div class="form-group">
+      <p class="lead">Bereich:</p>
+      <input type="text" name="city" value="<?=$newCity?>" class="form-control" aria-describedby="City" placeholder="City" required>
     </div>
     <div class="form-group">
       <p class="lead">Passwort: (max. 16 Zeichen)</p>
@@ -133,11 +153,11 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     </div>
     <div class="form-group">
       <p class="lead">Bar erhalten</p>
-      <input style="background:#FF0000; color:#FFFF00" type="text" name="itemprice" autocomplete="off" class="form-control" placeholder="&euro;">
+      <input style="<?=$abo_err ?>" type="text" name="itemprice" autocomplete="off" class="form-control" placeholder="&euro;">
     </div>
     <div class="form-group">
       <p class="lead">Abo endet am (prio)</p>
-      <input style="background:#FF0000; color:#FFFF00" type="text" id="datepicker" autocomplete="off" name="setAbo" class="form-control" placeholder="YYYY-MM-DD">
+      <input style="<?=$abo_err ?>" type="text" id="datepicker" autocomplete="off" name="setAbo" class="form-control" placeholder="YYYY-MM-DD">
     </div>
     <div>
       <table>
@@ -173,14 +193,6 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         die();
     }
     
-    $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
-    $getUserId	= json_decode($getInfo, true);
-    $userid		= $getUserId["response"]["InputPeer"]["user_id"];
-    
-    if($userid) {
-        $useridnow = ", userid = '$userid'";
-    }
-                    
     if($use_map == "PMSF") {
         $hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
                         
@@ -211,12 +223,12 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         if($statement == "insert") {				
             include("../Htpasswd.php");
             $htpasswd = new Htpasswd('../.htpasswd');
-            //$htpasswd->deleteUser($newAdd);
-            $htpasswd->addUser($newAdd, $passwd);
+            //$htpasswd->deleteUser($newUser);
+            $htpasswd->addUser($newUser, $passwd);
         }
                         
         $empfaenger	= $newMail;
-        $loginName	= $newAdd;
+        $loginName	= $newUser;
     }
                     
     else {
@@ -224,11 +236,11 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     }
     
     if($statement == "insert") {
-        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = ".$dateInsert;
+        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', city = '$newCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = ".$dateInsert;
         #print_r($sql_insert);
         $mysqli->query($sql_insert);
     } elseif($statement == "update") {
-        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, channels = '$InputChannels', endtime = ".$dateInsert.", info = NULL WHERE id = ".$update["id"]);
+        mysqli_query($mysqli, "UPDATE ".$tbl." SET city = '$newCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannels', endtime = ".$dateInsert.", info = NULL WHERE id = ".$update["id"]);
     }
     
     include_once("msg.php");
@@ -249,7 +261,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 
     while($unsert_bann = $all_channels->fetch_array()) {		
         $chat_id = $unsert_bann["chatid"];
-        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
+        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$newUser&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
     }
     
     if($botSend == '1') {
@@ -284,7 +296,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 
         $mail->Send();
     }
-    $userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Neuer Benutzer ".$newAdd." wurde erstellt!</h3>";
+    $userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Neuer Benutzer ".$newUser." wurde erstellt!</h3>";
                                     
 }
 
@@ -299,6 +311,10 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     <div class="form-group">
       <p class="lead">Telegram Username:</p>
       <input type="text" name="user" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
+    </div>
+    <div class="form-group">
+      <p class="lead">Bereich:</p>
+      <input type="text" name="city" class="form-control" aria-describedby="City" placeholder="City">
     </div>
     <div class="form-group">
       <p class="lead">Passwort: (max. 16 Zeichen)</p>

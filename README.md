@@ -134,6 +134,7 @@ Name der Tabelle muss in `config.php` angepasst werden!!
 CREATE TABLE `abos` (
   `id` int(11) NOT NULL,
   `buyerName` varchar(155) NOT NULL,
+  `city` varchar(25) DEFAULT NULL,
   `buyerEmail` varchar(255) NOT NULL,
   `Amount` varchar(5) NOT NULL,
   `TelegramUser` varchar(155) NOT NULL,

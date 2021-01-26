@@ -195,8 +195,8 @@ if(isset($_GET["delete"])) {
 <form name="one" method="post" action=""> 
   <table class="table">
     <tr>
-      <th width="50%" scope="col">Aktueller @Username</th>
-      <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px">(<?=$row["buyerEmail"] ?>)</span></th>
+      <th width="50%" scope="col">Aktueller @Username<br><span style="font-size:12px;font-weight:normal"><?php if($row["city"]) { echo 'aus '.$row["city"]; } ?></span></th>
+      <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px"><?php if($row["buyerEmail"]) { echo '('.$row["buyerEmail"].')'; } ?></span></th>
     </tr>
     <tr>
       <th scope="col">Passwort<br><span style="font-size:12px;font-weight:normal">max. 16 Zeichen</span></th>
@@ -363,8 +363,8 @@ if(isset($_GET["delete"])) {
 <form name="one" method="post" action=""> 
   <table class="table">
     <tr>
-      <th width="50%" scope="col">Aktueller @Username</th>
-      <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px">(<?=$row["buyerEmail"] ?>)</span></th>
+      <th width="50%" scope="col">Aktueller @Username<br><span style="font-size:12px;font-weight:normal"><?php if($row["city"]) { echo 'aus '.$row["city"]; } ?></span></th>
+      <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px"><?php if($row["buyerEmail"]) { echo '('.$row["buyerEmail"].')'; } ?></span></th>
     </tr>
     <tr>
       <th scope="col">Passwort<br><span style="font-size:12px;font-weight:normal">max. 16 Zeichen</span></th>

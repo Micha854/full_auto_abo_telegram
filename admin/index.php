@@ -89,9 +89,8 @@ if(isset($_POST["deleteUser"])) {
 $spalten = array(
 "TelegramUser"	=> "Telegram Username ",
 "paydate"		=> "Bezahlt am ",
-"endtime"		=> "L&auml;uft bis ");
-
-//$spaltenNamen = array("ID ", "Telegram Username ", "Bezahlt am ", "L&auml;uft ab ");
+"endtime"		=> "L&auml;uft bis ",
+"city"		    => "Bereich ");
 
 $spalte = isset($_GET["spalte"]) ? $_GET["spalte"] : 'id'; // Default-Wert
 $sort = isset($_GET["sort"]) ? $_GET["sort"] : 'desc';
@@ -180,6 +179,13 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
     }
 }
 ?>
+<style>
+    @media only screen and (max-width: 575px) {
+        .city {
+            display:none
+        }
+    }
+</style>
     <table class="table">
         <thead class="thead-light">
             <tr>
@@ -202,7 +208,13 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
                         $active2 = '';
                     }
                     
-                    echo '<th>' .
+                    if($name == $spalten['city']) {
+                        $th = '<th class="city">';
+                    } else {
+                        $th = '<th>';
+                    }
+
+                    echo $th .
                         ucfirst($name) .
                         '<a href="?spalte=' . $spalte . '&sort=asc'.$gettingPage.$show_inactive.'" '.$active.' title="Aufsteigend sortieren">&#9650;</a>' .
                         '<a href="?spalte=' . $spalte . '&sort=desc'.$gettingPage.$show_inactive.'" '.$active2.' title="Absteigend sortieren">&#9660;</a>' .
@@ -231,6 +243,7 @@ if(strlen($row["TelegramUser"]) >= 16) {
     <td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
     <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
     <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
+    <td class='city'><?=$row["city"] ?></td>
     <td><a class="btn btn-sm btn-outline-secondary" href="_edit_user.php?id=<?=$row["id"]?>" role="button">edit</a></td>
   </tr>
 <?php

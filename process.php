@@ -100,7 +100,7 @@ if($_POST) //Post Data received from product list page.
                 '&PAYMENTREQUEST_0_SHIPTOPHONENUM=408-967-4444'.
                 */
                 
-                '&NOSHIPPING=1'. //set 1 to hide buyer's shipping address, in-case products that do not require shipping
+                '&NOSHIPPING=0'. //set 1 to hide buyer's shipping address, in-case products that do not require shipping
                 
                 '&PAYMENTREQUEST_0_ITEMAMT='.urlencode($ItemTotalPrice).
                 '&PAYMENTREQUEST_0_TAXAMT='.urlencode($TotalTaxAmount).
@@ -282,9 +282,11 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     #### SAVE BUYER INFORMATION IN DATABASE ###
                     
                     $buyerName = $httpParsedResponseAr["FIRSTNAME"].' '.$httpParsedResponseAr["LASTNAME"];
+                    $buyerCity = $httpParsedResponseAr["PAYMENTREQUEST_0_SHIPTOCITY"];
                     $buyerEmail = $httpParsedResponseAr["EMAIL"];
                                         
                     $buyName = urldecode($buyerName);
+                    $buyCity = urldecode($buyerCity);
                     $buyEmail= urldecode($buyerEmail);
                     
                     function generateRandomString($length = 10) {
@@ -400,17 +402,19 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     if($AccessAllChannels === false) {
                         $InputChannels = implode(',',$InputChannel);
                         Logger::info("SELECTED CHANNELS ".$InputChannels); // LOGGER
+                    } else {
+                        $InputChannels = NULL;
                     }
                                         
                     if($statement == "insert") {
-                        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+                        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', city = '$buyCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
                         if($insert_row = $mysqli->query($sql_insert)) {
                             Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
                         } else {
                             Logger::error("INSERT USER ON DATABASE FAILED\n".$sql_insert); // LOGGER
                         }
                     } else {
-                        mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = '$TansID', paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY), info = NULL WHERE id = ".$update["id"]);
+                        mysqli_query($mysqli, "UPDATE ".$tbl." SET buyerName = '$buyName', city = '$buyCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannels', TransID = '$TansID', paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY), info = NULL WHERE id = ".$update["id"]);
                         Logger::info("UPDATE USER ON DATABASE"); // LOGGER
                     }
 
