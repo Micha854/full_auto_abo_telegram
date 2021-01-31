@@ -14,8 +14,15 @@ require_once dirname(__FILE__) . '/../functions.php';
 <link rel="icon" type="image/png" href="logo.png" sizes="96x96">
 <title><?=$WebsiteTitle ?> - ADMIN NEW USER</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style>
+    #country-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
+    #country-list li{padding: 10px; background: #fff; border-bottom: #bbb9b9 1px solid;}
+    #country-list li:hover{background:#E9ECEF;cursor: pointer;}
+  </style>
+
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  
   <script>
     $(function() {
       $( "#datepicker" ).datepicker({
@@ -24,6 +31,33 @@ require_once dirname(__FILE__) . '/../functions.php';
       });
     });
   </script>
+  
+  <script>
+    // AJAX call for autocomplete 
+    $(document).ready(function(){
+      $("#search-box").keyup(function(){
+        $.ajax({
+          type: "POST",
+          url: "request_city.php",
+          data:'keyword='+$(this).val(),
+          beforeSend: function(){
+            $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
+          },
+          success: function(data){
+            $("#suggesstion-box").show();
+            $("#suggesstion-box").html(data);
+            $("#search-box").css("background","#FFF");
+          }
+        });
+      });
+    });
+    //To select country name
+    function selectCountry(val) {
+      $("#search-box").val(val);
+      $("#suggesstion-box").hide();
+    }
+  </script>
+
 </head>
 <body>
 
@@ -141,7 +175,8 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     </div>
     <div class="form-group">
       <p class="lead">Bereich:</p>
-      <input type="text" name="city" value="<?=$newCity?>" class="form-control" aria-describedby="City" placeholder="City" required>
+      <input type="text" name="city" id="search-box" value="<?=$newCity?>" class="form-control" autocomplete="off" aria-describedby="City" placeholder="City" required>
+      <div id="suggesstion-box"></div>
     </div>
     <div class="form-group">
       <p class="lead">Passwort: (max. 16 Zeichen)</p>
@@ -314,7 +349,8 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     </div>
     <div class="form-group">
       <p class="lead">Bereich:</p>
-      <input type="text" name="city" class="form-control" aria-describedby="City" placeholder="City">
+      <input type="text" name="city" id="search-box" class="form-control" autocomplete="off" aria-describedby="City" placeholder="City">
+      <div id="suggesstion-box"></div>
     </div>
     <div class="form-group">
       <p class="lead">Passwort: (max. 16 Zeichen)</p>
