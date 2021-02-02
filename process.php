@@ -333,6 +333,14 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         else {
                             if($testDate1 > $testDate2) {
                                 $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
+
+                                if($use_map == "Rocketmap") {
+                                    // generate new acc
+                                    include("Htpasswd.php");
+                                    $htpasswd = new Htpasswd('.htpasswd');
+                                    $htpasswd->addUser($row["TelegramUser"], $row["pass"]);
+                                }
+
                             } else {
                                 $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
                             }

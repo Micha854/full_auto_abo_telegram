@@ -223,6 +223,15 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
                  <th scope="col"></th>
             </tr>
         </thead>
+<style>
+    .dot {
+  height: 10px;
+  width: 10px;
+  background-color: #009900;
+  border-radius: 50%;
+  display: inline-block;
+}
+</style>
 <?php
 while($row = $result->fetch_array()) {
 
@@ -237,10 +246,20 @@ if(strlen($row["TelegramUser"]) >= 16) {
 } else {
     $teleUser = $row["TelegramUser"];
 }
+
+// HighlightChannelId where user accessed
+$HighlightUser = '';
+if(is_int($HighlightChannelId)) {
+    foreach(explode(',', $row["channels"]) as $n) {
+        if($HighlightChannelId == $n) {
+            $HighlightUser = ' <span class="dot"></span>';
+        }
+    }
+}
 ?>
   <tr>
-    <td class="mobile"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$teleUser ?></a></td>
-    <td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a></td>
+    <td class="mobile"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$teleUser ?></a><?=$HighlightUser ?></td>
+    <td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a><?=$HighlightUser ?></td>
     <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
     <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
     <td class='city'><?=$row["city"] ?></td>

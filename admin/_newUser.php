@@ -127,12 +127,30 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         $update = $check->fetch_array();
         $statement = "update";
         $passwd = $update["pass"];
+        
+        $testDate1 = date_create(date('Y-m-d H:i:s',time()));
+        $testDate2 = date_create(date('Y-m-d H:i:s',strtotime($update["endtime"])));
+
         if(isset($_POST["setAbo"]) && date("Y-m-d") < $_POST["setAbo"]) {
             $date = mysqli_real_escape_string($mysqli, $_POST["setAbo"]);
             $dateInsert = "cast('$date 23:59:59' AS datetime)";
         } else {
-            $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
-            $dateInsert = "DATE_ADD(endtime,INTERVAL $days_to_end DAY)";
+            // check of curr date
+            if($testDate1 > $testDate2) {
+              $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
+              $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+
+              if($use_map == "Rocketmap") {
+                // generate new acc
+                include("../Htpasswd.php");
+                $htpasswd = new Htpasswd('../.htpasswd');
+                $htpasswd->addUser($update["TelegramUser"], $update["pass"]);
+              }
+      
+            } else {
+              $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
+            }
+            $dateInsert = $date;
         }
         $amountInsert = $update["Amount"];
         $amountInsert+=$sumBar;
@@ -269,13 +287,15 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     else {
         $empfaenger	= $newMail;
     }
+
+    $InputChannels = implode(',',$InputChannel);
     
     if($statement == "insert") {
-        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', city = '$newCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = ".$dateInsert;
+        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', city = '$newCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = '$dateInsert' ";
         #print_r($sql_insert);
         $mysqli->query($sql_insert);
     } elseif($statement == "update") {
-        mysqli_query($mysqli, "UPDATE ".$tbl." SET city = '$newCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannels', endtime = ".$dateInsert.", info = NULL WHERE id = ".$update["id"]);
+        mysqli_query($mysqli, "UPDATE ".$tbl." SET city = '$newCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannels', endtime = '$dateInsert', info = NULL WHERE id = ".$update["id"]);
     }
     
     include_once("msg.php");
@@ -289,7 +309,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     }
     
     if($AccessAllChannels === false) {
-        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).")");
+        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".$InputChannels.")");
     } else {
         $all_channels = $mysqli->query("SELECT * FROM channels");
     }

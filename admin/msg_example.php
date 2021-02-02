@@ -24,15 +24,13 @@ $emoji_smirk_cat	= "&#128572;"; // smirk_cat
 
 // DO NOT CHANGE THIS PART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 if($AccessAllChannels === false) {
-	if($row["channels"] == NULL) {
-		$InputChannel = NULL;
+	if(is_null($row["channels"])) {
 		$channels = $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC");
 	} else {
 		$InputChannel = array($row["channels"]);
 		$channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).") ORDER BY sort DESC, id DESC");
 	}
 } else {
-	$InputChannel = NULL;
 	$channels = $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC");
 }
 

@@ -14,6 +14,7 @@ $header               = "für den DEIN STADTTEIL Mon IV - Telegram Kanal (nur In
 $organization         = 'your organization';
 $showDisclaimer       = false;  // to use disclaimer set it true, rename the disclaimer_example.php to disclaimer.php and config the up part in the file !!!
 $AccessAllChannels    = false;  // set true to Access for all Channels or false(default) for costum handling
+$HighlightChannelId   = false;
 
 
 // API Server URL, bot token, Admins

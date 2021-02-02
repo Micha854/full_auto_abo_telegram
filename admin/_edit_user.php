@@ -267,13 +267,28 @@ if(isset($_GET["delete"])) {
     $amountInsert+=$sumBar;
     
     $userid = $row["userid"];
+    $testDate1 = date_create(date('Y-m-d H:i:s',time()));
+    $testDate2 = date_create(date('Y-m-d H:i:s',strtotime($row["endtime"])));
     
     if(isset($_POST["setAbo"]) && date("Y-m-d") < $_POST["setAbo"]) {
       $date = mysqli_real_escape_string($mysqli, $_POST["setAbo"]);
       $dateInsert = "cast('$date 23:59:59' AS datetime)";
     } else {
-      $date = date('Y-m-d H:i:s', strtotime($row["endtime"]. " + {$days_to_end} days"));
-      $dateInsert = "DATE_ADD(endtime,INTERVAL $days_to_end DAY)";
+      // check of curr date
+      if($testDate1 > $testDate2) {
+        $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
+        
+        if($use_map == "Rocketmap") {
+          // generate new acc
+          include("../Htpasswd.php");
+          $htpasswd = new Htpasswd('../.htpasswd');
+          $htpasswd->addUser($row["TelegramUser"], $row["pass"]);
+        }
+
+      } else {
+        $date = date('Y-m-d H:i:s', strtotime($row["endtime"]. " + {$days_to_end} days"));
+      }
+      $dateInsert = $date;
     }
     
     if($use_map == "PMSF") {
@@ -288,12 +303,13 @@ if(isset($_GET["delete"])) {
         }
     }
     
-    mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = ".$dateInsert.", info = NULL WHERE id = ".$row["id"]);
+    mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = '$dateInsert', info = NULL WHERE id = ".$row["id"]);
     
     include_once("msg.php");
     
     $all_channels = $mysqli->query("SELECT * FROM channels");
-    while($unsert_bann = $all_channels->fetch_array()) {		
+    while($unsert_bann = $all_channels->fetch_array()) {
+        $ItemDesc = $row["TelegramUser"];		
         $chat_id = $unsert_bann["chatid"];
         $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
     }

@@ -34,10 +34,10 @@ while($rowX = $result->fetch_array()) {
             $channel= $rowX["name"];
             
             // userid ist unbekannt !!!
-            $delete = is_null($row) ? 'no' : 'yes';
-            $userid = is_null($row) ? $user_id : $row["userid"];
-            $date = is_null(row) ? '' : $row["endtime"];
-            $empfaenger = is_null(row) ? '' : $row["buyerEmail"];
+            $delete     = is_null($row) ? 'no'      : 'yes';
+            $userid     = is_null($row) ? $user_id  : $row["userid"];
+            $date       = is_null($row) ? ''        : $row["endtime"];
+            $empfaenger = is_null($row) ? ''        : $row["buyerEmail"];
                         
             $userid_check = is_null($row) && $element["role"] == 'user' ? " class='iderror'" : "";
                     
