@@ -16,14 +16,39 @@ require_once dirname(__FILE__) . '/../functions.php';
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-  <script>
+  
+  <script type='text/javascript'>
     $(function() {
       $( "#datepicker" ).datepicker({
         firstDay: 1,
         dateFormat: "yy-mm-dd"
       });
     });
+
+    $(function() {
+        $( "#autocomplete" ).autocomplete({
+            source: function( request, response ) {
+                
+                $.ajax({
+                    url: "fetchData.php",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        search: request.term
+                    },
+                    success: function( data ) {
+                        response( data );
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('#autocomplete').val(ui.item.label);
+                return false;
+            }
+        });
+    });
   </script>
+
 </head>
 <body>
 
@@ -204,7 +229,7 @@ if(isset($_GET["delete"])) {
     </tr>
     <tr>
       <th scope="col"><b>Neuer @Username</b></th>
-      <th scope="col"><input type="text" name="user" class="form-control" autocomplete="off" required /></th>
+      <th scope="col"><input type="text" name="user" id='autocomplete' class="form-control" autocomplete="off" required /></th>
     </tr>
     <?php if($use_map == "PMSF") { ?>
     <tr>
@@ -388,7 +413,7 @@ if(isset($_GET["delete"])) {
     </tr>
     <tr>
       <th scope="col"><b>Neuer @Username</b></th>
-      <th scope="col"><input type="text" name="user" class="form-control" autocomplete="off" required /></th>
+      <th scope="col"><input type="text" name="user" id='autocomplete' class="form-control" autocomplete="off" required /></th>
     </tr>
     <?php if($use_map == "PMSF") { ?>
     <tr>

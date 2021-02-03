@@ -14,48 +14,65 @@ require_once dirname(__FILE__) . '/../functions.php';
 <link rel="icon" type="image/png" href="logo.png" sizes="96x96">
 <title><?=$WebsiteTitle ?> - ADMIN NEW USER</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  <style>
-    #country-list{float:left;list-style:none;margin-top:-3px;padding:0;width:190px;position: absolute;}
-    #country-list li{padding: 10px; background: #fff; border-bottom: #bbb9b9 1px solid;}
-    #country-list li:hover{background:#E9ECEF;cursor: pointer;}
-  </style>
-
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
-  <script>
+  <script type='text/javascript'>
     $(function() {
       $( "#datepicker" ).datepicker({
         firstDay: 1,
         dateFormat: "yy-mm-dd"
       });
     });
-  </script>
-  
-  <script>
-    // AJAX call for autocomplete 
-    $(document).ready(function(){
-      $("#search-box").keyup(function(){
-        $.ajax({
-          type: "POST",
-          url: "request_city.php",
-          data:'keyword='+$(this).val(),
-          beforeSend: function(){
-            $("#search-box").css("background","#FFF url(LoaderIcon.gif) no-repeat 165px");
-          },
-          success: function(data){
-            $("#suggesstion-box").show();
-            $("#suggesstion-box").html(data);
-            $("#search-box").css("background","#FFF");
-          }
+
+    $(function() {
+        $( "#autocomplete" ).autocomplete({
+            source: function( request, response ) {
+                
+                $.ajax({
+                    url: "fetchData.php",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        search: request.term
+                    },
+                    success: function( data ) {
+                        response( data );
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('#autocomplete').val(ui.item.label);
+                $('#select_city').val(ui.item.city);
+                $('#select_pass').val(ui.item.pass);
+                $('#select_email').val(ui.item.email);
+                return false;
+            }
         });
-      });
     });
-    //To select country name
-    function selectCountry(val) {
-      $("#search-box").val(val);
-      $("#suggesstion-box").hide();
-    }
+
+    $( function() {
+        $( "#select_city" ).autocomplete({
+            source: function( request, response ) {
+                
+                $.ajax({
+                    url: "fetchData.php",
+                    type: 'post',
+                    dataType: "json",
+                    data: {
+                        search_city: request.term
+                    },
+                    success: function( data ) {
+                        response( data );
+                    }
+                });
+            },
+            select: function (event, ui) {
+                $('#select_city').val(ui.item.city);
+                return false;
+            }
+        });
+    });
   </script>
 
 </head>
@@ -188,20 +205,20 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
   <form method="post" action="">
     <div class="form-group">
       <p class="lead">Telegram Username:</p>
-      <input style="<?=$username_err ?>" type="text" name="user" value="<?=$newUser?>" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
+      <input style="<?=$username_err ?>" type="text" name="user" id='autocomplete' value="<?=$newUser?>" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
     </div>
     <div class="form-group">
       <p class="lead">Bereich:</p>
-      <input type="text" name="city" id="search-box" value="<?=$newCity?>" class="form-control" autocomplete="off" aria-describedby="City" placeholder="City" required>
+      <input type="text" name="city" id="select_city" value="<?=$newCity?>" class="form-control" autocomplete="off" aria-describedby="City" placeholder="City" required>
       <div id="suggesstion-box"></div>
     </div>
     <div class="form-group">
       <p class="lead">Passwort: (max. 16 Zeichen)</p>
-      <input type="text" name="pass" value="<?=$passwd?>" class="form-control" autocomplete="off" maxlength="16" aria-describedby="passwort" placeholder="leave blank to generate a password" />
+      <input type="text" name="pass"id='select_pass' value="<?=$passwd?>" class="form-control" autocomplete="off" maxlength="16" aria-describedby="passwort" placeholder="leave blank to generate a password" />
     </div>
     <div class="form-group">
       <p class="lead">eMail:</p>
-      <input type="email" name="email" value="<?=$newMail?>" class="form-control" autocomplete="off" placeholder="Emailadresse" required>
+      <input type="email" name="email" id='select_email' value="<?=$newMail?>" class="form-control" autocomplete="off" placeholder="Emailadresse" required>
     </div>
     <div class="form-group">
       <p class="lead">Bar erhalten</p>
@@ -364,20 +381,20 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
   <form method="post" action="">
     <div class="form-group">
       <p class="lead">Telegram Username:</p>
-      <input type="text" name="user" class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
+      <input type="text" name="user" id='autocomplete' class="form-control" autocomplete="off" aria-describedby="telegramname @" placeholder="@" required>
     </div>
     <div class="form-group">
       <p class="lead">Bereich:</p>
-      <input type="text" name="city" id="search-box" class="form-control" autocomplete="off" aria-describedby="City" placeholder="City">
+      <input type="text" name="city" id="select_city" class="form-control" autocomplete="off" aria-describedby="City" placeholder="City">
       <div id="suggesstion-box"></div>
     </div>
     <div class="form-group">
       <p class="lead">Passwort: (max. 16 Zeichen)</p>
-      <input type="text" name="pass" class="form-control" autocomplete="off" maxlength="16" aria-describedby="passwort" placeholder="leave blank to generate a password" />
+      <input type="text" name="pass" id='select_pass' class="form-control" autocomplete="off" maxlength="16" aria-describedby="passwort" placeholder="leave blank to generate a password" />
     </div>
     <div class="form-group">
       <p class="lead">eMail:</p>
-      <input type="email" name="email" class="form-control" autocomplete="off" placeholder="Emailadresse" required>
+      <input type="email" name="email" id='select_email' class="form-control" autocomplete="off" placeholder="Emailadresse" required>
     </div>
     <div class="form-group">
       <p class="lead">Bar erhalten</p>
