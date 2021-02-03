@@ -138,7 +138,6 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
             // check of curr date
             if($testDate1 > $testDate2) {
               $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
-              $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
 
               if($use_map == "Rocketmap") {
                 // generate new acc
