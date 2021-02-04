@@ -126,14 +126,16 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     $sumBar = empty($sumBar) ? 0 : str_replace(",",".", $sumBar);
     //$sumBar = str_replace(",",".", $sumBar);
     
-    $days_to_end = $_POST["itemprice"]/$schnitt;
+    $days_to_end = $sumBar/$schnitt;
+
     $days_to_end = ceil($days_to_end);
 
     if($AccessAllChannels === false) {
         $InputChannel = array();
-        $InputChannel = $_POST["added"];  
+        $InputChannel = $_POST["added"];
+        $InputChannels = implode(',',$InputChannel);
     } else {
-        $InputChannel = NULL;
+        $InputChannels = NULL;
     }
                     
     // NEW USER OR UPDATE
@@ -303,11 +305,9 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     else {
         $empfaenger	= $newMail;
     }
-
-    $InputChannels = implode(',',$InputChannel);
     
     if($statement == "insert") {
-        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', city = '$newCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = '$dateInsert' ";
+        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', city = '$newCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = $dateInsert";
         #print_r($sql_insert);
         $mysqli->query($sql_insert);
     } elseif($statement == "update") {
