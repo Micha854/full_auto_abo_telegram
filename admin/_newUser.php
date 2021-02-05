@@ -93,6 +93,7 @@ $result = $mysqli->query($query);
 $row = $result->fetch_array();
 
 $schnitt = $row["total"]/$row["abo"];	// durchschnittlicher preis pro tag
+$schnitt_output = number_format((float)$schnitt, 8, '.', '');
 
 
 if(isset($_POST["submit"]) and $_POST["user"]) {
@@ -223,7 +224,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       <input type="email" name="email" id='select_email' value="<?=$newMail?>" class="form-control" autocomplete="off" placeholder="Emailadresse" required>
     </div>
     <div class="form-group">
-      <p class="lead">Bar erhalten</p>
+      <p class="lead">Bar erhalten <span style="font-size:12px;font-weight:normal">(Preis pro Tag <b><?=floatval($schnitt_output) ?></b> Euro)</span></p>
       <input style="<?=$abo_err ?>" type="text" name="itemprice" autocomplete="off" class="form-control" placeholder="&euro;">
     </div>
     <div class="form-group">
@@ -397,7 +398,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       <input type="email" name="email" id='select_email' class="form-control" autocomplete="off" placeholder="Emailadresse" required>
     </div>
     <div class="form-group">
-      <p class="lead">Bar erhalten</p>
+      <p class="lead">Bar erhalten <span style="font-size:12px;font-weight:normal">(Preis pro Tag <b><?=floatval($schnitt_output) ?></b> Euro)</span></p>
       <input type="text" name="itemprice" class="form-control" autocomplete="off" placeholder="&euro;">
     </div>
     <div class="form-group">

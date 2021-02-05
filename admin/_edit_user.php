@@ -62,6 +62,13 @@ if(!file_exists(dirname(__FILE__) . '/msg.php') and file_exists(dirname(__FILE__
     copy(dirname(__FILE__) . "/msg_example.php",dirname(__FILE__) . "/msg.php");
 }
 
+$query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
+$result2 = $mysqli->query($query2);
+$row2 = $result2->fetch_array();
+
+$schnitt = $row2["total"]/$row2["abo"];	// durchschnittlicher preis pro tag
+$schnitt_output = number_format((float)$schnitt, 8, '.', '');
+
 $id = mysqli_real_escape_string($mysqli, $_GET["id"]);
                     
 $query = "SELECT * FROM ".$tbl." WHERE id = $id";
@@ -251,7 +258,7 @@ if(isset($_GET["delete"])) {
       <th scope="col"><?=$row["TelegramUser"] ?></th>
     </tr>
     <tr>
-      <th scope="col">Bar erhalten</th>
+      <th scope="col">Bar erhalten<br><span style="font-size:12px;font-weight:normal">(Preis pro Tag <b><?=floatval($schnitt_output) ?></b> Euro)</span></th>
       <th scope="col"><input style="background:#FF0000; color:#FFFF00" type="text" name="itemprice" class="form-control" autocomplete="off" placeholder="&euro;"></th>
     </tr>
     <tr>
@@ -276,11 +283,6 @@ if(isset($_GET["delete"])) {
 <?php
         die();
     }
-    $query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
-    $result2 = $mysqli->query($query2);
-    $row2 = $result2->fetch_array();
-    $schnitt = $row2["total"]/$row2["abo"];	// durchschnittlicher preis pro tag
-
     $sumBar = mysqli_real_escape_string($mysqli, $_POST["itemprice"]);
     $sumBar = empty($sumBar) ? 0 : str_replace(",",".", $sumBar);
     //$sumBar = str_replace(",",".", $sumBar);
@@ -435,7 +437,7 @@ if(isset($_GET["delete"])) {
       <th scope="col"><?=$row["TelegramUser"] ?></th>
     </tr>
     <tr>
-      <th scope="col">Bar erhalten</th>
+      <th scope="col">Bar erhalten<br><span style="font-size:12px;font-weight:normal">(Preis pro Tag <b><?=floatval($schnitt_output) ?></b> Euro)</span></th>
       <th scope="col"><input type="text" name="itemprice" class="form-control" autocomplete="off" placeholder="&euro;"></th>
     </tr>
     <tr>
