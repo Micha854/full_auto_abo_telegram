@@ -81,17 +81,20 @@ if(isset($_POST["submit"])) { echo $save; }
 <?php
 while($row = $result->fetch_array()) {
 $chat_id = $row["chatid"];
-$getMember = callAPI('GET', $apiServer."getPWRchat/?id=$chat_id", false);
+$getMember = callAPI('GET', $apiServer."getfullinfo/?chat_id=$chat_id", false);
 
     $check_chatid = json_decode($getMember, true);
-    $check_invite = isset($check_chatid["response"]["invite"]);
+    $check_invite = $check_chatid["response"]["full"]["exported_invite"]["link"];
     
-if($row["url"] != $check_invite) {
+if(isset($check_invite)) {
+  if($row["url"] != $check_invite) {
     $color 	= ";background:#FF0000;color:#FFFF00";
-    $txt	= "<br>evtl. stimmt die Url f&uuml;r diesem Channel nicht, bitte pr&uuml;fe dies! <span style='background:#009933;color:#FFF'>".$check_invite."</span>";
-} else {
+    $txt	= "<br>evtl. stimmt die Url f&uuml;r diesem Channel nicht, bitte pr&uuml;fe dies!
+              <input style='background:#009933;color:#FFF' type='text' class='form-control' value=".$check_invite.">";
+  } else {
     $color 	= "";
     $txt	= "";
+  }
 }
 ?>
 
@@ -102,19 +105,19 @@ if($row["url"] != $check_invite) {
     </tr>
     <tr>
       <th scope="col">Name: </th>
-      <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="name[<?=$row["id"]?>]" value="<?=$row["name"] ?>" maxlength="155" style="width:100%" /></th>
+      <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="name[<?=$row["id"]?>]" class="form-control" value="<?=$row["name"] ?>" maxlength="155" style="width:100%" /></th>
     </tr>
     <tr>
       <th scope="col">Sort: </th>
-      <th scope="col" style="width:100%"><input type="text" name="sort[<?=$row["id"]?>]" value="<?=$row["sort"] ?>" maxlength="155" style="width:100%" /></th>
+      <th scope="col" style="width:100%"><input type="text" name="sort[<?=$row["id"]?>]" class="form-control" value="<?=$row["sort"] ?>" maxlength="155" style="width:100%" /></th>
     </tr>
     <tr>
       <th valign="top" scope="col">URL: </th>
-      <th scope="col" style="width:100%"><input type="text" name="url[<?=$row["id"]?>]" value="<?=$row["url"] ?>" maxlength="155" style="width:100%<?=$color?>" /><?=$txt?></th>
+      <th scope="col" style="width:100%"><input type="text" name="url[<?=$row["id"]?>]" class="form-control" value="<?=$row["url"] ?>" maxlength="155" style="width:100%<?=$color?>" /><?=$txt?></th>
     </tr>
     <tr>
       <th scope="col">ChatID: </th>
-      <th scope="col" style="width:100%"><input type="text" name="chatid[<?=$row["id"]?>]" value="<?=$row["chatid"] ?>" maxlength="15" style="width:100%" /></th>
+      <th scope="col" style="width:100%"><input type="text" name="chatid[<?=$row["id"]?>]" class="form-control" value="<?=$row["chatid"] ?>" maxlength="15" style="width:100%" /></th>
     </tr>
   </table>
 <hr />

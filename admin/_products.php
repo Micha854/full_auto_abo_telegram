@@ -89,19 +89,19 @@ while($row = $result->fetch_array()) {
     </tr>
     <tr>
       <th scope="col">Monate: </th>
-      <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="months[<?=$row["id"]?>]" value="<?=$row["months"] ?>" maxlength="2" style="width:100%" /></th>
+      <th scope="col" style="width:100%"><input type="hidden" name="id[]" value="<?=$row["id"]?>" /><input type="text" name="months[<?=$row["id"]?>]" class="form-control" value="<?=$row["months"] ?>" maxlength="2" style="width:100%" /></th>
     </tr>
     <tr>
       <th scope="col">Art. Nr.: </th>
-      <th scope="col" style="width:100%"><input type="text" name="item_number[<?=$row["id"]?>]" value="<?=$row["item_number"] ?>" maxlength="6" style="width:100%" /></th>
+      <th scope="col" style="width:100%"><input type="text" name="item_number[<?=$row["id"]?>]" class="form-control" value="<?=$row["item_number"] ?>" maxlength="6" style="width:100%" /></th>
     </tr>
     <tr>
       <th scope="col">Preis: </th>
-      <th scope="col" style="width:100%"><input type="text" name="item_price[<?=$row["id"]?>]" value="<?=$row["item_price"] ?>" maxlength="5" style="width:100%" /></th>
+      <th scope="col" style="width:100%"><input type="text" name="item_price[<?=$row["id"]?>]" class="form-control" value="<?=$row["item_price"] ?>" maxlength="5" style="width:100%" /></th>
     </tr>
     <tr>
       <th scope="col">Tage: </th>
-      <th scope="col" style="width:100%"><input type="text" name="abo_days[<?=$row["id"]?>]" value="<?=$row["abo_days"] ?>" maxlength="3" style="width:100%" /></th>
+      <th scope="col" style="width:100%"><input type="text" name="abo_days[<?=$row["id"]?>]" class="form-control" value="<?=$row["abo_days"] ?>" maxlength="3" style="width:100%" /></th>
     </tr>
   </table>
 <hr />

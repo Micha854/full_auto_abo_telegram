@@ -2,8 +2,8 @@
 require_once dirname(__FILE__) . '/../config.php';
 
 if(!file_exists(dirname(__FILE__) . '/cron.txt')) {
-$handle = fopen(dirname(__FILE__) . '/cron.txt', 'a');
-fclose($handle);
+    $handle = fopen(dirname(__FILE__) . '/cron.txt', 'a');
+    fclose($handle);
 }
 
 ?>
@@ -29,20 +29,30 @@ fclose($handle);
  #active {
   color: #FF0000;
  }
- 
-@media only screen and (max-width: 500px) {
+.dot {
+  height: 10px;
+  width: 10px;
+  background-color: #009900;
+  border-radius: 50%;
+  display: inline-block;
+ }
+ @media only screen and (max-width: 500px) {
   .destop {
-      display:none
+    display:none
   }
   .table td, .table th {
-     padding-left:1px;
-     padding-right:1px;
- }
+    padding-left:1px;
+    padding-right:1px;
+  }
 }
-
-@media only screen and (min-width: 500px) {
+ @media only screen and (min-width: 500px) {
   .mobile {
-      display:none
+    display:none
+  }
+}
+ @media only screen and (max-width: 575px) {
+  .city {
+    display:none
   }
 }
 </style>
@@ -116,7 +126,7 @@ if(isset($_GET["inactive"]) == 'true') {
 }
 
 if(isset($_POST["searchSubmit"])) {
-    $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%')";
+    $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR city LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%')";
 } else {
     $result_tot	= "SELECT COUNT(*) as total FROM ".$tbl.$where_inactive;
 }
@@ -141,7 +151,7 @@ $limit = ($seite*$ergebnisse_pro_seite)-$ergebnisse_pro_seite;
 
 
 if(isset($_POST["searchSubmit"])) {
-    $query		= "SELECT * FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR buyerEmail LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%') ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
+    $query		= "SELECT * FROM ".$tbl." WHERE (buyerEmail LIKE '%".$_POST["Search"]."%' OR city LIKE '%".$_POST["Search"]."%' OR TelegramUser LIKE '%".$_POST["Search"]."%') ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
 } else {
     $query		= "SELECT * FROM ".$tbl.$where_inactive."  ORDER BY " . $spalte . " " . $sort." LIMIT ".$limit.", ".$ergebnisse_pro_seite;
 }
@@ -179,13 +189,6 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
     }
 }
 ?>
-<style>
-    @media only screen and (max-width: 575px) {
-        .city {
-            display:none
-        }
-    }
-</style>
     <table class="table">
         <thead class="thead-light">
             <tr>
@@ -223,15 +226,6 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
                  <th scope="col"></th>
             </tr>
         </thead>
-<style>
-    .dot {
-  height: 10px;
-  width: 10px;
-  background-color: #009900;
-  border-radius: 50%;
-  display: inline-block;
-}
-</style>
 <?php
 while($row = $result->fetch_array()) {
 
