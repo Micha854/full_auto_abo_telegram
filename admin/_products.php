@@ -67,6 +67,9 @@ if(isset($_POST["deleteAbo"])) {
     mysqli_query($mysqli, "DELETE FROM products WHERE id = $deleteAbo");
 }
 
+$sql = $mysqli->query("SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products")->fetch_array();
+$schnitt = number_format((float)$sql["total"]/$sql["abo"], 8, '.', '');
+
 $query = "SELECT * FROM products ORDER BY id DESC";
 $result = $mysqli->query($query);
 if(isset($_POST["submit"])) { echo $save; }
@@ -77,6 +80,7 @@ if(isset($_POST["submit"])) { echo $save; }
 <input type="submit" class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" name="newField" value="Neuer Eintrag" />
 </form>
 <h1>Abos verwalten</h1>
+<p>durchschnittlicher Preis pro Tag: <b><?=floatval($schnitt) ?></b> Euro</p>
 <form method="post" action=""> 
 <?php
 while($row = $result->fetch_array()) {
