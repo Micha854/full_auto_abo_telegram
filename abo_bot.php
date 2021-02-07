@@ -42,6 +42,12 @@ switch ($text) {
             }
             $passwd = $row["pass"];
             $date = $row["endtime"];
+            if($AccessAllChannels === false) {
+                $InputChannel = array();
+                $InputChannel = $row["channels"];
+            } else {
+                $InputChannel = NULL;
+            }
             
             include_once("admin/msg.php");
 

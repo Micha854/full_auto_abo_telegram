@@ -21,32 +21,29 @@ $emoji_point_down	= "&#128071;"; // point_down
 $emoji_point_right	= "&#128073;"; // point_right
 $emoji_smirk_cat	= "&#128572;"; // smirk_cat
 
-
-// DO NOT CHANGE THIS PART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-if($AccessAllChannels === false) {
-	if(is_null($row["channels"])) {
-		$channels = $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC");
-	} else {
-		$InputChannel = array($row["channels"]);
-		$channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).") ORDER BY sort DESC, id DESC");
-	}
-} else {
+// DO NOT CHANGE THIS PART !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!		
+if(is_null($InputChannel)) {
 	$channels = $mysqli->query("SELECT * FROM channels ORDER BY sort DESC, id DESC");
+} else {
+	$channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".$InputChannel.") ORDER BY sort DESC, id DESC");
 }
 
 $joinMsg	= '';
 $chl_names	= '';
-if(!isset($channel)) {
-    while ($channel = $channels->fetch_array()) {
-        $joinMsg	.= $channel["name"] . ": $emoji_point_right <a href=\"" . $channel["url"] . "\">" . $channel["url"] . "</a>\n\n";
-        $chl_names	.= $channel["name"] . "\n";
-    }
+if(isset($channels->num_rows)) {
+	$joinMsg = '<b>*** Links zu den Kanälen: ***</b>';
+	while ($channel = $channels->fetch_array()) {
+		$joinMsg	.= "\n\n".$channel["name"] . ": $emoji_point_right <a href=\"" . $channel["url"] . "\">" . $channel["url"] . "</a>";
+		$chl_names	.= $channel["name"] . "\n";
+	}
 }
 // END !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
+// Dein Support Kanal
+$supportChannel = "<a href=\"https://t.me/MonsHLSupport\">@MonsHLSupport</a>";
 
 // wenn ein user geändert oder neu über das Admin Panel hinzugefügt wird
-$UserMsg			= "Link zur MAP: $emoji_point_right <a href=\"$urlMap\">$urlMap</a>\n\n<b>Deine Logindaten:</b>\nUsername: $loginName\nPasswort: <a href=\"$urlMap\">$passwd</a>\n\nDein Abo endet am $endtime\n\n<b>Links zu den Kanälen:</b>\n\n$joinMsg";
+$UserMsg			= "Link zur MAP: $emoji_point_right <a href=\"$urlMap\">$urlMap</a>\n\n<b>Deine Logindaten:</b>\nUsername: $loginName\nPasswort: <code>$passwd</code>\n\nDein Abo endet am $endtime\n\n$joinMsg\n\nFalls du Fragen hast wende dich an unseren Support $emoji_point_right $supportChannel\n\nViel Spass beim Pokemon fangen $emoji_smirk_cat";
 $UserMsgShort		= "Dein Abo endet am $endtime"; // es wird keine Map verwendet !!!
 
 
@@ -61,7 +58,7 @@ $notifyAdmin		= "Es wurde ein neues Abo abgeschlossen von <b>$loginName</b>, lau
 
 
 // Info an den user, das er aus dem Kanal entfernt wurde
-$userKicked			= "Du wurdest aus dem Kanal $emoji_point_right <b>$channel</b> entfernt! Du kannst hier ein Abo abschliessen: \n\n<a href=\"$WebsiteUrl\">$WebsiteUrl</a>";
+$userKicked			= "Du wurdest aus dem Kanal $emoji_point_right <b>$chl_names</b> entfernt! Du kannst hier ein Abo abschliessen: \n\n<a href=\"$WebsiteUrl\">$WebsiteUrl</a>";
 
 
 // Info an den user, das sein Abo in X Tagen ausläuft
@@ -69,13 +66,12 @@ $userInfo			= "Dein Abo läuft am $endtime aus, du kannst dein Abo hier verläng
 
 
 // Info an den user, das Abo ist abgelaufen
-$aboEnds			= "Dein Abo ist am $endtime abgelaufen, du hast keinen Zutritt mehr zu $chl_names und zur MAP! Du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl";
-
+$aboEnds			= "Dein Abo ist am $endtime abgelaufen, du hast keinen Zutritt mehr zu <b>$chl_names</b> und zur MAP! Du kannst hier ein Abo abschliessen: \n\n$WebsiteUrl";
 
 
 // TELEGRAM BOT HANDLING
 $botStartMsg		= "Willkommen bei Mein Abo-Bot!\nWas möchtest du tun?";
 
-$botUserFalse		= "Du hast noch kein Abo! $emoji_confused Wenn du ein Abo abschließt, wird es nicht automatisch verlängert und läuft automatisch aus $emoji_point_down";
+$botUserFalse		= "<b>Ohh... Du hast wohl noch kein Abo!</b> $emoji_confused\n\nFalls du Probleme mit deinem Abo hast wende dich an unseren Support $emoji_point_right $supportChannel\n\nWenn du ein Abo abschließt, wird es nicht automatisch verlängert und läuft automatisch aus $emoji_point_down";
 
-$botUserTrue		= "Dein Abo ist Aktiv bis zum <b>*** $endtime ***</b>\n\nUm die Map zu verwenden, benutze folgende URL: $emoji_point_right $urlMap\n\n<b>*** Deine Login Daten: ***</b>\nUsername: $loginName\nPassword: $passwd\n\n<b>*** Links zu den Kanälen: ***</b>\n\n" . $joinMsg . "Falls du Fragen hast wende dich an unseren Support $emoji_point_right @MonsHLSupport\n\nViel Spass beim Pokemon fangen $emoji_smirk_cat";
+$botUserTrue		= "Dein Abo ist Aktiv bis zum <b>*** $endtime ***</b>\n\nUm die Map zu verwenden, benutze folgende URL: $emoji_point_right $urlMap\n\n<b>*** Deine Login Daten: ***</b>\nUsername: $loginName\nPassword: <code>$passwd</code>\n\n" . $joinMsg . "\n\nFalls du Fragen hast wende dich an unseren Support $emoji_point_right $supportChannel\n\nViel Spass beim Pokemon fangen $emoji_smirk_cat";

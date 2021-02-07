@@ -76,6 +76,13 @@ $result = $mysqli->query($query);
 
 $row = $result->fetch_array();
 
+if($AccessAllChannels === false) {
+  $InputChannel = array($row["channels"]);  
+  $InputChannel = implode(',',$InputChannel);
+} else {
+  $InputChannel = NULL;
+}
+
 if(isset($_POST["submit"]) and $_POST["user"]) {
     
     function generateRandomString($length = 10) {
@@ -101,12 +108,6 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     $ItemDesc = $newAdd;
     
     $OldUser = $row["TelegramUser"]; // old Username delete
-
-    if($AccessAllChannels === false) {
-        $InputChannel = array($row["channels"]);  
-    } else {
-        $InputChannel = NULL;
-    }
     
     $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
     $getUserId	= json_decode($getInfo, true);
@@ -149,7 +150,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     }
     
     if($AccessAllChannels === false) {
-        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".implode(',',$InputChannel).")");
+        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".$InputChannel.")");
     } else {
         $all_channels = $mysqli->query("SELECT * FROM channels");
     }
@@ -286,9 +287,6 @@ if(isset($_GET["delete"])) {
     $sumBar = mysqli_real_escape_string($mysqli, $_POST["itemprice"]);
     $sumBar = empty($sumBar) ? 0 : str_replace(",",".", $sumBar);
     //$sumBar = str_replace(",",".", $sumBar);
-    
-    $days_to_end = $_POST["itemprice"]/$schnitt;
-    $days_to_end = ceil($days_to_end);
         
     $amountInsert = $row["Amount"];
     $amountInsert+=$sumBar;
@@ -301,6 +299,9 @@ if(isset($_GET["delete"])) {
       $date = mysqli_real_escape_string($mysqli, $_POST["setAbo"]);
       $dateInsert = "cast('$date 23:59:59' AS datetime)";
     } else {
+      $days_to_end = $_POST["itemprice"]/$schnitt;
+      $days_to_end = ceil($days_to_end);
+
       // check of curr date
       if($testDate1 > $testDate2) {
         $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
@@ -315,7 +316,7 @@ if(isset($_GET["delete"])) {
       } else {
         $date = date('Y-m-d H:i:s', strtotime($row["endtime"]. " + {$days_to_end} days"));
       }
-      $dateInsert = $date;
+      $dateInsert = "'".$date."'";
     }
     
     if($use_map == "PMSF") {
@@ -330,7 +331,7 @@ if(isset($_GET["delete"])) {
         }
     }
     
-    mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = '$dateInsert', info = NULL WHERE id = ".$row["id"]);
+    mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = $dateInsert, info = NULL WHERE id = ".$row["id"]);
     
     include_once("msg.php");
     

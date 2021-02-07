@@ -133,10 +133,9 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 
     if($AccessAllChannels === false) {
         $InputChannel = array();
-        $InputChannel = $_POST["added"];
-        $InputChannels = implode(',',$InputChannel);
+        $InputChannel = mysqli_real_escape_string($mysqli, implode(',',$_POST["added"]));
     } else {
-        $InputChannels = NULL;
+        $InputChannel = NULL;
     }
                     
     // NEW USER OR UPDATE
@@ -179,7 +178,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         //$date->modify('+$days_to_end day');
         //$date = $date->format('Y-m-d H:i:s');
         if(isset($_POST["setAbo"]) && date("Y-m-d") < $_POST["setAbo"]) {
-            $date = $_POST["setAbo"];
+            $date = mysqli_real_escape_string($mysqli, $_POST["setAbo"]);
             $dateInsert = "cast('$date 23:59:59' AS datetime)";
         } else {
             $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
@@ -308,11 +307,11 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     }
     
     if($statement == "insert") {
-        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', city = '$newCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannels', pass = '$passwd', TransID = NULL, paydate = now(), endtime = $dateInsert";
+        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '', city = '$newCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannel', pass = '$passwd', TransID = NULL, paydate = now(), endtime = $dateInsert";
         #print_r($sql_insert);
         $mysqli->query($sql_insert);
     } elseif($statement == "update") {
-        mysqli_query($mysqli, "UPDATE ".$tbl." SET city = '$newCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannels', endtime = '$dateInsert', info = NULL WHERE id = ".$update["id"]);
+        mysqli_query($mysqli, "UPDATE ".$tbl." SET city = '$newCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannel', endtime = $dateInsert, info = NULL WHERE id = ".$update["id"]);
     }
     
     include_once("msg.php");
@@ -326,7 +325,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     }
     
     if($AccessAllChannels === false) {
-        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".$InputChannels.")");
+        $all_channels = $mysqli->query("SELECT * FROM channels WHERE id IN (".$InputChannel.")");
     } else {
         $all_channels = $mysqli->query("SELECT * FROM channels");
     }
