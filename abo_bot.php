@@ -61,7 +61,7 @@ switch ($text) {
 }
 
 //antworte nur wenn was zum antworten da ist
-if ($content) {
+if ($content && $userId == $chat_id) {
     $content['chat_id'] = $chat_id;
     $content['parse_mode'] = 'html';
     $content['disable_web_page_preview'] = 'true';

@@ -1,4 +1,5 @@
 <?php
+session_name ( 'ABO' );
 session_start();
 if(isset($_GET["reset"])) {
   session_destroy();
