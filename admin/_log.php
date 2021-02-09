@@ -10,12 +10,13 @@ if ($mysqli->connect_error) {
 $filename = "response.txt";
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="logo.png" sizes="32x32">
 <link rel="icon" type="image/png" href="logo.png" sizes="96x96">
@@ -23,13 +24,13 @@ $filename = "response.txt";
 </head>
 
 <body>
-<main role="main" class="container">
+<div role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
 if(isset($_GET["delete"])) {
     
-    echo "<div align='center'><h2>M&ouml;chtest du das Log wirklich leeren?</h2>";
+    echo "<div style='text-align:center'><h2>M&ouml;chtest du das Log wirklich leeren?</h2>";
     ?>
     <form method="post" action="_log.php">
         <a class="btn btn-sm btn-outline-secondary" href="_log.php" role="button">abbrechen</a>
@@ -81,7 +82,7 @@ if(isset($_GET["delete"])) {
 ?>
 
 </div>
-</main>
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>

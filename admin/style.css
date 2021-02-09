@@ -1,0 +1,110 @@
+/* styles for all sites in the admin directory */
+  .container {
+    position: relative;
+    padding-right: 0;
+    padding-left: 0;
+  }
+  .jumbotron {
+    margin-bottom: 0;
+    padding: 4rem 1.5rem 5rem 1.5rem;
+  }
+  @media only screen and (max-width: 575px) {
+    .jumbotron {
+      padding: 2rem 0.7rem 4rem 0.7rem;
+    }
+  }
+  .footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background: #212529;
+    color: #f8f9fa;
+    padding-top: 2px;
+    padding-bottom: 5px;
+  }
+
+/* styles for index.php */
+  a:link, a:visited {
+    color: Royalblue;
+    text-decoration: None;
+  }
+  a:hover, a:active {
+    color: Red;
+  }
+  #active {
+    color: #FF0000;
+  }
+  .dot {
+    height: 10px;
+    width: 10px;
+    background-color: #009900;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  @media only screen and (max-width: 500px) {
+    .destop {
+      display:none
+    }
+    .table td, .table th {
+      padding-left:1px;
+      padding-right:1px;
+    }
+  }
+  @media only screen and (min-width: 500px) {
+    .mobile {
+      display:none
+    }
+  }
+  @media only screen and (max-width: 575px) {
+    .city {
+      display:none
+    }
+  }
+
+/* styles for _cron.php */
+  .admin {
+    background:#0099FF;
+    color:#FFFFFF;
+    padding:3px;
+    line-height:160%
+  }
+  .true {
+    background:#009900;
+    color:#FFFFFF;
+    padding:3px;
+    line-height:160%
+  }
+  .false {
+    background:#FF0000;
+    color:#FFFFFF;
+    padding:3px;
+    line-height:160%
+  }
+  .left {
+    background:#FF9900;
+    color:#000000;
+    padding:3px;
+    line-height:160%
+  }
+  .time {
+    background:#FFFF00;
+    color:#000000;
+    padding:3px;
+    line-height:160%
+  }
+  .iderror {
+    background:#333333;
+    color:#FF3300;
+    padding:3px;
+    line-height:160%;
+    font-weight:bolder
+  }
+  .stat {
+    background:#FF99CC;
+    color:#000000;
+    padding:3px;
+    line-height:160%;
+    font-weight:bolder;
+    font-style:oblique
+  }

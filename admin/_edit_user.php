@@ -3,12 +3,13 @@ require_once dirname(__FILE__) . '/../config.php';
 require_once dirname(__FILE__) . '/../functions.php';
 ?>
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="logo.png" sizes="32x32">
 <link rel="icon" type="image/png" href="logo.png" sizes="96x96">
@@ -17,7 +18,7 @@ require_once dirname(__FILE__) . '/../functions.php';
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   
-  <script type='text/javascript'>
+  <script>
     $(function() {
       $( "#datepicker" ).datepicker({
         firstDay: 1,
@@ -201,10 +202,14 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     $userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benutzer ge&auml;ndert zu ".$newAdd."</h3>";
 } elseif(isset($_POST["submit2"])) {
     
-    if(empty($_POST["itemprice"]) && date("Y-m-d") >= $_POST["setAbo"] or empty($_POST["setAbo"]) && empty($_POST["itemprice"])) { 
+    if(empty($_POST["itemprice"]) && date('Y-m-d',strtotime($row["endtime"])) >= $_POST["setAbo"] or empty($_POST["setAbo"]) && empty($_POST["itemprice"])) {
+      if($_POST["setAbo"] && date('Y-m-d',strtotime($row["endtime"])) >= $_POST["setAbo"]) {
+        $userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Das Datum darf nicht kleiner = ".date('Y-m-d',strtotime($row["endtime"]))." sein!!</h3>";
+      } else {
         $userSave = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Bitte ein \"Abo Ende\" oder \"Betrag\" angeben!!</h3>";
+      }
     ?>
-<main role="main" class="container">
+<div role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
@@ -225,10 +230,10 @@ if(isset($_GET["delete"])) {
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="?id=<?=$id?>&delete=<?=$id?>" role="button">Benutzer l&ouml;schen</a>
 <h1>Benutzer umbenennen</h1>
-<form name="one" method="post" action=""> 
+<form name="one" method="post"> 
   <table class="table">
     <tr>
-      <th width="50%" scope="col">Aktueller @Username<br><span style="font-size:12px;font-weight:normal"><?php if($row["city"]) { echo 'aus '.$row["city"]; } ?></span></th>
+      <th scope="col">Aktueller @Username<br><span style="font-size:12px;font-weight:normal"><?php if($row["city"]) { echo 'aus '.$row["city"]; } ?></span></th>
       <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px"><?php if($row["buyerEmail"]) { echo '('.$row["buyerEmail"].')'; } ?></span></th>
     </tr>
     <tr>
@@ -252,10 +257,10 @@ if(isset($_GET["delete"])) {
   </table>
 </form>
 <h1>Abo verl&auml;ngern</h1>
-<form name="two" method="post" action=""> 
+<form name="two" method="post"> 
   <table class="table">
     <tr>
-      <th width="50%" scope="col">Abonnent</th>
+      <th scope="col">Abonnent</th>
       <th scope="col"><?=$row["TelegramUser"] ?></th>
     </tr>
     <tr>
@@ -276,7 +281,7 @@ if(isset($_GET["delete"])) {
 }
 ?>
 </div>
-</main>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>
@@ -383,7 +388,7 @@ if(isset($_GET["delete"])) {
     
 }
 ?>
-<main role="main" class="container">
+<div role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
@@ -404,10 +409,10 @@ if(isset($_GET["delete"])) {
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="?id=<?=$id?>&delete=<?=$id?>" role="button">Benutzer l&ouml;schen</a>
 <h1>Benutzer umbenennen</h1>
-<form name="one" method="post" action=""> 
+<form name="one" method="post"> 
   <table class="table">
     <tr>
-      <th width="50%" scope="col">Aktueller @Username<br><span style="font-size:12px;font-weight:normal"><?php if($row["city"]) { echo 'aus '.$row["city"]; } ?></span></th>
+      <th scope="col">Aktueller @Username<br><span style="font-size:12px;font-weight:normal"><?php if($row["city"]) { echo 'aus '.$row["city"]; } ?></span></th>
       <th scope="col"><?=$row["TelegramUser"] ?> <span style="font-size:12px"><?php if($row["buyerEmail"]) { echo '('.$row["buyerEmail"].')'; } ?></span></th>
     </tr>
     <tr>
@@ -431,10 +436,10 @@ if(isset($_GET["delete"])) {
   </table>
 </form>
 <h1>Abo verl&auml;ngern</h1>
-<form name="two" method="post" action=""> 
+<form name="two" method="post"> 
   <table class="table">
     <tr>
-      <th width="50%" scope="col">Abonnent</th>
+      <th scope="col">Abonnent</th>
       <th scope="col"><?=$row["TelegramUser"] ?></th>
     </tr>
     <tr>
@@ -455,7 +460,7 @@ if(isset($_GET["delete"])) {
 }
 ?>
 </div>
-</main>
+</div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 </body>

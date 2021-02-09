@@ -7,12 +7,13 @@ if ($mysqli->connect_error) {
     die('Error : ('. $mysqli->connect_errno .') '. $mysqli->connect_error);
 }
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="style.css">
 <link rel="shortcut icon" href="favicon.ico">
 <link rel="icon" type="image/png" href="logo.png" sizes="32x32">
 <link rel="icon" type="image/png" href="logo.png" sizes="96x96">
@@ -20,7 +21,7 @@ if ($mysqli->connect_error) {
 </head>
 
 <body>
-<main role="main" class="container">
+<div role="main" class="container">
 <?php include "nav.php"; ?>
 <div class="jumbotron">
 <?php
@@ -30,7 +31,7 @@ if(isset($_GET["delete"])) {
     $result = $mysqli->query($query);
     $row	= $result->fetch_array();
     
-    echo "<div align='center'><h2>M&ouml;chtest du den Kanal</h2><h1 style='font-style:italic'><a href='".$row["url"]."' target='_blank'>".$row["name"]."</a></h1><h2>unwiderruflich l&ouml;schen?</h2>";
+    echo "<div style='text-align:center'><h2>M&ouml;chtest du den Kanal</h2><h1 style='font-style:italic'><a href='".$row["url"]."' target='_blank'>".$row["name"]."</a></h1><h2>unwiderruflich l&ouml;schen?</h2>";
     ?>
     <form method="post" action="_channels.php">
         <a class="btn btn-sm btn-outline-secondary" href="_channels.php" role="button">abbrechen</a>
@@ -71,13 +72,13 @@ $result = $mysqli->query($query);
 if(isset($_POST["submit"])) { echo $save; }
 ?>
 
-<form method="post" action="">
+<form method="post">
 <a class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>" role="button">zur&uuml;ck</a>
 <input type="submit" class="btn btn-sm btn-outline-secondary" style="margin-bottom:20px" name="newField" value="Neuer Eintrag" />
 </form>
 <h1>Telegram Channels</h1>
 <p>höchster wert in Feld "Sort" zeigt den Kanal an erster Stelle</p>
-<form method="post" action=""> 
+<form method="post"> 
 <?php
 while($row = $result->fetch_array()) {
 $chat_id = $row["chatid"];
@@ -100,8 +101,8 @@ if(isset($check_invite)) {
 
   <table>
     <tr>
-      <th scope="col"><h2 style="margin-top:10px; margin-bottom:10px; font-style:oblique"><a href="<?=$row["url"] ?>" target="_blank" title="<?=$row["name"] ?>">#<?=$row["id"] ?></a></h2></th>
-      <th scope="col"><a class="btn btn-sm btn-outline-secondary" href="?delete=<?=$row["id"] ?>" role="button">Channel l&ouml;schen</a></h2></th>
+      <th scope="col"><a class="btn btn-sm btn-outline-secondary" href="<?=$row["url"] ?>" target="_blank" role="button" title="<?=$row["name"] ?>">#<?=$row["id"] ?></a></th>
+      <th scope="col"><a class="btn btn-sm btn-outline-secondary" href="?delete=<?=$row["id"] ?>" role="button">Channel l&ouml;schen</a></th>
     </tr>
     <tr>
       <th scope="col">Name: </th>
@@ -112,7 +113,7 @@ if(isset($check_invite)) {
       <th scope="col" style="width:100%"><input type="text" name="sort[<?=$row["id"]?>]" class="form-control" value="<?=$row["sort"] ?>" maxlength="155" style="width:100%" /></th>
     </tr>
     <tr>
-      <th valign="top" scope="col">URL: </th>
+      <th scope="col">URL: </th>
       <th scope="col" style="width:100%"><input type="text" name="url[<?=$row["id"]?>]" class="form-control" value="<?=$row["url"] ?>" maxlength="155" style="width:100%<?=$color?>" /><?=$txt?></th>
     </tr>
     <tr>
@@ -128,7 +129,7 @@ if(isset($check_invite)) {
 }
 ?>
 </div>
-</main>
+</div>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
