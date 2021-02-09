@@ -360,7 +360,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         $mail->SetFrom($mailSender, $WebsiteTitle);
         $mail->AddReplyTo($mailSender, $WebsiteTitle);
         
-        $mail->Subject    = mb_encode_mimeheader($mailSubject,"UTF-8");;
+        $mail->Subject    = mb_encode_mimeheader($mailSubject,"UTF-8");
         $mail->AltBody    = strip_tags($mailMessage); // optional, comment out and test
         $mail->MsgHTML($mailMessage);
         $mail->AddAddress($empfaenger, $WebsiteTitle);

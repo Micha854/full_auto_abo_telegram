@@ -102,7 +102,7 @@ while($rowX = $result->fetch_array()) {
                     $mail->SetFrom($mailSender, $WebsiteTitle);
                     $mail->AddReplyTo($mailSender, $WebsiteTitle);
         
-                    $mail->Subject    = $mailSubject;
+                    $mail->Subject    = mb_encode_mimeheader($mailSubject,"UTF-8");
                     $mail->AltBody    = strip_tags($mailMessage); // optional, comment out and test
                     $mail->MsgHTML($mailMessage);
                     $mail->AddAddress($empfaenger, $WebsiteTitle);
@@ -142,7 +142,7 @@ while($rowX = $result->fetch_array()) {
                         $mail->SetFrom($mailSender, $WebsiteTitle);
                         $mail->AddReplyTo($mailSender, $WebsiteTitle);
         
-                        $mail->Subject    = $mailSubject;
+                        $mail->Subject    = mb_encode_mimeheader($mailSubject,"UTF-8");
                         $mail->AltBody    = strip_tags($mailMessage); // optional, comment out and test
                         $mail->MsgHTML($mailMessage);
                         $mail->AddAddress($empfaenger, $WebsiteTitle);

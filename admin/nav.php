@@ -30,6 +30,7 @@ $file = basename($path, ".php");
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_newUser.php">Hinzufügen</a>
       <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_channels.php">Channels</a>
       <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_products.php">Abos</a>
+      <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_log.php">Log</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"]).'/?reset=1' ?>">Reset</a>
         </div>
