@@ -60,17 +60,20 @@ if($result->num_rows) {
 }
 
 // User löschen die in keinen Kanälen sind !!!
-$non_exists_user = $mysqli->query("SELECT * FROM ".$tbl);
+$non_exists_user = $mysqli->query("SELECT * FROM ".$tbl." WHERE NOT info = 2");
 while($manual = $non_exists_user->fetch_array()) {
     if($manual["userid"]) {
         if($manual["endtime"] < date("Y-m-d H:i:s") ) {
-            //mysqli_query($mysqli, "DELETE FROM ".$tbl." WHERE id = ".$manual['id']." ");
+            mysqli_query($mysqli, "UPDATE ".$tbl." SET info = 2 WHERE id = ".$manual['id']." ");
             //echo "<p>delete".$manual['TelegramUser'].'</p>';
             if($use_map == "PMSF") {
                 mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$manual['buyerEmail']."' ");
             } elseif($use_map == "Rocketmap") {
-                $htpasswd = new Htpasswd('../.htpasswd');
-                $htpasswd->deleteUser($manual["TelegramUser"]);
+                $load_htpasswd = file_get_contents('../.htpasswd');
+                if(is_bool(strpos($load_htpasswd, $manual["TelegramUser"])) === false) {
+                    $htpasswd = new Htpasswd('../.htpasswd');
+                    $htpasswd->deleteUser($manual["TelegramUser"]);
+                }
             }
         }
     }

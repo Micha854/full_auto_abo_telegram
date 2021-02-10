@@ -153,8 +153,11 @@ while($rowX = $result->fetch_array()) {
                     if($use_map == "PMSF") {
                         mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$row["buyerEmail"]."' ");
                     } elseif($use_map == "Rocketmap") {
-                        $htpasswd = new Htpasswd('../.htpasswd');
-                        $htpasswd->deleteUser($row["TelegramUser"]);
+                        $load_htpasswd = file_get_contents('../.htpasswd');
+                        if(is_bool(strpos($load_htpasswd, $row["TelegramUser"])) === false) {
+                            $htpasswd = new Htpasswd('../.htpasswd');
+                            $htpasswd->deleteUser($row["TelegramUser"]);
+                        }
                     }
                 }
             } elseif($element["role"] != 'banned') {																								// ALLES OK

@@ -136,7 +136,10 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         include("../Htpasswd.php");
     
         $htpasswd = new Htpasswd('../.htpasswd');
-        $htpasswd->deleteUser($OldUser);
+        $load_htpasswd = file_get_contents('../.htpasswd');
+        if(is_bool(strpos($load_htpasswd, $OldUser)) === false) {
+            $htpasswd->deleteUser($OldUser);
+        }
         $htpasswd->addUser($newAdd, $passwd);
     }
     

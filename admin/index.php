@@ -51,9 +51,12 @@ if(isset($_POST["deleteUser"])) {
     if($use_map == "PMSF") {
         mysqli_query($mysqli, "UPDATE users SET access_level = '0' WHERE user = '".$deleteUserEmail."' ");
     } elseif($use_map == "Rocketmap") {
-        include '../Htpasswd.php';
-        $htpasswd = new Htpasswd('../.htpasswd');
-        $htpasswd->deleteUser($deleteUserName);
+        $load_htpasswd = file_get_contents('../.htpasswd');
+        if(is_bool(strpos($load_htpasswd, $deleteUserName)) === false) {
+            include '../Htpasswd.php';
+            $htpasswd = new Htpasswd('../.htpasswd');
+            $htpasswd->deleteUser($deleteUserName);
+        }
     }
     
     $Save = "<h3 style=\"background:#333333; color:#00CC00; padding:5px; text-align:center\">Benutzer ".$deleteUserName." wurde gelöscht<div style=\"font-size:13px;padding-top:10px\"><p>Hinweis: Der Benutzer wird erst bei dem nächsten Cron Aufruf aus den Kanälen gelöscht!</p></div></h3>";
