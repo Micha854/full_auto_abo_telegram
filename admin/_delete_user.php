@@ -64,8 +64,8 @@ while($rowX = $result->fetch_array()) {
                 echo "<tr><td class='false'>@".$element["user"]["username"]."</td><td class='false'>".$element["role"]."</td><td class='false'>".$user_id."</td><td".$userid_check." class='false'>".$userid."</td><td class='false'>-- KICKED --</td></tr>";	// user ohne ABO
                 $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
                 include("msg.php");
-                $botMessage = urlencode($userKicked);
-                $mailMessage= nl2br($userKicked);
+                $botMessage = urlencode($aboEnds);
+                $mailMessage= nl2br($aboEnds);
                 if($botSend == '1') {
                     $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
                     sleep(1);
@@ -115,8 +115,8 @@ while($rowX = $result->fetch_array()) {
                 if($delete == 'yes') { // nur loeschen wenn userid bekannt !!!
                     $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
                     include("msg.php");
-                    $botMessage = urlencode($userKicked);
-                    $mailMessage= nl2br($userKicked);
+                    $botMessage = urlencode($aboEnds);
+                    $mailMessage= nl2br($aboEnds);
                     if($botSend == '1') {
                         $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
                         sleep(1);
