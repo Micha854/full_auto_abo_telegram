@@ -306,7 +306,9 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                             exit;
                         }
                         $statement = "update";
-                        $passwd = $update["pass"];
+                        if($row["pass"] != '') {
+                            $passwd = $update["pass"];
+                        }
 
                         // give current datetime and aboend datetime
                         $testDate1 = date_create(date('Y-m-d H:i:s',time()));

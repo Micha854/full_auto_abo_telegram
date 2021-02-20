@@ -14,7 +14,8 @@ $chat_id = $telegram->ChatID();
 
 
 $userId = $telegram->UserID();
-$userName = trim($telegram->FirstName() . ' ' . $telegram->LastName());
+$userName = $telegram->Username();
+$userFullName = trim($telegram->FirstName() . ' ' . $telegram->LastName());
 
 $content = array();
 
@@ -28,13 +29,25 @@ switch ($text) {
 
         $query = $mysqli->query("SELECT * FROM ".$tbl." WHERE userid = $userId ");
         $row_cnt = $query->num_rows;
+        $row = $query->fetch_array();
 
-        if ($row_cnt == 0) {
+        $now = date_create(date('Y-m-d H:i:s',time()));
+        $endtime = date_create(date('Y-m-d H:i:s',strtotime($row["endtime"])));
+
+        if ($row_cnt == 0 || $now > $endtime) {
             include_once("admin/msg.php");
             $content['text'] = $botUserFalse;
             $content['reply_markup'] = get_no_abo_buttons();
+
+            if($userName) {
+                if($row_cnt == 0) {
+                    $mysqli->query("INSERT INTO ".$tbl." SET userid = $userId, TelegramUser = '@$userName', buyerName = '$userFullName', interaktion = $now, info = 2");
+                } else {
+                    $mysqli->query("UPDATE ".$tbl." SET TelegramUser = '@$userName', buyerName = '$userFullName', interaktion = $now, info = 2 WHERE userid = $userId");
+                }
+            }
+
         } else {
-            $row = $query->fetch_array();
             if($use_map == "PMSF") {
                 $loginName = $row["buyerEmail"];
             } else {

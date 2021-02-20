@@ -63,6 +63,11 @@ if(!file_exists(dirname(__FILE__) . '/msg.php') and file_exists(dirname(__FILE__
     copy(dirname(__FILE__) . "/msg_example.php",dirname(__FILE__) . "/msg.php");
 }
 
+function generateRandomString($length = 10) {
+  //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
+  return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+}
+
 $query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
 $result2 = $mysqli->query($query2);
 $row2 = $result2->fetch_array();
@@ -86,11 +91,6 @@ if($AccessAllChannels === false) {
 
 if(isset($_POST["submit"]) and $_POST["user"]) {
     
-    function generateRandomString($length = 10) {
-        //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
-        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    }
-
     // give costum passwort or generate automaticle
     if($_POST["pass"] != '') {
       $passwd = mysqli_real_escape_string($mysqli, $_POST["pass"]);
@@ -313,14 +313,6 @@ if(isset($_GET["delete"])) {
       // check of curr date
       if($testDate1 > $testDate2) {
         $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
-        
-        if($use_map == "Rocketmap") {
-          // generate new acc
-          include("../Htpasswd.php");
-          $htpasswd = new Htpasswd('../.htpasswd');
-          $htpasswd->addUser($row["TelegramUser"], $row["pass"]);
-        }
-
       } else {
         $date = date('Y-m-d H:i:s', strtotime($row["endtime"]. " + {$days_to_end} days"));
       }
@@ -337,6 +329,21 @@ if(isset($_GET["delete"])) {
             $update_user = $check_user->fetch_array();
             mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$expire_timestamp."' WHERE id = ".$update_user["id"]);
         }
+    } elseif($use_map == "Rocketmap") {
+        // give costum passwort or generate automaticle
+        if($row["pass"] != '') {
+          $passwd = $row["pass"];
+        } else {
+          $passwd = generateRandomString(8);
+        }
+        // generate new acc
+        include("../Htpasswd.php");
+        $htpasswd = new Htpasswd('../.htpasswd');
+        $load_htpasswd = file_get_contents('../.htpasswd');
+        if(is_bool(strpos($load_htpasswd, $row["TelegramUser"])) === false) {
+            $htpasswd->deleteUser($row["TelegramUser"]);
+        }
+        $htpasswd->addUser($row["TelegramUser"], $passwd);
     }
     
     mysqli_query($mysqli, "UPDATE ".$tbl." SET Amount = $amountInsert, TransID = NULL, paydate = now(), endtime = $dateInsert, info = NULL WHERE id = ".$row["id"]);

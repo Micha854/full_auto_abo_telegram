@@ -64,9 +64,17 @@ if(isset($_POST["deleteUser"])) {
 
 $spalten = array(
 "TelegramUser"	=> "Telegram Username ",
+"interaktion"   => "Interaktion ",
 "paydate"		=> "Bezahlt am ",
 "endtime"		=> "L&auml;uft bis ",
 "city"		    => "Bereich ");
+
+if(isset($_GET["inactive"]) == false) {
+    unset($spalten['interaktion']);
+    $rows = 6;
+} else {
+    $rows = 7;
+}
 
 $spalte = isset($_GET["spalte"]) ? $_GET["spalte"] : 'id'; // Default-Wert
 $sort = isset($_GET["sort"]) ? $_GET["sort"] : 'desc';
@@ -87,7 +95,7 @@ $where_inactive = ' WHERE endtime > CURRENT_TIMESTAMP()';
 $show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '&inactive=true">inaktive zeigen</a>';
 if(isset($_GET["inactive"]) == 'true') {
     $show_inactive  = '&inactive=true';
-    $where_inactive = ' WHERE endtime < CURRENT_TIMESTAMP()';
+    $where_inactive = ' WHERE endtime < CURRENT_TIMESTAMP() OR endtime IS NULL';
     $show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '">aktive zeigen</a>';
 }
 
@@ -157,11 +165,12 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
 ?>
     <table class="table">
         <thead class="thead-light">
-            <tr>
-                 <?php
+                <?php
                 if($sites) {
-                    echo "<th colspan='4'>".$sites."</th>";
+                    echo "<tr><th colspan='$rows'>".$sites."</th></tr>";
                 }
+
+                echo '<tr>';
                 foreach ($spalten as $spalte => $name) {
                     
                     if(isset($_GET["spalte"]) and $_GET["spalte"] == $spalte) {
@@ -204,7 +213,7 @@ if($row["endtime"] < date("Y-m-d H:i:s")) {
 }
 
 if(strlen($row["TelegramUser"]) >= 16) {
-    $teleUser =	substr($row["TelegramUser"], 0, 14).'..';
+    $teleUser =	substr($row["TelegramUser"], 0, 12).'..';
 } else {
     $teleUser = $row["TelegramUser"];
 }
@@ -222,6 +231,10 @@ if(is_int($HighlightChannelId)) {
   <tr>
     <td class="mobile"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$teleUser ?></a><?=$HighlightUser ?></td>
     <td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a><?=$HighlightUser ?></td>
+    <?php
+    if(isset($_GET["inactive"]) == true) { ?>
+        <td class="inter" title="<?=date("d.m.Y H:i:s", strtotime($row["interaktion"])) ?>"><?=date("d.m.y", strtotime($row["interaktion"])) ?></td>
+    <?php } ?>
     <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
     <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
     <td class='city'><?=$row["city"] ?></td>

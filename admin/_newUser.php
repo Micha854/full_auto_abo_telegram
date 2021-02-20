@@ -158,14 +158,6 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
             // check of curr date
             if($testDate1 > $testDate2) {
               $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
-
-              if($use_map == "Rocketmap") {
-                // generate new acc
-                include("../Htpasswd.php");
-                $htpasswd = new Htpasswd('../.htpasswd');
-                $htpasswd->addUser($update["TelegramUser"], $update["pass"]);
-              }
-      
             } else {
               $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
             }
@@ -292,12 +284,13 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
                     
     elseif($use_map == "Rocketmap") {
         
-        if($statement == "insert") {				
-            include("../Htpasswd.php");
-            $htpasswd = new Htpasswd('../.htpasswd');
-            //$htpasswd->deleteUser($newUser);
-            $htpasswd->addUser($newUser, $passwd);
+        include("../Htpasswd.php");
+        $htpasswd = new Htpasswd('../.htpasswd');
+        $load_htpasswd = file_get_contents('../.htpasswd');
+        if(is_bool(strpos($load_htpasswd, $newUser)) === false) {
+            $htpasswd->deleteUser($newUser);
         }
+        $htpasswd->addUser($newUser, $passwd);
                         
         $empfaenger	= $newMail;
         $loginName	= $newUser;
