@@ -335,14 +335,6 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         else {
                             if($testDate1 > $testDate2) {
                                 $date = date('Y-m-d H:i:s', strtotime('+'.$days_to_end.' days'));
-
-                                if($use_map == "Rocketmap") {
-                                    // generate new acc
-                                    include("Htpasswd.php");
-                                    $htpasswd = new Htpasswd('.htpasswd');
-                                    $htpasswd->addUser($row["TelegramUser"], $row["pass"]);
-                                }
-
                             } else {
                                 $date = date('Y-m-d H:i:s', strtotime($update["endtime"]. " + {$days_to_end} days"));
                             }
@@ -395,6 +387,12 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         Logger::info("USE ROCKETMAP AS MAP"); // LOGGER
                         include("Htpasswd.php");
                         $htpasswd = new Htpasswd('.htpasswd');
+
+                        $load_htpasswd = file_get_contents('.htpasswd');
+                        if(is_bool(strpos($load_htpasswd, $ItemDesc)) === false) {
+                            $htpasswd->deleteUser($ItemDesc);
+                        }
+
                         if($htpasswd->addUser($ItemDesc, $passwd)) {
                             Logger::info("CREATE USER ".$ItemDesc." ON .htpasswd"); // LOGGER
                         }
@@ -424,7 +422,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                             Logger::error("INSERT USER ON DATABASE FAILED\n".$sql_insert); // LOGGER
                         }
                     } else {
-                        mysqli_query($mysqli, "UPDATE ".$tbl." SET buyerName = '$buyName', city = '$buyCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannel', TransID = '$TansID', paydate = now(), endtime = DATE_ADD(endtime,INTERVAL $days_to_end DAY), info = NULL WHERE id = ".$update["id"]);
+                        mysqli_query($mysqli, "UPDATE ".$tbl." SET buyerName = '$buyName', city = '$buyCity', buyerEmail = '$empfaenger', Amount = $amountInsert, channels = '$InputChannel', TransID = '$TansID', paydate = now(), endtime = '$date', info = NULL WHERE id = ".$update["id"]);
                         Logger::info("UPDATE USER ON DATABASE"); // LOGGER
                     }
 
