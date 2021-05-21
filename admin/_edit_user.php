@@ -166,6 +166,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
                         
     if($botSend == '1') {
         $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html&data[no_webpage]=1", false);
+        APIlog($sendMessage, $userid);
     }
                     
     if($mailSend == '1') {
@@ -361,6 +362,7 @@ if(isset($_GET["delete"])) {
         $botMessage = urlencode($extendUserMsg);
         $mailMessage= nl2br($extendUserMsg);
         $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html&data[no_webpage]=1", false);
+        APIlog($sendMessage, $userid);
     }
                     
     if($mailSend == '1') {

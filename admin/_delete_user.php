@@ -47,7 +47,9 @@ while($rowX = $result->fetch_array()) {
                 $i_user++;
             }
         
-            if($element["role"] == 'admin' or $element["role"] == 'creator') {	// admin && creator duerfen immer !!!
+            if($element["role"] == 'admin' or $element["role"] == 'creator') {
+                // ***********************************************************************
+                // admin && creator duerfen immer !!!
                 if($userid) {
                     $admin_id = $userid;
                     if($row_cnt != 0) {
@@ -60,18 +62,22 @@ while($rowX = $result->fetch_array()) {
                     $ending = 'does not expire';
                 }
                 echo "<tr><td class='admin'>@".$element["user"]["username"]."</td><td class='admin'>".$element["role"]."</td><td class='admin'>".$user_id."</td><td".$userid_check." class='admin'>".$admin_id."</td><td class='admin'>".$ending."</td></tr>";
-            } elseif(!$row_cnt and $element["role"] == 'user') {	// user existiert nicht in abos || user = user
+            } elseif(!$row_cnt and $element["role"] == 'user') {
+                // ***********************************************************************
+                // user existiert nicht in abos || user = user
                 echo "<tr><td class='false'>@".$element["user"]["username"]."</td><td class='false'>".$element["role"]."</td><td class='false'>".$user_id."</td><td".$userid_check." class='false'>".$userid."</td><td class='false'>-- KICKED --</td></tr>";	// user ohne ABO
                 $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
                 include("msg.php");
-                $botMessage = urlencode($aboEnds);
-                $mailMessage= nl2br($aboEnds);
+                $botMessage = urlencode($userKicked);
+                $mailMessage= nl2br($userKicked);
                 if($botSend == '1') {
                     $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
+                    APIlog($sendMessage, $user_id);
                     sleep(1);
                 }
-            } elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s", strtotime("+".$sequenceInfo." days")) and !$row["info"] and $sequenceInfo ) {			// user ABO läuft bald aus, user informieren || user = user
-            
+            } elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s", strtotime("+".$sequenceInfo." days")) and !$row["info"] and $sequenceInfo ) {
+                // ***********************************************************************
+                // user ABO läuft bald aus, user informieren || user = user
                 echo "<tr><td class='left'>@".$element["user"]["username"]."</td><td class='left'>".$element["role"]."</td><td class='left'>".$user_id."</td><td".$userid_check." class='left'>".$userid."</td><td class='left'>".$row["endtime"]."</td></tr>";
                 $endtime = $row["endtime"];
                 include("msg.php");
@@ -79,6 +85,7 @@ while($rowX = $result->fetch_array()) {
                 $mailMessage= nl2br($userInfo);
                 if($botSend == '1') {
                     $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
+                    APIlog($sendMessage, $user_id);
                     sleep(1);
                 }
                 if($mailSend == '1') {
@@ -110,7 +117,9 @@ while($rowX = $result->fetch_array()) {
                     $mail->Send();
                 } mysqli_query($mysqli, "UPDATE ".$tbl." SET info = '1' WHERE id = ".$row["id"]." ");
             
-            } elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s") ) {			// user ABO abgelaufen || user = user
+            } elseif($row_cnt and $element["role"] == 'user' and $row["endtime"] < date("Y-m-d H:i:s") ) {
+                // ***********************************************************************
+                // user ABO abgelaufen || user = user
                 echo "<tr><td class='time'>@".$element["user"]["username"]."</td><td class='time'>".$element["role"]."</td><td class='time'>".$user_id."</td><td".$userid_check." class='time'>".$userid."</td><td class='time'>".$row["endtime"]."</td></tr>";
                 if($delete == 'yes') { // nur loeschen wenn userid bekannt !!!
                     $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
@@ -119,6 +128,7 @@ while($rowX = $result->fetch_array()) {
                     $mailMessage= nl2br($aboEnds);
                     if($botSend == '1') {
                         $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$user_id&data[message]=$botMessage", false);
+                        APIlog($sendMessage, $user_id);
                         sleep(1);
                     }
                     if($mailSend == '1') {
@@ -160,7 +170,9 @@ while($rowX = $result->fetch_array()) {
                         }
                     }
                 }
-            } elseif($element["role"] != 'banned') {																								// ALLES OK
+            } elseif($element["role"] != 'banned') {
+                // ***********************************************************************
+                // ALLES OK
                 echo "<tr><td class='true'>@".$element["user"]["username"]."</td><td class='true'>".$element["role"]."</td><td class='true'>".$user_id."</td><td".$userid_check." class='true'>".$userid."</td><td class='true'>".$row["endtime"]."</td></tr>";
             }
         }

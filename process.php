@@ -35,17 +35,21 @@ if($_POST) //Post Data received from product list page.
     if(substr($ItemDesc,0,1) !== "@") {
         $ItemDesc = "@".$ItemDesc;
     }
-    $getInfo    = callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
+    $newUser    = $ItemDesc;
+    $getInfo    = callAPI('GET', $apiServer."getfullInfo/?id=".$newUser, false);
     $getUserId  = json_decode($getInfo, true);
     $userid     = $getUserId["response"]["InputPeer"]["user_id"];
     if(is_null($userid))
     {
         //Show error message
-        $wrongName = htmlspecialchars($ItemDesc, ENT_QUOTES, 'UTF-8');
+        $wrongName = htmlspecialchars($newUser, ENT_QUOTES, 'UTF-8');
         echo '<div style="color:red"><b>Error : </b>Den Telegram Benutzername: '.$wrongName.' gibt es nicht!</div></br>';
         echo '<a href="/"><button>Zur&uuml;ck</button></a>';
         Logger::warn("Telegram Benutzername does not exist: ".$wrongName); // LOGGER
         return;
+    } else {
+        $useridnow = ", userid = '$userid'";
+        $newUser   = '@'.$getUserId["response"]["User"]["username"];
     }
     
     if(isset($_POST["itemdesc2"])) {
@@ -75,7 +79,7 @@ if($_POST) //Post Data received from product list page.
                 
                 '&L_PAYMENTREQUEST_0_NAME0='.urlencode($ItemName).
                 '&L_PAYMENTREQUEST_0_NUMBER0='.urlencode($ItemNumber).
-                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($ItemDesc).
+                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($newUser).
                 '&L_PAYMENTREQUEST_0_AMT0='.urlencode($ItemPrice).
                 '&L_PAYMENTREQUEST_0_QTY0='. urlencode($ItemQty).
                 
@@ -119,7 +123,7 @@ if($_POST) //Post Data received from product list page.
                 $_SESSION['ItemName'] 			=  $ItemName; //Item Name
                 $_SESSION['ItemPrice'] 			=  $ItemPrice; //Item Price
                 $_SESSION['ItemNumber'] 		=  $ItemNumber; //Item Number
-                $_SESSION['ItemDesc'] 			=  $ItemDesc; //Item description
+                $_SESSION['ItemDesc'] 			=  $newUser; //Item description
                 $_SESSION['ItemDesc2'] 			=  $ItemDesc2; //Item description
                 $_SESSION['ItemQty'] 			=  $ItemQty; // Item Quantity
                 $_SESSION['ItemTotalPrice'] 	=  $ItemTotalPrice; //total amount of product; 
@@ -168,7 +172,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
     $ItemName 			= $_SESSION['ItemName']; //Item Name
     $ItemPrice 			= $_SESSION['ItemPrice']; //Item Price
     $ItemNumber 		= $_SESSION['ItemNumber']; //Item Number
-    $ItemDesc 			= $_SESSION['ItemDesc']; //Item Number
+    $newUser 			= $_SESSION['ItemDesc']; //Item Number
     $ItemDesc2 			= $_SESSION['ItemDesc2']; //Item Number
     $ItemQty 			= $_SESSION['ItemQty']; // Item Quantity
     $ItemTotalPrice 	= $_SESSION['ItemTotalPrice']; //total amount of product; 
@@ -188,7 +192,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                 //set item info here, otherwise we won't see product details later	
                 '&L_PAYMENTREQUEST_0_NAME0='.urlencode($ItemName).
                 '&L_PAYMENTREQUEST_0_NUMBER0='.urlencode($ItemNumber).
-                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($ItemDesc).
+                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($newUser).
                 '&L_PAYMENTREQUEST_0_AMT0='.urlencode($ItemPrice).
                 '&L_PAYMENTREQUEST_0_QTY0='. urlencode($ItemQty).
 
@@ -295,7 +299,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     } $passwd = generateRandomString(8);
                     
                     // NEW USER OR UPDATE
-                    $check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$ItemDesc."' ");
+                    $check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' ");
                     $row_cnt = $check->num_rows;
     
                     if($row_cnt != 0) {
@@ -349,14 +353,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     
                     Logger::info("USE ".$statement." FOR USER"); // LOGGER
                     
-                    $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
-                    $getUserId	= json_decode($getInfo, true);
-                    $userid		= $getUserId["response"]["InputPeer"]["user_id"];					
-                    
-                    if($userid) {
-                        $useridnow = ", userid = '$userid'";
-                    }
-                                        
+                                                            
                     if($use_map == "PMSF") {
                         Logger::info("USE PMSF AS MAP"); // LOGGER
                         $hashedPwd = password_hash($passwd, PASSWORD_DEFAULT);
@@ -389,22 +386,22 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         $htpasswd = new Htpasswd('.htpasswd');
 
                         $load_htpasswd = file_get_contents('.htpasswd');
-                        if(is_bool(strpos($load_htpasswd, $ItemDesc)) === false) {
-                            $htpasswd->deleteUser($ItemDesc);
+                        if(is_bool(strpos($load_htpasswd, $newUser)) === false) {
+                            $htpasswd->deleteUser($newUser);
                         }
 
-                        if($htpasswd->addUser($ItemDesc, $passwd)) {
-                            Logger::info("CREATE USER ".$ItemDesc." ON .htpasswd"); // LOGGER
+                        if($htpasswd->addUser($newUser, $passwd)) {
+                            Logger::info("CREATE USER ".$newUser." ON .htpasswd"); // LOGGER
                         }
                         
                         $empfaenger	= $buyEmail;
-                        $loginName	= $ItemDesc;
+                        $loginName	= $newUser;
                     }
                     
                     else {
                         Logger::warn("USE NO MAP IN YOUR CONFIG !!!"); // LOGGER
                         $empfaenger	= $buyEmail;
-                        $loginName	= $ItemDesc;
+                        $loginName	= $newUser;
                     }
 
                     if($AccessAllChannels === false) {
@@ -415,7 +412,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     }
                                         
                     if($statement == "insert") {
-                        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', city = '$buyCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$ItemDesc'".$useridnow.", channels = '$InputChannel', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
+                        $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', city = '$buyCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannel', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
                         if($insert_row = $mysqli->query($sql_insert)) {
                             Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
                         } else {
@@ -432,6 +429,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         $sendAdminMessage = urlencode($notifyAdmin);
                         foreach($admins as $sendAdmins) {
                             $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$sendAdmins&data[message]=$sendAdminMessage&data[parse_mode]=html", false);
+                            APIlog($sendMessage, $sendAdmins);
                         }
                     }
                     
@@ -450,12 +448,13 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     }
                     while($unsert_bann = $all_channels->fetch_array()) {		
                         $chat_id = $unsert_bann["chatid"];
-                        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$ItemDesc&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
+                        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$newUser&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
                     }
         
                     if($botSend == '1') {
                         Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
                         $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
+                        APIlog($sendMessage, $userid);
                     }
                     
                     if($mailSend == '1') {

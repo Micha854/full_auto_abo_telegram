@@ -86,3 +86,13 @@ function callAPI($method, $url, $data){
    curl_close($curl);
    return $result;
 }
+
+function APIlog($return, $user) {
+    $result = json_decode($return, true);
+        if(!$result[success] == 1) {
+            $data = $return;
+            //echo $data;
+            Logger::error("SEND TELEGRAM MESSAGE FAILED FOR USERID: ".$user); // LOGGER
+            Logger::error($data); // LOGGER
+        }
+}

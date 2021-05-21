@@ -91,11 +91,11 @@ if (!in_array($sort, array('asc', 'desc'))) {
 
 // switch between active and inactive users
 $show_inactive  = '';
-$where_inactive = ' WHERE endtime > CURRENT_TIMESTAMP()';
+$where_inactive = ' WHERE endtime > CURRENT_TIMESTAMP() OR info < 2';
 $show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '&inactive=true">inaktive zeigen</a>';
 if(isset($_GET["inactive"]) == 'true') {
     $show_inactive  = '&inactive=true';
-    $where_inactive = ' WHERE endtime < CURRENT_TIMESTAMP() OR endtime IS NULL';
+    $where_inactive = ' WHERE endtime < CURRENT_TIMESTAMP() AND info = 2 OR endtime IS NULL';
     $show_user  = '&nbsp;&nbsp;<a href="?spalte=' . $_GET['spalte'] . '&sort=' . $_GET['sort'] . '">aktive zeigen</a>';
 }
 

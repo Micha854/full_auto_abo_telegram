@@ -60,7 +60,7 @@ if($result->num_rows) {
 }
 
 // User löschen die in keinen Kanälen sind !!!
-$non_exists_user = $mysqli->query("SELECT * FROM ".$tbl." WHERE NOT info = 2");
+$non_exists_user = $mysqli->query("SELECT * FROM ".$tbl." WHERE NOT info = 2 or info is null");
 while($manual = $non_exists_user->fetch_array()) {
     if($manual["userid"]) {
         if($manual["endtime"] < date("Y-m-d H:i:s") ) {

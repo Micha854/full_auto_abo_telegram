@@ -57,9 +57,11 @@ $userPayedMsgShort	= "Vielen Dank, wir haben deine Zahlung erhalten!\n\nDein Abo
 $notifyAdmin		= "Es wurde ein neues Abo abgeschlossen von <b>$loginName</b>, laufzeit bis <b>$endtime</b>";
 
 
-// Info an den user, das Abo ist abgelaufen
-$aboEnds			= "Dein Abo ist am $endtime abgelaufen, du hast keinen Zutritt mehr zu $emoji_point_down\n\n<b>$chl_names</b>\nund zur MAP! Du kannst hier ein Abo abschliessen:\n\n<a href=\"$WebsiteUrl\">$WebsiteUrl</a>";
+// Info an den user, das er aus dem Kanal entfernt wurde
+$userKicked			= "Du wurdest aus den Kanälen $emoji_point_down\n\n<b>$chl_names</b>\nentfernt! Du kannst hier ein Abo abschließen:\n\n<a href=\"$WebsiteUrl\">$WebsiteUrl</a>";
 
+// Info an den user, das Abo ist abgelaufen
+$aboEnds			= "Dein Abo ist am $endtime abgelaufen, du hast keinen Zutritt mehr zu $emoji_point_down\n\n<b>$chl_names</b>\nund zur MAP! Du kannst hier ein Abo abschließen:\n\n<a href=\"$WebsiteUrl\">$WebsiteUrl</a>";
 
 // Info an den user, das sein Abo in X Tagen ausläuft
 $userInfo			= "Dein Abo läuft am $endtime aus, du kannst dein Abo hier verlängern:\n\n<a href=\"$WebsiteUrl\">$WebsiteUrl</a>";
