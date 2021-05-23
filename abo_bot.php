@@ -41,9 +41,9 @@ switch ($text) {
 
             if($userName) {
                 if($row_cnt == 0) {
-                    $mysqli->query("INSERT INTO ".$tbl." SET userid = $userId, TelegramUser = '@$userName', buyerName = '$userFullName', interaktion = $now, info = 2");
+                    $mysqli->query("INSERT INTO ".$tbl." SET userid = $userId, TelegramUser = '@$userName', buyerName = '$userFullName', interaktion = NOW(), info = 2");
                 } else {
-                    $mysqli->query("UPDATE ".$tbl." SET TelegramUser = '@$userName', buyerName = '$userFullName', interaktion = $now, info = 2 WHERE userid = $userId");
+                    $mysqli->query("UPDATE ".$tbl." SET TelegramUser = '@$userName', buyerName = '$userFullName', interaktion = NOW(), info = 2 WHERE userid = $userId");
                 }
             }
 
