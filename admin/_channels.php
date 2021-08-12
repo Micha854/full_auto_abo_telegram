@@ -67,7 +67,7 @@ if(isset($_POST["deleteChannel"])) {
     mysqli_query($mysqli, "DELETE FROM channels WHERE id = $deleteChannel");
 }
 
-$query = "SELECT * FROM channels ORDER BY sort DESC, id DESC";
+$query = "SELECT * FROM channels ORDER BY sort ASC, id ASC";
 $result = $mysqli->query($query);
 if(isset($_POST["submit"])) { echo $save; }
 ?>
@@ -81,22 +81,26 @@ if(isset($_POST["submit"])) { echo $save; }
 <form method="post"> 
 <?php
 while($row = $result->fetch_array()) {
-$chat_id = $row["chatid"];
-$getMember = callAPI('GET', $apiServer."getfullinfo/?chat_id=$chat_id", false);
+  $color 	= "";
+  $txt	= "";
+  //if($row["type"] == 0) {
+    $chat_id = $row["chatid"];
+    $getMember = callAPI('GET', $apiServer."getfullinfo/?chat_id=$chat_id", false);
 
-    $check_chatid = json_decode($getMember, true);
-    $check_invite = $check_chatid["response"]["full"]["exported_invite"]["link"];
-    
-if(isset($check_invite)) {
-  if($row["url"] != $check_invite) {
-    $color 	= ";background:#FF0000;color:#FFFF00";
-    $txt	= "<br>evtl. stimmt die Url f&uuml;r diesem Channel nicht, bitte pr&uuml;fe dies!
-              <input style='background:#009933;color:#FFF' type='text' class='form-control' value=".$check_invite.">";
-  } else {
-    $color 	= "";
-    $txt	= "";
-  }
-}
+        $check_chatid = json_decode($getMember, true);
+        $check_invite = $check_chatid["response"]["full"]["exported_invite"]["link"];
+        
+    if(isset($check_invite)) {
+      if($row["url"] != $check_invite) {
+        $color 	= ";background:#FF0000;color:#FFFF00";
+        $txt	= "<br>evtl. stimmt die Url f&uuml;r diesem Channel nicht, bitte pr&uuml;fe dies!
+                  <input style='background:#009933;color:#FFF' type='text' class='form-control' value=".$check_invite.">";
+      }
+    } else {
+        $color 	= "";
+        $txt	= "<br>ChatID unbekannt!";
+    }
+  //}
 ?>
 
   <table>

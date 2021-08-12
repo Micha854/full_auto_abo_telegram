@@ -99,11 +99,6 @@ $schnitt_output = number_format((float)$schnitt, 8, '.', '');
 
 if(isset($_POST["submit"]) and $_POST["user"]) {
     
-    function generateRandomString($length = 10) {
-        //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
-        return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-    }
-    
     // give costum passwort or generate automaticle
     if($_POST["pass"] != '') {
       $passwd = mysqli_real_escape_string($mysqli, $_POST["pass"]);
@@ -111,14 +106,19 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       $passwd = generateRandomString(8);
     }
     
-    $newUser   = $_POST["user"];
-    $getInfo   = callAPI('GET', $apiServer."getfullInfo/?id=".$newUser, false);
-    $getUserId = json_decode($getInfo, true);
-    $userid		 = $getUserId["response"]["InputPeer"]["user_id"];
+    if(isset($_POST["user"])) {
+      $newUser   = $_POST["user"];
+      $getInfo   = callAPI('GET', $apiServer."getfullInfo/?id=".$newUser, false);
+      $getUserId = json_decode($getInfo, true);
+      $userid		 = $getUserId["response"]["InputPeer"]["user_id"];
 
-    if($userid) {
-      $useridnow = ", userid = '$userid'";
-      $newUser   = '@'.$getUserId["response"]["User"]["username"];
+      if($userid) {
+        $useridnow = ", userid = '$userid'";
+        $newUser   = '@'.$getUserId["response"]["User"]["username"];
+      }
+    } else {
+      $useridnow = ", userid = 0";
+      $newUser   = '';
     }
 
     $newCity = ucfirst(mysqli_real_escape_string($mysqli, $_POST["city"]));
@@ -282,7 +282,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         }
     }
                     
-    elseif($use_map == "Rocketmap") {
+    elseif($use_map == "Rocketmap" && $newUser) {
         
         include("../Htpasswd.php");
         $htpasswd = new Htpasswd('../.htpasswd');

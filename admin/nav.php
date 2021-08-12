@@ -1,4 +1,6 @@
 <?php
+include_once("../version.php");
+
 session_name ( 'ABO' );
 session_start();
 if(isset($_GET["reset"])) {
@@ -31,6 +33,7 @@ $file = basename($path, ".php");
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_channels.php">Channels</a>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_products.php">Abos</a>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_log.php">Log</a>
+          <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"])?>/_stats.php">Statistik</a>
           <div class="dropdown-divider"></div>
           <a class="dropdown-item" href="<?=dirname($_SERVER["SCRIPT_NAME"]).'/?reset=1' ?>">Reset</a>
         </div>
@@ -57,4 +60,4 @@ if(!$lastCron) {
 }
 ?>
 <div style="text-align:center; background:<?=$cronColorBack?>; color:<?=$cronColorText?>; font-weight:bolder; font-size:11px">LAST CRON UPDATE: <?=$lastCron?></div>
-<div class="footer">Script by @Micha854 | <a href="https://www.paypal.com/pools/c/8hBamIhqR6" target="_blank">Donate</a> | <a href="https://discord.gg/jsvX9pz" target="_blank">Help on Discord</a></div>
+<div class="footer">Script by @Micha854 | <a href="https://www.paypal.com/pools/c/8hBamIhqR6" target="_blank">Donate</a> | <a href="https://discord.gg/jsvX9pz" target="_blank">Help on Discord</a> | Ver. <?=$version ?></div>

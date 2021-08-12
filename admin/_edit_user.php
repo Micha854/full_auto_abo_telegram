@@ -63,11 +63,6 @@ if(!file_exists(dirname(__FILE__) . '/msg.php') and file_exists(dirname(__FILE__
     copy(dirname(__FILE__) . "/msg_example.php",dirname(__FILE__) . "/msg.php");
 }
 
-function generateRandomString($length = 10) {
-  //return substr(str_shuffle(str_repeat(implode('', range('!','z')), $length)), 0, $length);
-  return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
-}
-
 $query2 = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
 $result2 = $mysqli->query($query2);
 $row2 = $result2->fetch_array();
@@ -105,17 +100,19 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         $newMail = $row["buyerEmail"];
     }
 
-    $newAdd = $_POST["user"];
-    $ItemDesc = $newAdd;
-    
-    $OldUser = $row["TelegramUser"]; // old Username delete
-    
-    $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
-    $getUserId	= json_decode($getInfo, true);
-    $userid		= $getUserId["response"]["InputPeer"]["user_id"];
+    if(isset($newUser)) {
+      $newAdd = $_POST["user"];
+      $ItemDesc = $newAdd;
+      
+      $OldUser = $row["TelegramUser"]; // old Username delete
+      
+      $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
+      $getUserId	= json_decode($getInfo, true);
+      $userid		= $getUserId["response"]["InputPeer"]["user_id"];
+    }
     $date		= $row["endtime"];
     
-    if($userid) {
+    if(isset($userid)) {
         $useridnow = ", userid = '$userid'";
     } else {
         $useridnow = ", userid = NULL";
@@ -129,7 +126,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
         
         $loginName	= $newMail;
         mysqli_query($mysqli, "UPDATE users SET user = '".$newMail."', password = NULL, temp_password = '".$hashedPwd."', session_id = NULL WHERE user = '".$loginName."' ");
-    } elseif($use_map == "Rocketmap") {
+    } elseif($use_map == "Rocketmap" && $newUser) {
         $statement = "insert";
         $loginName	= $newAdd;
                         

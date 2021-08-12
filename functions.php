@@ -89,10 +89,31 @@ function callAPI($method, $url, $data){
 
 function APIlog($return, $user) {
     $result = json_decode($return, true);
-        if(!$result[success] == 1) {
+        if(!$result["success"] == 1) {
             $data = $return;
             //echo $data;
             Logger::error("SEND TELEGRAM MESSAGE FAILED FOR USERID: ".$user); // LOGGER
             Logger::error($data); // LOGGER
         }
+}
+
+function generateRandomString($length = 10) {
+    return substr(str_shuffle(str_repeat($x='0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ', ceil($length/strlen($x)) )),1,$length);
+}
+
+function getUserId($apiServer,$username) {
+    $getInfo   = callAPI('GET', $apiServer."getfullInfo/?id=".$username, false);
+    $getUserId = json_decode($getInfo, true);
+    $userid	   = $getUserId["response"]["InputPeer"]["user_id"];
+    return($userid);
+}
+
+function getAveragePrice($conn) {
+    $query = "SELECT SUM(item_price) as total, SUM(abo_days) as abo, COUNT(id) as menge FROM products";
+    $result = $conn->query($query);
+    $row = $result->fetch_array();
+
+    $schnitt = $row["total"]/$row["abo"];	// durchschnittlicher preis pro tag
+    $average = number_format((float)$schnitt, 8, '.', '');
+    return $average;
 }

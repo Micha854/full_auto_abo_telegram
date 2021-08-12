@@ -1,5 +1,6 @@
 <?php
 include_once("config.php");
+include_once("version.php");
 
 if($use_map == 'Rocketmap' and !file_exists(__DIR__.'/.htpasswd')) {
 $handle = fopen(__DIR__.'/.htpasswd', 'a');
