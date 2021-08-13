@@ -1,4 +1,5 @@
 <?php
+// version 2.41
 $query = "SELECT id FROM version";
 $result = mysqli_query($mysqli, $query);
 if(empty($result)) {
