@@ -35,21 +35,17 @@ if($_POST) //Post Data received from product list page.
     if(substr($ItemDesc,0,1) !== "@") {
         $ItemDesc = "@".$ItemDesc;
     }
-    $newUser    = $ItemDesc;
-    $getInfo    = callAPI('GET', $apiServer."getfullInfo/?id=".$newUser, false);
+    $getInfo    = callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
     $getUserId  = json_decode($getInfo, true);
     $userid     = $getUserId["response"]["InputPeer"]["user_id"];
     if(is_null($userid))
     {
         //Show error message
-        $wrongName = htmlspecialchars($newUser, ENT_QUOTES, 'UTF-8');
+        $wrongName = htmlspecialchars($ItemDesc, ENT_QUOTES, 'UTF-8');
         echo '<div style="color:red"><b>Error : </b>Den Telegram Benutzername: '.$wrongName.' gibt es nicht!</div></br>';
         echo '<a href="/"><button>Zur&uuml;ck</button></a>';
         Logger::warn("Telegram Benutzername does not exist: ".$wrongName); // LOGGER
         return;
-    } else {
-        $useridnow = ", userid = '$userid'";
-        $newUser   = '@'.$getUserId["response"]["User"]["username"];
     }
     
     if(isset($_POST["itemdesc2"])) {
@@ -79,7 +75,7 @@ if($_POST) //Post Data received from product list page.
                 
                 '&L_PAYMENTREQUEST_0_NAME0='.urlencode($ItemName).
                 '&L_PAYMENTREQUEST_0_NUMBER0='.urlencode($ItemNumber).
-                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($newUser).
+                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($ItemDesc).
                 '&L_PAYMENTREQUEST_0_AMT0='.urlencode($ItemPrice).
                 '&L_PAYMENTREQUEST_0_QTY0='. urlencode($ItemQty).
                 
@@ -123,7 +119,7 @@ if($_POST) //Post Data received from product list page.
                 $_SESSION['ItemName'] 			=  $ItemName; //Item Name
                 $_SESSION['ItemPrice'] 			=  $ItemPrice; //Item Price
                 $_SESSION['ItemNumber'] 		=  $ItemNumber; //Item Number
-                $_SESSION['ItemDesc'] 			=  $newUser; //Item description
+                $_SESSION['ItemDesc'] 			=  $ItemDesc; //Item description
                 $_SESSION['ItemDesc2'] 			=  $ItemDesc2; //Item description
                 $_SESSION['ItemQty'] 			=  $ItemQty; // Item Quantity
                 $_SESSION['ItemTotalPrice'] 	=  $ItemTotalPrice; //total amount of product; 
@@ -172,7 +168,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
     $ItemName 			= $_SESSION['ItemName']; //Item Name
     $ItemPrice 			= $_SESSION['ItemPrice']; //Item Price
     $ItemNumber 		= $_SESSION['ItemNumber']; //Item Number
-    $newUser 			= $_SESSION['ItemDesc']; //Item Number
+    $ItemDesc 			= $_SESSION['ItemDesc']; //Item Number
     $ItemDesc2 			= $_SESSION['ItemDesc2']; //Item Number
     $ItemQty 			= $_SESSION['ItemQty']; // Item Quantity
     $ItemTotalPrice 	= $_SESSION['ItemTotalPrice']; //total amount of product; 
@@ -192,7 +188,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                 //set item info here, otherwise we won't see product details later	
                 '&L_PAYMENTREQUEST_0_NAME0='.urlencode($ItemName).
                 '&L_PAYMENTREQUEST_0_NUMBER0='.urlencode($ItemNumber).
-                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($newUser).
+                '&L_PAYMENTREQUEST_0_DESC0='.urlencode($ItemDesc).
                 '&L_PAYMENTREQUEST_0_AMT0='.urlencode($ItemPrice).
                 '&L_PAYMENTREQUEST_0_QTY0='. urlencode($ItemQty).
 
@@ -295,6 +291,18 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     
                     $passwd = generateRandomString(8);
                     
+                    // get userid and correct username
+                    $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
+                    $getUserId	= json_decode($getInfo, true);
+                    $userid		= $getUserId["response"]["InputPeer"]["user_id"];
+                    $newUser   = '@'.$getUserId["response"]["User"]["username"];					
+
+                    if($userid) {
+                        $useridnow = ", userid = $userid";
+                    } else {
+                        $useridnow = ", userid = null";
+                    }
+
                     // NEW USER OR UPDATE
                     $check = $mysqli->query("SELECT * FROM ".$tbl." WHERE TelegramUser = '".$newUser."' ");
                     $row_cnt = $check->num_rows;
