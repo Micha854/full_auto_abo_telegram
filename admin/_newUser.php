@@ -326,7 +326,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
 
     while($unsert_bann = $all_channels->fetch_array()) {		
         $chat_id = $unsert_bann["chatid"];
-        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$newUser&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
+        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[participant]=$newUser&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
     }
     
     if($botSend == '1') {

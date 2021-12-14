@@ -33,9 +33,11 @@ $query = "SELECT SUM(Amount) as amt, COUNT(city) as anzahl, city, endtime FROM "
 $result = $mysqli->query($query);
 
 $age = array();
+$g1summe = 0;
 while($row = $result->fetch_array()) {
     $city = (!$row["city"]) ? '** NONE **' : $row["city"];
     array_push($age, array("label"=>$city, "anzahl"=>$row["anzahl"], "y"=>number_format($row["amt"],2), "gdp"=>number_format($row["amt"]*100/$sum['summe'],2)));
+	$g1summe += $row["amt"];
 }
 
 // stats_3
@@ -72,7 +74,7 @@ while($row2 = $result2->fetch_array()) {
         $array[] = $value;
     }
 
-    $city2 = (!$row2["city"]) ? '** NONE **' : $row2["city"];
+    $city2 = (!$row2["city"]) ? '** NONE **' : strtolower($row2["city"]);
     $summe = $abo[array_search(min($array), $array)];
 
 	if (isset($sumarr[$summe])) {
@@ -96,9 +98,11 @@ while($row2 = $result2->fetch_array()) {
 
 usort($grouped, 'compare_sum');
 
+$g2summe = 0;
 foreach($grouped as $i) {
     $city2 = (!$i[city]) ? '** NONE **' : $i[city];
     array_push($age2, array("label"=>$city2, "anzahl"=>$i[count], y=>$i[sum]));
+	$g2summe += $i[sum];
 }
 
 foreach($sumarr as $i => $item) {
@@ -142,7 +146,8 @@ window.onload = function () {
 var chart1 = new CanvasJS.Chart("chartContainer1", {
 	animationEnabled: true,
 	title: {
-		text: "bisherige Einnahmen"
+		fontSize: 28,
+		text: "bisherige Einnahmen (" + <?=floatval($g1summe)?> + " €)"
 	},
 	axisX: {
 		interval: 1
@@ -165,7 +170,8 @@ var chart1 = new CanvasJS.Chart("chartContainer1", {
 var chart3 = new CanvasJS.Chart("chartContainer3", {
 	animationEnabled: true,
 	title: {
-		text: "laufende Abonnenten"
+		fontSize: 28,
+		text: "laufende Abonnenten (" + <?=floatval($g2summe)?> + " €)"
 	},
 	axisX: {
 		interval: 1
@@ -188,6 +194,7 @@ var chart3 = new CanvasJS.Chart("chartContainer3", {
 var chart2 = new CanvasJS.Chart("chartContainer2", {
 	animationEnabled: true,
 	title: {
+		fontSize: 28,
 		text: "aktive/inaktive Abos"
 	},
 	data: [{
@@ -202,6 +209,7 @@ var chart2 = new CanvasJS.Chart("chartContainer2", {
 var chart4 = new CanvasJS.Chart("chartContainer4", {
 	animationEnabled: true,
 	title:{
+		fontSize: 28,
 		text: "meistgenutzte Abos",
 	},
 	data: [{

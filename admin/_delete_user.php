@@ -66,7 +66,7 @@ while($rowX = $result->fetch_array()) {
                 // ***********************************************************************
                 // user existiert nicht in abos || user = user
                 echo "<tr><td class='false'>@".$element["user"]["username"]."</td><td class='false'>".$element["role"]."</td><td class='false'>".$user_id."</td><td".$userid_check." class='false'>".$userid."</td><td class='false'>-- KICKED --</td></tr>";	// user ohne ABO
-                $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
+                $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[participant]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
                 include("msg.php");
                 $botMessage = urlencode($userKicked);
                 $mailMessage= nl2br($userKicked);
@@ -122,7 +122,7 @@ while($rowX = $result->fetch_array()) {
                 // user ABO abgelaufen || user = user
                 echo "<tr><td class='time'>@".$element["user"]["username"]."</td><td class='time'>".$element["role"]."</td><td class='time'>".$user_id."</td><td".$userid_check." class='time'>".$userid."</td><td class='time'>".$row["endtime"]."</td></tr>";
                 if($delete == 'yes') { // nur loeschen wenn userid bekannt !!!
-                    $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
+                    $deleteUser = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[participant]=$user_id&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=1&data[banned_rights][_]=chatBannedRights", false);
                     include("msg.php");
                     $botMessage = urlencode($aboEnds);
                     $mailMessage= nl2br($aboEnds);

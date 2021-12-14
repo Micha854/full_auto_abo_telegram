@@ -315,7 +315,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                             exit;
                         }
                         $statement = "update";
-                        if($row["pass"] != '') {
+                        if($row["pass"]) {
                             $passwd = $update["pass"];
                         }
 
@@ -396,7 +396,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         }
 
                         if($htpasswd->addUser($newUser, $passwd)) {
-                            Logger::info("CREATE USER ".$newUser." ON .htpasswd"); // LOGGER
+                            Logger::info("CREATE USER ".$newUser." ON .htpasswd: ".$passwd); // LOGGER
                         }
                         
                         $empfaenger	= $buyEmail;
@@ -453,7 +453,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     }
                     while($unsert_bann = $all_channels->fetch_array()) {		
                         $chat_id = $unsert_bann["chatid"];
-                        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[user_id]=$newUser&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
+                        $editBanned = callAPI('GET', $apiServer."channels.editBanned/?data[channel]=$chat_id&data[participant]=$newUser&data[banned_rights][until_date]=0&data[banned_rights][view_messages]=0&data[banned_rights][_]=chatBannedRights", false);
                     }
         
                     if($botSend == '1') {
