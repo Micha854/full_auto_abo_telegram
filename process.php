@@ -315,7 +315,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                             exit;
                         }
                         $statement = "update";
-                        if($row["pass"]) {
+                        if($update["pass"]) {
                             $passwd = $update["pass"];
                         }
 
