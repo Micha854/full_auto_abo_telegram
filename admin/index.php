@@ -220,7 +220,7 @@ if(strlen($row["TelegramUser"]) >= 16) {
 
 // HighlightChannelId where user accessed
 $HighlightUser = '';
-if(is_int($HighlightChannelId)) {
+if(isset($HighlightChannelId) && is_int($HighlightChannelId)) {
     foreach(explode(',', $row["channels"]) as $n) {
         if($HighlightChannelId == $n) {
             $HighlightUser = ' <span class="dot"></span>';
@@ -233,7 +233,7 @@ if(is_int($HighlightChannelId)) {
     <td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a><?=$HighlightUser ?></td>
     <?php
     if(isset($_GET["inactive"]) == true) { ?>
-        <td class="inter" title="<?=date("d.m.Y H:i:s", strtotime($row["interaktion"])) ?>"><?=date("d.m.y", strtotime($row["interaktion"])) ?></td>
+        <td class="inter" title="<?=date("d.m.Y H:i:s", strtotime($row["interaktion"] ?? '')) ?>"><?=date("d.m.y", strtotime($row["interaktion"] ?? '')) ?></td>
     <?php } ?>
     <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
     <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
