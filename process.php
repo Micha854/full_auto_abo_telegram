@@ -371,17 +371,35 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                         
                         $empfaenger	= $ItemDesc2;
                         $loginName	= $empfaenger;
-                        
+
+                        $query_previous_email = $mysqli->query("SELECT buyerEmail FROM ".$tbl." WHERE TelegramUser = '".$newUser."' ");
+                        $previous_email_num = $query_previous_email->num_rows;
+                        $previous_email = $query_previous_email->fetch_array()["buyerEmail"];
+
                         $check_user = $mysqli->query("SELECT id FROM users WHERE user = '".$loginName."' ");
-                        if($check_user->num_rows != 0) {
+                        $check_user_num = $check_user->num_rows;
+
+                        if($check_user_num != 0) {
+                            // user with the entered mail address already exists - update this
+                            Logger::info("Update existing PMSF entry of user ".$loginName);
                             mysqli_query($mysqli, "UPDATE users SET password = NULL, temp_password = '".$hashedPwd."', expire_timestamp = '".$expire_timestamp."', session_id = NULL, login_system = '".$login_system."', access_level = '".$access_level."'  WHERE user = '".$loginName."' ");
-                        } elseif($statement == "insert") {
+                        } else {
+                            // user does not yet exist - create new
+                            Logger::info("Create new PMSF user ".$ItemDesc2);
                             $insert_pmsf_user = $mysqli->query("INSERT INTO users 
                             (user,temp_password,expire_timestamp,login_system,access_level)
                             VALUES ('$ItemDesc2','$hashedPwd','$expire_timestamp','$login_system','$access_level')");
+                        }
+
+                        if($previous_email_num != 0 && $previous_email != $loginName) {
+                            // previous and new email do not match - invalidate the PMSF login for the previous email
+                            $now = new DateTime();
+                            $nowTs = $now->getTimestamp();
+                            Logger::info("Previous email exists, this ".$previous_email." and new loginName ".$loginName." are not the same! Expire previous PMSF entry (new timestamp of now: ".$nowTs.")!");
+                            mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$nowTs."' WHERE user = '".$previous_email."' ");
                         } else {
-                            $update_user = $check_user->fetch_array();
-                            mysqli_query($mysqli, "UPDATE users SET expire_timestamp = '".$expire_timestamp."' WHERE id = ".$update_user["id"]);
+                            // previous and new email DO match - all good - only logging here
+                            Logger::info("previous mail ".$previous_email." and new loginName ".$loginName." are the same - do nothing");
                         }
                     }
                     
