@@ -435,7 +435,7 @@ if(isset($_GET["delete"])) {
     <?php if($use_map == "PMSF") { ?>
     <tr>
       <th scope="col">Neue Emailadresse</th>
-      <th scope="col"><input type="text" name="email" class="form-control" autocomplete="off" required /></th>
+      <th scope="col"><input type="text" name="email" class="form-control" autocomplete="off" required value="<?=$row["buyerEmail"]?>"/></th>
     </tr>
     <?php } ?>
     <tr>
