@@ -1,4 +1,6 @@
 <?php
+date_default_timezone_set('Europe/Berlin');
+
 // Mysql Database, Name der Tabelle
 $mysqli = new mysqli('localhost','DBuser','DBpass','database');
 $tbl    = "abos";
@@ -41,8 +43,8 @@ $ergebnisse_pro_seite = 50;				        // x Abos pro Seite anzeigen || Admin Pan
 $mailSubject    = "Welcome to PoGO MAP";  // mail betreff
 $mailSender     = 'pogo@YOURURL.COM';     // sender mail || ReplyTo
 $mailHost       = 'domain.com';           // SMTP server
-$smtpPort       = 25;                     // usually the port for TLS is 587, for SSL is 465 and non-secure is 25
-$smtpSecure     = '';				          	  // TLS, SSL or  empty the line
+$smtpPort       = 587;                    // usually the port for TLS is 587, for SSL is 465
+$smtpSecure     = '';				          	  // tls, ssl
 $smtpUser       = '';                     // SMTP account username
 $smtpPass       = '';                     // SMTP account password
 

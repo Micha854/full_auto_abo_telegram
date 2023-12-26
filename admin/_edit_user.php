@@ -1,6 +1,14 @@
 <?php
 require_once dirname(__FILE__) . '/../config.php';
 require_once dirname(__FILE__) . '/../functions.php';
+
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+
+require_once dirname(__FILE__) . '/../phpmailer/Exception.php';
+require_once dirname(__FILE__) . '/../phpmailer/PHPMailer.php';
+require_once dirname(__FILE__) . '/../phpmailer/SMTP.php';
 ?>
 
 <!DOCTYPE html>
@@ -108,7 +116,7 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
       
       $getInfo	= callAPI('GET', $apiServer."getfullInfo/?id=".$ItemDesc, false);
       $getUserId	= json_decode($getInfo, true);
-      $userid		= $getUserId["response"]["InputPeer"]["user_id"];
+      $userid		= $getUserId["response"]["user_id"];
     }
     $date		= $row["endtime"];
     
@@ -169,21 +177,23 @@ if(isset($_POST["submit"]) and $_POST["user"]) {
     if($mailSend == '1') {
         
         $empfaenger	= $row["buyerEmail"];
-        require_once('../mailer/class.phpmailer.php');
-
-        $mail             = new PHPMailer();
+        
+        $mail             = new PHPMailer(true);
         $mail->CharSet	  = 'utf-8';
 
-        $mail->IsSMTP(); // telling the class to use SMTP
-        $mail->Host       = $mailHost; // SMTP server
-        $mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
-        $mail->SMTPSecure = $smtpSecure;
-        $mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
-                                           // 1 = errors and messages
-                                           // 2 = messages only
-        $mail->SMTPAuth   = true;                  // enable SMTP authentication
-        $mail->Username   = $smtpUser; // SMTP account username
-        $mail->Password   = $smtpPass;        // SMTP account password
+        $mail->IsSMTP();                          //Send using SMTP
+        $mail->Host       = $mailHost;            //Send using SMTP
+        $mail->SMTPAuth   = true;                 //Set the SMTP server to send
+        $mail->Username   = $smtpUser;            //SMTP username
+        $mail->Password   = $smtpPass;            //SMTP password
+
+        if ($smtpSecure == 'ssl') {
+          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit SSL encryption
+        } elseif ($smtpSecure == 'tls') {
+          $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         //Enable implicit TLS encryption
+        }
+
+        $mail->Port       = $smtpPort;            //TCP port to connect to; use
         
         $mail->SetFrom($mailSender, $WebsiteTitle);
         $mail->AddReplyTo($mailSender, $WebsiteTitle);
@@ -366,21 +376,22 @@ if(isset($_GET["delete"])) {
         
         $statement = "update";
         $empfaenger	= $row["buyerEmail"];
-        require_once('../mailer/class.phpmailer.php');
-
-        $mail             = new PHPMailer();
+        $mail             = new PHPMailer(true);
         $mail->CharSet	  = 'utf-8';
 
-        $mail->IsSMTP(); // telling the class to use SMTP
-        $mail->Host       = $mailHost; // SMTP server
-        $mail->Port       = $smtpPort;                    // set the SMTP port for the GMAIL server
-        $mail->SMTPSecure = $smtpSecure;
-        $mail->SMTPDebug  = 0;                     // enables SMTP debug information (for testing)
-                                           // 1 = errors and messages
-                                           // 2 = messages only
-        $mail->SMTPAuth   = true;                  // enable SMTP authentication
-        $mail->Username   = $smtpUser; // SMTP account username
-        $mail->Password   = $smtpPass;        // SMTP account password
+        $mail->IsSMTP();                          //Send using SMTP
+        $mail->Host       = $mailHost;            //Send using SMTP
+        $mail->SMTPAuth   = true;                 //Set the SMTP server to send
+        $mail->Username   = $smtpUser;            //SMTP username
+        $mail->Password   = $smtpPass;            //SMTP password
+
+        if ($smtpSecure == 'ssl') {
+          $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;            //Enable implicit SSL encryption
+        } elseif ($smtpSecure == 'tls') {
+          $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         //Enable implicit TLS encryption
+        }
+
+        $mail->Port       = $smtpPort;            //TCP port to connect to; use
         
         $mail->SetFrom($mailSender, $WebsiteTitle);
         $mail->AddReplyTo($mailSender, $WebsiteTitle);
@@ -435,7 +446,7 @@ if(isset($_GET["delete"])) {
     <?php if($use_map == "PMSF") { ?>
     <tr>
       <th scope="col">Neue Emailadresse</th>
-      <th scope="col"><input type="text" name="email" class="form-control" autocomplete="off" required /></th>
+      <th scope="col"><input type="text" name="email" class="form-control" autocomplete="off" value="<?=$row["buyerEmail"]?>" required /></th>
     </tr>
     <?php } ?>
     <tr>

@@ -104,7 +104,7 @@ function generateRandomString($length = 10) {
 function getUserId($apiServer,$username) {
     $getInfo   = callAPI('GET', $apiServer."getfullInfo/?id=".$username, false);
     $getUserId = json_decode($getInfo, true);
-    $userid	   = $getUserId["response"]["InputPeer"]["user_id"];
+    $userid	   = $getUserId["response"]["user_id"];
     return($userid);
 }
 

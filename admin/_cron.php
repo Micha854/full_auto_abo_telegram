@@ -33,7 +33,7 @@ while($get_user = $sql_abos->fetch_array()) {
         $getUserId = callAPI('GET', $apiServer."getInfo/?id=$from_username", false);
         
         $output = json_decode($getUserId, true);
-        $user_id = $output["response"]["InputPeer"]["user_id"];
+        $user_id = $output["response"]["user_id"];
         
     
         mysqli_query($mysqli, "UPDATE ".$tbl." SET userid = $user_id WHERE id = ".$get_user["id"]." ");

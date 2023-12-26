@@ -1997,7 +1997,8 @@ class Telegram
             return $this->data['callback_query']['from']['id'];
         }
         if ($type == self::CHANNEL_POST) {
-            return $this->data['channel_post']['from']['id'];
+            //return $this->data['channel_post']['from']['id'];
+            return $this->data['channel_post']['sender_chat']['id'];
         }
         if ($type == self::EDITED_MESSAGE) {
             return @$this->data['edited_message']['from']['id'];
