@@ -8,7 +8,7 @@ if ($mysqli->connect_error) {
 
 function compare_sum($a, $b)
   {
-    return strnatcmp($a[sum], $b[sum]);
+    return strnatcmp($a["sum"], $b["sum"]);
   }
 
   // stats_1, starts_2
@@ -18,7 +18,9 @@ $inactive = 0;
 $stat = array();
 while($row = $sql->fetch_array()) {
 
-    if(date_create(date('Y-m-d H:i:s',time())) < date_create(date('Y-m-d H:i:s',strtotime($row["endtime"])))) {
+    if($row["endtime"] == null) {
+		$inactive++;
+	} elseif(date_create(date('Y-m-d H:i:s',time())) < date_create(date('Y-m-d H:i:s',strtotime($row["endtime"])))) {
         $active++;
     } else {
         $inactive++;
@@ -95,26 +97,28 @@ while($row2 = $result2->fetch_array()) {
     $grouped[$city2]['sum'] = number_format($grouped[$city2]['sum'],2);
 
 }
-
+/*echo "<pre>";
+var_dump($grouped);
+echo "</pre>";*/
 usort($grouped, 'compare_sum');
 
 $g2summe = 0;
 foreach($grouped as $i) {
-    $city2 = (!$i[city]) ? '** NONE **' : $i[city];
-    array_push($age2, array("label"=>$city2, "anzahl"=>$i[count], y=>$i[sum]));
-	$g2summe += $i[sum];
+    $city2 = (!$i["city"]) ? '** NONE **' : $i["city"];
+    array_push($age2, array("label"=>$city2, "anzahl"=>$i["count"], "y"=>$i["sum"]));
+	$g2summe += $i["sum"];
 }
 
 foreach($sumarr as $i => $item) {
-	if($item[name] > 1) {
-		$sumarr[$i][name] = $sumarr[$i][name] . ' Monate';
+	if($item["name"] > 1) {
+		$sumarr[$i]["name"] = $sumarr[$i]["name"] . ' Monate';
 	} else {
-		$sumarr[$i][name] = $sumarr[$i][name] . ' Monat';
+		$sumarr[$i]["name"] = $sumarr[$i]["name"] . ' Monat';
 	}
 }
 
 foreach($sumarr as $final) {
-    array_push($age3, array("label"=>$final[name], y=>$final[count]));
+    array_push($age3, array("label"=>$final["name"], "y"=>$final["count"]));
 }
 
 /*
