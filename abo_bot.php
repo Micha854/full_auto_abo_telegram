@@ -66,6 +66,8 @@ switch ($text) {
 
             $content['text'] = $botUserTrue;
             $content['reply_markup'] = get_no_abo_buttons();
+
+            $mysqli->query("UPDATE ".$tbl." SET TelegramUser = '@$userName', buyerName = '$userFullName', interaktion = NOW() WHERE userid = $userId");
         }
         break;
 

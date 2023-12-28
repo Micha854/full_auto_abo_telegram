@@ -286,7 +286,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                 if("SUCCESS" == strtoupper($httpParsedResponseAr["ACK"]) || "SUCCESSWITHWARNING" == strtoupper($httpParsedResponseAr["ACK"])) 
                 {
                     
-                    Logger::info("SUCESS PAYMENT"); // LOGGER
+                    Logger::info("SUCCESS PAYMENT"); // LOGGER
                     #### SAVE BUYER INFORMATION IN DATABASE ###
                     
                     $buyerName = $httpParsedResponseAr["FIRSTNAME"].' '.$httpParsedResponseAr["LASTNAME"];
@@ -445,7 +445,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     if($statement == "insert") {
                         $sql_insert = "INSERT INTO ".$tbl." SET buyerName = '$buyName', city = '$buyCity', buyerEmail = '$empfaenger', Amount = '$amountInsert', TelegramUser = '$newUser'".$useridnow.", channels = '$InputChannel', pass = '$passwd', TransID = '$TansID', paydate = now(), endtime = NOW() + INTERVAL $days_to_end DAY";
                         if($insert_row = $mysqli->query($sql_insert)) {
-                            Logger::info("INSERT USER ON DATABASE SUCESS"); // LOGGER
+                            Logger::info("INSERT USER ON DATABASE SUCCESS"); // LOGGER
                         } else {
                             Logger::error("INSERT USER ON DATABASE FAILED\n".$sql_insert); // LOGGER
                         }
@@ -459,7 +459,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
 					if(isset($admins) and empty($admins) === false) {
                         $sendAdminMessage = urlencode($notifyAdmin);
                         foreach($admins as $sendAdmins) {
-                            $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$sendAdmins&data[message]=$sendAdminMessage&data[parse_mode]=html", false);
+                            $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$sendAdmins&data[message]=$sendAdminMessage&data[parse_mode]=html&data[no_webpage]=1", false);
                             APIlog($sendMessage, $sendAdmins);
                         }
                     }
@@ -484,7 +484,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
         
                     if($botSend == '1') {
                         Logger::info("USE BOT TO SEND MESSAGE"); // LOGGER
-                        $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html", false);
+                        $sendMessage = callAPI('GET', $apiServer."sendMessage/?data[peer]=$userid&data[message]=$botMessage&data[parse_mode]=html&data[no_webpage]=1", false);
                         APIlog($sendMessage, $userid);
                     }
                     
@@ -526,7 +526,7 @@ if(isset($_GET["token"]) && isset($_GET["PayerID"]))
                     }
                     
                     
-                    Logger::info("FINISH SUCESS !!!"); // LOGGER
+                    Logger::info("FINISH SUCCESS !!!"); // LOGGER
                     //echo '<pre>';
                     //print_r($httpParsedResponseAr);
                     //echo '</pre>';

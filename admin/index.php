@@ -206,7 +206,7 @@ if($gesamte_anzahl > $ergebnisse_pro_seite) {
 <?php
 while($row = $result->fetch_array()) {
 
-if($row["endtime"] < date("Y-m-d H:i:s")) {
+if($row["endtime"] < date("Y-m-d H:i:s") && $row["endtime"] != null) {
     $color = ' style="color:#FF0000;font-weight:bolder"';
 } else {
     $color = ' style="color:#000"';
@@ -233,10 +233,10 @@ if(isset($HighlightChannelId) && is_int($HighlightChannelId)) {
     <td class="destop"><a href="https://t.me/<?=substr($row["TelegramUser"], 1) ?>"><?=$row["TelegramUser"] ?></a><?=$HighlightUser ?></td>
     <?php
     if(isset($_GET["inactive"]) == true) { ?>
-        <td class="inter" title="<?=date("d.m.Y H:i:s", strtotime($row["interaktion"] ?? '')) ?>"><?=date("d.m.y", strtotime($row["interaktion"] ?? '')) ?></td>
+        <td class="inter" title="<?php echo ($row["interaktion"]) ? date("d.m.Y H:i:s", strtotime($row["interaktion"])) : '' ?>"><?php echo ($row["interaktion"]) ? date("d.m.y", strtotime($row["interaktion"])) : '' ?></td>
     <?php } ?>
-    <td title="<?=date("d.m.Y H:i:s", strtotime($row["paydate"])) ?>"><?=date("d.m.y", strtotime($row["paydate"])) ?></td>
-    <td<?=$color?> title="<?=date("d.m.Y H:i:s", strtotime($row["endtime"])) ?>"><?=date("d.m.y", strtotime($row["endtime"])) ?></td>
+    <td title="<?php echo ($row["paydate"]) ? date("d.m.Y H:i:s", strtotime($row["paydate"])) : '' ?>"><?php echo ($row["paydate"]) ? date("d.m.y", strtotime($row["paydate"])) : '' ?></td>
+    <td<?=$color?> title="<?php echo ($row["endtime"]) ? date("d.m.Y H:i:s", strtotime($row["endtime"])) : '' ?>"><?php echo ($row["endtime"]) ? date("d.m.y", strtotime($row["endtime"])) : '' ?></td>
     <td class='city'><?=$row["city"] ?></td>
     <td><a class="btn btn-sm btn-outline-secondary" href="_edit_user.php?id=<?=$row["id"]?>" role="button">edit</a></td>
   </tr>
